@@ -1,0 +1,150 @@
+nelmio_api_doc:
+    areas: # to filter documented areas
+        security:
+            name_patterns:
+                - .security. # Accepts routes under /api except /api/doc
+            documentation:
+                components:
+                    securitySchemes:
+                        Bearer:
+                            type: http
+                            scheme: bearer
+                            bearerFormat: JWT
+                    schemas:
+                        LoginUsernameRequest:
+                            properties:
+                                key:
+                                    type: string
+                                password:
+                                    type: string
+                                remember_me:
+                                    type: boolean
+                        LoginEmailRequest:
+                            properties:
+                                key:
+                                    type: string
+                                password:
+                                    type: string
+                        LoginResponse:
+                            properties:
+                                token:
+                                    type: string
+                        ErrorResponse:
+                            properties:
+                                code:
+                                    type: integer
+                                message:
+                                    type: string
+                        PagerFantaResponse:
+                            properties:
+                                nbResults:
+                                    type: integer
+                                currentPage:
+                                    type: integer
+                                maxPerPage:
+                                    type: integer
+                                nbPages:
+                                    type: integer
+                                haveToPaginate:
+                                    type: boolean
+                                hasPreviousPage:
+                                    type: boolean
+                                previousPage:
+                                    type: integer
+                                    nullable: true
+                                hasNextPage:
+                                    type: boolean
+                                nextPage:
+                                    type: integer
+                                    nullable: true
+                                currentPageOffsetStart:
+                                    type: integer
+                                currentPageOffsetEnd:
+                                    type: integer
+
+                        AccountRoleResponse:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    role:
+                                        type: string
+                                        example: ROLE_SECURITY_ACCOUNT_EDIT
+                                    inherited:
+                                        type: array
+                                        items:
+                                            type: string
+                                            example: ROLE_SECURITY_ACCOUNT_SHOW
+
+                        RoleManipulateResponse:
+                            type: object
+                            properties:
+                                grantables:
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: ROLE_SECURITY_ACCOUNT_SHOW
+                                revocables:
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: ROLE_SECURITY_ACCOUNT_SHOW
+
+                        SessionSummaryResponse:
+                            type: object
+                            properties:
+                                nbActives:
+                                    type: integer
+                                    example: 8
+                                nbExpired:
+                                    type: integer
+                                    example: 102
+
+                    requestBodies:
+                        LoginUsernameBody:
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+                                application/x-www-form-urlencoded:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+                                multipart/form-data:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+                        LoginUsernameJsonBody:
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+                        LoginUsernameFormBody:
+                            content:
+                                application/x-www-form-urlencoded:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+                                multipart/form-data:
+                                    schema:
+                                        $ref: '#/components/schemas/LoginUsernameRequest'
+
+                    responses:
+                        400-BadRequest:
+                            description: 'Bad Request'
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#components/schemas/ErrorResponse'
+                                    example:
+                                        code: 400
+                                        message: 'Foo is required'
+                        401-Unauthorized:
+                            description: 'Unauthorized'
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#components/schemas/ErrorResponse'
+                                    example:
+                                        code: 401
+                                        message: 'Expired JWT Token'
+
+                security:
+                    - Bearer: []

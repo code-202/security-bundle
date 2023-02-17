@@ -1,0 +1,3 @@
+login:
+    resource: 'Code202\Security\Router\LoginRouteLoader::loadRoutes'
+    type: service
