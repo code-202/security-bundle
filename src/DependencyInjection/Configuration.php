@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('generator')
                             ->defaultValue('')
                         ->end()
-                        ->enumNode('validator')
+                        ->scalarNode('validator')
                             ->defaultValue('')
                         ->end()
                     ->end()
