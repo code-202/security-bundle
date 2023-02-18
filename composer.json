@@ -30,7 +30,7 @@
     "suggest": {
         "lexik/jwt-authentication-bundle": "This bundle provides JWT (Json Web Token) authentication for your Symfony API.",
         "nelmio/api-doc-bundle": "Generates documentation for your REST API from annotations",
-        "ramsey/uuid": "A PHP library for generating and working with universally unique identifiers (UUIDs).",
+        "ramsey/uuid": "A PHP library for generating and working with universally unique identifiers (UUIDs)."
     },
     "autoload": {
         "psr-4": {
