@@ -17,6 +17,7 @@
         "symfony/console": "6.2.*",
         "symfony/expression-language": "6.2.*",
         "symfony/form": "6.2.*",
+        "symfony/polyfill-uuid": "~1.27",
         "symfony/property-access": "6.2.*",
         "symfony/security-bundle": "6.2.*",
         "symfony/serializer": "6.2.*",
@@ -26,11 +27,10 @@
     "require-dev": {
         
     },
-    "suggests": {
-        "lexik/jwt-authentication-bundle": "^2.16",
-        "nelmio/api-doc-bundle": "^4.11",
-        "ramsey/uuid": "^4.7.3",
-        "symfony/polyfill-uuid": "^1.27.0"
+    "suggest": {
+        "lexik/jwt-authentication-bundle": "This bundle provides JWT (Json Web Token) authentication for your Symfony API.",
+        "nelmio/api-doc-bundle": "Generates documentation for your REST API from annotations",
+        "ramsey/uuid": "A PHP library for generating and working with universally unique identifiers (UUIDs).",
     },
     "autoload": {
         "psr-4": {

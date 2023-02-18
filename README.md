@@ -54,7 +54,7 @@ code202_security:
 ```
 Your service name have to respectivly implements Code202\Security\Uuid\UuidGeneratorInterface and Code202\Security\Uuid\UuidValidatorInterface
 
-You also can use these values `ramsey/uuid` or `symfony/polyfill-uuid` if you use the corresponding packages.
+You also can use these values `ramsey/uuid` or `symfony/polyfill-uuid` (default) if you use the corresponding packages.
 
 ### Session TTL
 You can provide differents values of Time To Live for the differents authentications ways, the default value is 3600 seconds.
