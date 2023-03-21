@@ -37,7 +37,7 @@ main:
 Add to folowing route in your `routing.yaml` :
 ```
 security:
-    resource: '@TeamDiffusionSecurityBundle/Resources/config/routing.yml'
+    resource: '@Code202SecurityBundle/Resources/config/routing.yml'
     name_prefix: api.security
     prefix: api/security
 ```
@@ -118,7 +118,7 @@ By default, if `to_revoke` option in note define, the `to_grant` option is apply
 This bundle already use OpenApi attributes. The best way to use it is to import our configuration in your `nelmio-apièdoc.yaml` file
 ```
 imports:
-    - { resource: '@TeamDiffusionSecurityBundle/Resources/config/nelmio_api_doc.yaml' }
+    - { resource: '@Code202SecurityBundle/Resources/config/nelmio_api_doc.yaml' }
 
 nelmio_api_doc:
     documentation:
@@ -159,7 +159,7 @@ In cases where you change key, password or remember_me parameters on authenticat
 You can add these route in your configuration to show login routes in your API documentation:
 ```
 security-login:
-    resource: '@TeamDiffusionSecurityBundle/Resources/config/routing-loging.yml'
+    resource: '@Code202SecurityBundle/Resources/config/routing-loging.yml'
     name_prefix: api.security
 ```
 
