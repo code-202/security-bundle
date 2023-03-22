@@ -33,9 +33,9 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
     protected HttpUtils $httpUtils;
     protected UserProviderInterface $userProvider;
     protected PropertyAccessorInterface $propertyAccessor;
-    private ?AuthenticationSuccessHandlerInterface $successHandler;
-    private ?AuthenticationFailureHandlerInterface $failureHandler;
-    private ?TranslatorInterface $translator = null;
+    protected ?AuthenticationSuccessHandlerInterface $successHandler;
+    protected ?AuthenticationFailureHandlerInterface $failureHandler;
+    protected ?TranslatorInterface $translator = null;
 
     public function __construct(
         HttpUtils $httpUtils,
