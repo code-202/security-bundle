@@ -123,7 +123,7 @@ imports:
 nelmio_api_doc:
     documentation:
         info:
-            title: OB2B BO
+            title: My Project
             description: Test application
             version: 1.0.0
 
@@ -136,7 +136,7 @@ In cases where you change key, password or remember_me parameters on authenticat
 ```
     documentation:
         info:
-            title: OB2B BO
+            title: My Project
             description: Test application
             version: 1.0.0
 
