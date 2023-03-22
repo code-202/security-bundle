@@ -38,7 +38,7 @@ class UsernamePasswordUpdater
         bool $verifyOldPassword = false,
         string $oldPassword = '',
         bool $autoFlush = true
-    ): void {
+    ): Authentication {
         if (!$newPassword) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('new_password_empty');
         }
@@ -85,6 +85,8 @@ class UsernamePasswordUpdater
         if ($autoFlush) {
             $this->em->flush();
         }
+
+        return $authentication;
     }
 
     public function updateUsername(
@@ -93,7 +95,7 @@ class UsernamePasswordUpdater
         bool $verifyPassword = false,
         string $password = '',
         bool $autoFlush = true
-    ) {
+    ): Authentication {
         if (!$newUsername) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('new_username_empty');
         }
@@ -145,5 +147,7 @@ class UsernamePasswordUpdater
         if ($autoFlush) {
             $this->em->flush();
         }
+
+        return $authentication;
     }
 }

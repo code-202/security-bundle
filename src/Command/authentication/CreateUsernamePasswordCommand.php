@@ -1,6 +1,6 @@
 <?php
 
-namespace Code202\Security\Command;
+namespace Code202\Security\Command\Authentication;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -11,10 +11,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Code202\Security\Service\Authentication\UsernamePasswordCreator;
 
 #[AsCommand(
-    name: 'code202:security:create-authentication:username-password',
+    name: 'code202:security:authentication:create-username-password',
     hidden: false
 )]
-class CreateAuthenticationUsernamePasswordCommand extends Command
+class CreateUsernamePasswordCommand extends Command
 {
     private UsernamePasswordCreator $creator;
 

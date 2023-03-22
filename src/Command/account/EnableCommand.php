@@ -1,6 +1,6 @@
 <?php
 
-namespace Code202\Security\Command;
+namespace Code202\Security\Command\Account;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -10,10 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Code202\Security\Service\Account\Enabler;
 
 #[AsCommand(
-    name: 'code202:security:enable-account',
+    name: 'code202:security:account:enable',
     hidden: false
 )]
-class EnableAccountCommand extends Command
+class EnableCommand extends Command
 {
     private Enabler $enabler;
 

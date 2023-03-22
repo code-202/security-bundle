@@ -1,6 +1,6 @@
 <?php
 
-namespace Code202\Security\Command;
+namespace Code202\Security\Command\Account;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -10,10 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Code202\Security\Service\Account\Creator;
 
 #[AsCommand(
-    name: 'code202:security:create-account',
+    name: 'code202:security:account:create',
     hidden: false
 )]
-class CreateAccountCommand extends Command
+class CreateCommand extends Command
 {
     private Creator $creator;
 
