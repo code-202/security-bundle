@@ -22,10 +22,8 @@
         "symfony/security-bundle": "6.2.*",
         "symfony/serializer": "6.2.*",
         "symfony/validator": "6.2.*",
-        "symfony/yaml": "6.2.*"
-    },
-    "require-dev": {
-        
+        "symfony/yaml": "6.2.*",
+        "zircote/swagger-php": "^4.7"
     },
     "suggest": {
         "lexik/jwt-authentication-bundle": "This bundle provides JWT (Json Web Token) authentication for your Symfony API.",
