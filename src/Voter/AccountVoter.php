@@ -10,7 +10,7 @@ use Code202\Security\User\UserInterface;
 
 class AccountVoter extends Voter
 {
-    public const LIST = 'SECURITY.ACCOUNT.LIST';
+    public const _LIST = 'SECURITY.ACCOUNT.LIST';
     public const SHOW = 'SECURITY.ACCOUNT.SHOW';
     public const EDIT = 'SECURITY.ACCOUNT.EDIT';
     public const ROLE = 'SECURITY.ACCOUNT.ROLE';
@@ -29,7 +29,7 @@ class AccountVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (in_array($attribute, [
-            self::LIST,
+            self::_LIST,
         ])) {
             return true;
         }
@@ -54,30 +54,27 @@ class AccountVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        return match ($attribute) {
-            self::LIST => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_LIST'),
-            self::SHOW => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_SHOW'),
-            self::EDIT => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_EDIT'),
-            self::ROLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ROLE'),
-            self::ENABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ENABLE'),
-            self::DISABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_DISABLE'),
-            self::AUTHENTICATIONS => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_AUTHENTICATIONS'),
-        };
-
         $user = $token->getUser();
 
+        return match ($attribute) {
+            self::_LIST => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_LIST'),
+            self::SHOW => $this->isAccoutOwner($user, $subject) || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_SHOW'),
+            self::EDIT => $this->isAccoutOwner($user, $subject),
+            self::ROLE => $this->isAccoutOwner($user, $subject) || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ROLE'),
+            self::ENABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ENABLE'),
+            self::DISABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_DISABLE'),
+            self::AUTHENTICATIONS => $this->isAccoutOwner($user, $subject) || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_AUTHENTICATIONS'),
+            default => throw new \LogicException('This code should not be reached!')
+        };
+    }
+
+    protected function isAccoutOwner(mixed $user, mixed $subject): bool
+    {
         if (!$user instanceof UserInterface) {
             // the user must be logged in; if not, deny access
             return false;
         }
 
-        return match ($attribute) {
-            self::SHOW => $subject == $user->getAccount(),
-            self::EDIT => $subject == $user->getAccount(),
-            self::ROLE => $subject == $user->getAccount(),
-            self::AUTHENTICATIONS => $subject == $user->getAccount(),
-        };
-
-        throw new \LogicException('This code should not be reached!');
+        return $subject == $user->getAccount();
     }
 }
