@@ -33,6 +33,19 @@ main:
         token_by_email_form: false
 ```
 
+### User provider
+To fully use the bundle, don't forget to use our dedicated user provider
+```
+security:
+    providers:
+        code202_user:
+            id: Code202\Security\User\Provider
+
+    firewalls:
+        main:
+            provider: code202_user
+```
+
 ### Routing
 Add to folowing route in your `routing.yaml` :
 ```
