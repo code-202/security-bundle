@@ -35,6 +35,7 @@ class AccountController
     use FormHelperTrait;
 
     #[Route('', name: '.list', methods: 'GET')]
+    #[IsGranted('SECURITY.ACCOUNT.LIST')]
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'maxPerPage', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'show', schema: new OA\Schema(type: 'string', enum: ['all', 'active', 'inactive']))]

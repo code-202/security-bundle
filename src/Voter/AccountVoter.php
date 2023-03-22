@@ -10,6 +10,7 @@ use Code202\Security\User\UserInterface;
 
 class AccountVoter extends Voter
 {
+    public const LIST = 'SECURITY.ACCOUNT.LIST';
     public const SHOW = 'SECURITY.ACCOUNT.SHOW';
     public const EDIT = 'SECURITY.ACCOUNT.EDIT';
     public const ROLE = 'SECURITY.ACCOUNT.ROLE';
@@ -28,6 +29,7 @@ class AccountVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (!in_array($attribute, [
+            self::LIST,
             self::SHOW,
             self::EDIT,
             self::ROLE,
@@ -55,6 +57,7 @@ class AccountVoter extends Voter
         }
 
         return match ($attribute) {
+            self::LIST => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_LIST'),
             self::SHOW => $subject == $user->getAccount() || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_SHOW'),
             self::EDIT => $subject == $user->getAccount(),
             self::ROLE => $subject == $user->getAccount() || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ROLE'),
