@@ -24,7 +24,6 @@ use Code202\Security\Request\Account\UpdateNameRequest;
 use Code202\Security\Service\Account\Enabler;
 use Code202\Security\Service\Account\Lister;
 use Code202\Security\Service\Account\Updater;
-use Code202\Security\User\UserInterface;
 
 #[AsController]
 #[Route('/accounts', name: '.accounts')]

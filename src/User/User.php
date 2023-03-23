@@ -5,7 +5,6 @@ namespace Code202\Security\User;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
-use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
