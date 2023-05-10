@@ -52,7 +52,7 @@ class AuthenticationController
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'maxPerPage', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'show', schema: new OA\Schema(type: 'string', enum: ['all', 'active', 'inactive']))]
-    #[OAA\PagerFantaResponse(new Model(type: Authentication::class, groups: ['list']))]
+    #[OAA\PagerFantaResponse(new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
         Request $request,
@@ -76,7 +76,7 @@ class AuthenticationController
             'account' => $data->account,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
     }
 
     #[Route('/{uuid}/update-password', name: '.update-password', methods: 'PUT')]
