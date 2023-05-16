@@ -136,7 +136,7 @@ class UsernamePasswordUpdater
         $violations = $this->validator->validate($authentication);
 
         if (count($violations) > 0) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater('username_already_used');
+            throw new Exception\AuthenticationUsernamePasswordUpdater($violations[0]->getMessage());
         }
 
         $this->em->persist($authentication);
