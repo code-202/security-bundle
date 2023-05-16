@@ -55,7 +55,7 @@ class Updater
         $violations = $this->validator->validate($account);
 
         if (count($violations) > 0) {
-            throw new Exception\AccountUpdater($violations[0]->getMessage());
+            throw new Exception\ValidationFailed($account, $violations);
         }
 
         $this->em->persist($account);

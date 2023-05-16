@@ -66,7 +66,7 @@ class TokenByEmailUpdater
         $violations = $this->validator->validate($authentication);
 
         if (count($violations) > 0) {
-            throw new Exception\AuthenticationTokenByEmailUpdater($violations[0]->getMessage());
+            throw new Exception\ValidationFailed($authentication, $violations);
         }
 
         $this->em->persist($authentication);

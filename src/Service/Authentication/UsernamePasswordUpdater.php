@@ -136,7 +136,7 @@ class UsernamePasswordUpdater
         $violations = $this->validator->validate($authentication);
 
         if (count($violations) > 0) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater($violations[0]->getMessage());
+            throw new Exception\ValidationFailed($authentication, $violations);
         }
 
         $this->em->persist($authentication);

@@ -36,7 +36,7 @@ class Creator
         $violations = $this->validator->validate($account);
 
         if (count($violations) > 0) {
-            throw new Exception\AccountCreator((string) $violations);
+            throw new Exception\ValidationFailed($account, $violations);
         }
 
         $this->em->persist($account);

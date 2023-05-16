@@ -63,7 +63,7 @@ class TokenByEmailCreator
         $violations = $this->validator->validate($authentication);
 
         if (count($violations) > 0) {
-            throw new Exception\AuthenticationTokenByEmailCreator('Impossible to create an email/token authentication mode with this email for this account');
+            throw new Exception\ValidationFailed($authentication, $violations);
         }
 
         $this->em->persist($authentication);
