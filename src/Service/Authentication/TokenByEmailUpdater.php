@@ -61,6 +61,7 @@ class TokenByEmailUpdater
         $authentication
             ->setKey($newEmail)
             ->setVerified(false)
+            ->setDatas([])
         ;
 
         $violations = $this->validator->validate($authentication);
