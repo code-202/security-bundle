@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(schema: 'security')]
 #[ORM\UniqueConstraint(name: 'type_key', columns: ['type', 'key'])]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['type', 'key'])]
+#[UniqueEntity(fields: ['key', 'type'])]
 class Authentication implements Activity\TargetReference
 {
     use Timestampable;
