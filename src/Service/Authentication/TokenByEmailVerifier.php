@@ -14,18 +14,11 @@ use Code202\Security\User\User;
 
 class TokenByEmailVerifier
 {
-    protected EntityManagerInterface $em;
-    protected PasswordHasherFactoryInterface $encoderFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        PasswordHasherFactoryInterface $passwordHasherFactory,
-        EventDispatcherInterface $eventDispatcher
+        private EntityManagerInterface $em,
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->em = $em;
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function verify(Authentication|string $authenticationOrUuid, string $token, bool $autoFlush = true): string
@@ -48,6 +41,10 @@ class TokenByEmailVerifier
 
         if ($authentication->isVerified()) {
             throw new Exception\AuthenticationTokenByEmailVerifier('authentication_already_verified');
+        }
+
+        if (!$authentication->getData('password')) {
+            throw new Exception\AuthenticationTokenByEmailVerifier('authentication_has_no_validation_token');
         }
 
         $now = new \DatetimeImmutable();
