@@ -31,7 +31,7 @@ class ActivityController
     #[Route('', name: '.list', methods: 'GET')]
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'maxPerPage', schema: new OA\Schema(type: 'integer'))]
-    #[OAA\PagerFantaResponse(new Model(type: Activity::class, groups: ['list']))]
+    #[OAA\PagerFantaResponse(new Model(type: Activity::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
         Request $request,
@@ -53,6 +53,6 @@ class ActivityController
             'targets' => $targets,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
     }
 }
