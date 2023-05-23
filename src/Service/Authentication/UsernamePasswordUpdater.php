@@ -141,7 +141,7 @@ class UsernamePasswordUpdater
 
         $this->em->persist($authentication);
 
-        $event = new UsernameChangedEvent($authentication, ['oldUsername' => $oldUsername]);
+        $event = new UsernameChangedEvent($authentication, ['oldUsername' => $oldUsername, 'username' => $newUsername]);
         $this->eventDispatcher->dispatch($event);
 
         if ($autoFlush) {

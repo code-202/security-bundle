@@ -60,7 +60,7 @@ class Updater
 
         $this->em->persist($account);
 
-        $event = new NameChangedEvent($account, ['oldName' => $oldName]);
+        $event = new NameChangedEvent($account, ['oldName' => $oldName, 'name' => $newName]);
         $this->eventDispatcher->dispatch($event);
 
         if ($autoFlush) {
