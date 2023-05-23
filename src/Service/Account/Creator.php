@@ -41,7 +41,7 @@ class Creator
 
         $this->em->persist($account);
 
-        $event = new CreatedEvent($account);
+        $event = new CreatedEvent($account, ['name' => $name]);
         $this->eventDispatcher->dispatch($event);
 
         if ($autoFlush) {
