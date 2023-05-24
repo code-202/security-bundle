@@ -2,7 +2,6 @@
 
 namespace Code202\Security\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[OA\Tag(name: ' Logout')]
 #[Route('/logout', name: '.logout')]
-#[OASecurity(name: null)]
 class LogoutController
 {
     #[OA\Post(
