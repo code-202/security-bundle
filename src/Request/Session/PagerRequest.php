@@ -9,4 +9,6 @@ class PagerRequest extends BasePagerRequest
 {
     #[Choice(['all', 'active', 'inactive'])]
     public string $show = 'all';
+
+    public string $search = '';
 }

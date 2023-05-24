@@ -61,6 +61,13 @@ class Lister
             ;
         }
 
+        if ($options['search']) {
+            $qb
+                ->andWhere('s.uuid LIKE = :search')
+                ->setParameter(':search', '%'.$options['search'].'%')
+            ;
+        }
+
         $adapter = new QueryAdapter($qb);
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($options['maxPerPage']);
@@ -86,6 +93,11 @@ class Lister
         $resolver->define('show')
             ->default('all')
             ->allowedValues('all', 'active', 'inactive')
+        ;
+
+        $resolver->define('search')
+            ->default('')
+            ->allowedTypes('string')
         ;
 
         $resolver->define('account')

@@ -34,6 +34,7 @@ class SessionController
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'maxPerPage', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'show', schema: new OA\Schema(type: 'string', enum: ['all', 'active', 'inactive']))]
+    #[OA\QueryParameter(name: 'search', schema: new OA\Schema(type: 'string'))]
     #[OAA\PagerFantaResponse(new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
@@ -51,6 +52,7 @@ class SessionController
             'page' => $data->page,
             'maxPerPage' => $data->maxPerPage,
             'show' => $data->show,
+            'search' => $data->search,
             'account' => $user->getAccount(),
         ]);
 
