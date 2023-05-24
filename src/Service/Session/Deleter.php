@@ -24,7 +24,7 @@ class Deleter
     public function delete(Session $session, bool $autoFlush = true)
     {
         $now = new \Datetime();
-        if ($session->getExpiredAt() < $now) {
+        if ($session->getExpiredAt() !== null && $session->getExpiredAt() < $now) {
             return;
         }
 
