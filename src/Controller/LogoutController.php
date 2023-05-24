@@ -5,8 +5,10 @@ namespace Code202\Security\Controller;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[AsController]
 #[OA\Tag(name: ' Logout')]
 #[Route('/logout', name: '.logout')]
 class LogoutController
