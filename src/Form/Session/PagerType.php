@@ -15,6 +15,7 @@ class PagerType extends BasePagerType
 
         $builder
             ->add('show')
+            ->add('search')
         ;
     }
 
