@@ -63,7 +63,7 @@ class Lister
 
         if ($options['search']) {
             $qb
-                ->andWhere('s.uuid LIKE = :search')
+                ->andWhere('CONCAT(s.uuid,\'\') LIKE :search')
                 ->setParameter(':search', '%'.$options['search'].'%')
             ;
         }
@@ -97,7 +97,7 @@ class Lister
 
         $resolver->define('search')
             ->default('')
-            ->allowedTypes('string')
+            ->allowedTypes('string', 'null')
         ;
 
         $resolver->define('account')
