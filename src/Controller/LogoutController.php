@@ -27,7 +27,7 @@ class LogoutController
     #[Route('', name: '', methods: 'POST')]
     public function logout(Security $security): Response
     {
-        $security->logout();
+        $security->logout(false);
 
         return new Response(null, 204, [], true);
     }
