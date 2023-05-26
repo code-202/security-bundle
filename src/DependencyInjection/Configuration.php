@@ -75,6 +75,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->integerNode('trust_duration')->defaultValue(600)->end()
             ->end()
         ;
 

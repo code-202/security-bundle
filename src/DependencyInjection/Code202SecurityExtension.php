@@ -35,6 +35,8 @@ class Code202SecurityExtension extends Extension
         $this->configureNumberBaseTokenGenerator($config, $container);
 
         $this->configureRoleManager($config, $container);
+
+        $this->configureSessionTruster($config, $container);
     }
 
     protected function loadTTLProvider(array $config, ContainerBuilder $container): void
@@ -101,5 +103,11 @@ class Code202SecurityExtension extends Extension
     {
         $definition = $container->getDefinition(\Code202\Security\Service\RoleStrategy\Provider::class);
         $definition->setArgument('$strategies', $config['role_strategies']);
+    }
+
+    protected function configureSessionTruster(array $config, ContainerBuilder $container): void
+    {
+        $definition = $container->getDefinition(\Code202\Security\Service\Session\Truster::class);
+        $definition->setArgument('$trustDuration', $config['trust_duration']);
     }
 }
