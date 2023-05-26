@@ -11,8 +11,10 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
+use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\User\RefreshedEvent;
+use Code202\Security\Service\Session\Truster as SessionTruster;
 use Code202\Security\Service\Session\TTLProvider as SessionTTLProvider;
 use Code202\Security\User\UserInterface;
 
@@ -23,15 +25,11 @@ use Code202\Security\User\UserInterface;
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]
 class SessionListener
 {
-    protected EntityManagerInterface $em;
-    protected SessionTTLProvider $sessionTTLProvider;
-
     public function __construct(
-        EntityManagerInterface $em,
-        SessionTTLProvider $sessionTTLProvider
+        private EntityManagerInterface $em,
+        private SessionTTLProvider $sessionTTLProvider,
+        private SessionTruster $sessionTruster,
     ) {
-        $this->em = $em;
-        $this->sessionTTLProvider = $sessionTTLProvider;
     }
 
     public function onCheckPassport(CheckPassportEvent $event)
@@ -88,6 +86,10 @@ class SessionListener
 
         if ($event->getPassport()->hasBadge(PermanentSessionBadge::class)) {
             $session->setExpiredAt(null);
+        }
+
+        if ($event->getPassport()->hasBadge(TrustSessionBadge::class)) {
+            $this->sessionTruster->trust($session, false);
         }
 
         $this->em->persist($session);

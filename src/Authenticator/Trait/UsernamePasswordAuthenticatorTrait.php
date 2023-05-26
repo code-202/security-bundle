@@ -8,6 +8,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
+use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
 use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
 use Code202\Security\Entity\AuthenticationType;
 
@@ -26,7 +27,7 @@ trait UsernamePasswordAuthenticatorTrait
                 return $this->userProvider->loadUserByIdentifier($key);
             }),
             new PasswordCredentials($credentials['password']),
-            [new VerifyAuthenticationBadge(), new RememberMeBadge()]
+            [new VerifyAuthenticationBadge(), new RememberMeBadge(), new TrustSessionBadge()]
         );
 
         if ($credentials['remember_me']) {
