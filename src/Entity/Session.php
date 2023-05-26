@@ -35,6 +35,10 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     #[Groups(['session.info'])]
     protected ?\DateTimeImmutable $expiredAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[Groups(['session.info'])]
+    protected ?\DateTimeImmutable $trustUntil = null;
+
     protected bool $created = false;
 
     public function __construct(string $uuid, Authentication $authentication)
@@ -101,5 +105,17 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     public function getExpiredAt(): ?\DateTimeInterface
     {
         return $this->expiredAt;
+    }
+
+    public function setTrustUntil(\DateTimeInterface $trustUntil = null): self
+    {
+        $this->trustUntil = $trustUntil !== null ? \DateTimeImmutable::createFromInterface($trustUntil) : null;
+
+        return $this;
+    }
+
+    public function getTrustUntil(): ?\DateTimeInterface
+    {
+        return $this->trustUntil;
     }
 }
