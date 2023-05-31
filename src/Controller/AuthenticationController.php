@@ -81,6 +81,7 @@ class AuthenticationController
 
     #[Route('/{uuid}/update-password', name: '.update-password', methods: 'PUT')]
     #[IsGranted('SECURITY.AUTHENTICATION.EDIT', subject: 'authentication')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the authentication')]
     #[OAA\PutBody(new Model(type: UpdatePasswordRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
@@ -107,6 +108,7 @@ class AuthenticationController
 
     #[Route('/{uuid}/update-username', name: '.update-username', methods: 'PUT')]
     #[IsGranted('SECURITY.AUTHENTICATION.EDIT', subject: 'authentication')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the authentication')]
     #[OAA\PutBody(new Model(type: UpdateUsernameRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
@@ -132,7 +134,7 @@ class AuthenticationController
     }
 
     #[Route('/create-email', name: '.create-email', methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OAA\PostBody(new Model(type: CreateEmailRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
@@ -202,6 +204,7 @@ class AuthenticationController
 
     #[Route('/{uuid}/update-email', name: '.update-email', methods: 'PUT')]
     #[IsGranted('SECURITY.AUTHENTICATION.EDIT', subject: 'authentication')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the authentication')]
     #[OAA\PutBody(new Model(type: UpdateEmailRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]

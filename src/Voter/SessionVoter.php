@@ -12,9 +12,14 @@ class SessionVoter extends Voter
     public const DELETE = 'SECURITY.SESSION.DELETE';
     public const TRUST = 'SECURITY.SESSION.TRUST';
     public const UNTRUST = 'SECURITY.SESSION.UNTRUST';
+    public const TRUSTED = 'SECURITY.SESSION.TRUSTED';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
+        if ($attribute == self::TRUSTED) {
+            return true;
+        }
+
         if (!in_array($attribute, [
             self::DELETE,
             self::TRUST,
@@ -43,6 +48,7 @@ class SessionVoter extends Voter
             self::TRUST,
             self::UNTRUST,
             self::DELETE => $subject->getAuthentication()->getAccount() == $user->getAccount(),
+            self::TRUSTED => $user->getSession()->getTrustUntil() != null && $user->getSession()->getTrustUntil() > new \DateTime('now'),
             default => throw new \LogicException('This code should not be reached!')
         };
     }

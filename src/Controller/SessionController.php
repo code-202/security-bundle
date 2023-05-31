@@ -122,6 +122,7 @@ class SessionController
 
     #[Route('/{uuid}', name: '.delete', methods: 'DELETE')]
     #[IsGranted('SECURITY.SESSION.DELETE', subject: 'session')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the session')]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     public function delete(

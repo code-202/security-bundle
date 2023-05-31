@@ -74,6 +74,7 @@ class AccountController
 
     #[Route('/{uuid}/update-name', name: '.update-name', methods: 'PUT')]
     #[IsGranted('SECURITY.ACCOUNT.EDIT', subject: 'account')]
+    #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string'), description: 'Uuid of the account or "me"')]
     #[OAA\PutBody(new Model(type: UpdateNameType::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Account::class, groups: ['list', 'timestampable']))]
