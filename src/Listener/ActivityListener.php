@@ -30,6 +30,8 @@ use Code202\Security\User\UserInterface;
 #[AsEventListener(event: AuthenticationEvent\TokenByEmailVerifiedEvent::class, method: 'onTokenByEmailVerified')]
 #[AsEventListener(event: AuthenticationEvent\EmailChangedEvent::class, method: 'onEmailChanged')]
 #[AsEventListener(event: SessionEvent\DeletedEvent::class, method: 'onSessionDeleted')]
+#[AsEventListener(event: SessionEvent\TrustEvent::class, method: 'onSessionTrusted')]
+#[AsEventListener(event: SessionEvent\UntrustEvent::class, method: 'onSessionUntrusted')]
 class ActivityListener
 {
     protected EntityManagerInterface $em;
@@ -181,6 +183,22 @@ class ActivityListener
     {
         $target = $this->targetProvider->get($event->getSession());
         $activity = new Activity(ActivityType::SESSION_DELETED, $target, $this->triggerProvider->get());
+
+        $this->em->persist($activity);
+    }
+
+    public function onSessionTrusted(SessionEvent\TrustEvent $event)
+    {
+        $target = $this->targetProvider->get($event->getSession());
+        $activity = new Activity(ActivityType::SESSION_TRUSTED, $target, $this->triggerProvider->get());
+
+        $this->em->persist($activity);
+    }
+
+    public function onSessionUntrusted(SessionEvent\UntrustEvent $event)
+    {
+        $target = $this->targetProvider->get($event->getSession());
+        $activity = new Activity(ActivityType::SESSION_UNTRUSTED, $target, $this->triggerProvider->get());
 
         $this->em->persist($activity);
     }

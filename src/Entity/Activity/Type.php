@@ -14,6 +14,8 @@ enum Type: string
     case LOGIN = 'login';
     case LOGOUT = 'logout';
     case SESSION_DELETED = 'session_deleted';
+    case SESSION_TRUSTED = 'session_trusted';
+    case SESSION_UNTRUSTED = 'session_untrusted';
     case PASSWORD_CHANGED = 'password_changed';
     case USERNAME_CHANGED = 'username_changed';
     case TOKEN_BY_EMAIL_REFRESHED = 'token_by_email_refreshed';
