@@ -10,10 +10,16 @@ use Code202\Security\User\UserInterface;
 class SessionVoter extends Voter
 {
     public const DELETE = 'SECURITY.SESSION.DELETE';
+    public const TRUST = 'SECURITY.SESSION.TRUST';
+    public const UNTRUST = 'SECURITY.SESSION.UNTRUST';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::DELETE])) {
+        if (!in_array($attribute, [
+            self::DELETE,
+            self::TRUST,
+            self::UNTRUST,
+        ])) {
             return false;
         }
 
@@ -34,6 +40,8 @@ class SessionVoter extends Voter
         }
 
         return match ($attribute) {
+            self::TRUST,
+            self::UNTRUST,
             self::DELETE => $subject->getAuthentication()->getAccount() == $user->getAccount(),
             default => throw new \LogicException('This code should not be reached!')
         };
