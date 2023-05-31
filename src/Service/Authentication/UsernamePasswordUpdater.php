@@ -35,8 +35,6 @@ class UsernamePasswordUpdater
     public function updatePassword(
         string|Authentication $authenticationOrUuid,
         string $newPassword,
-        bool $verifyOldPassword = false,
-        string $oldPassword = '',
         bool $autoFlush = true
     ): Authentication {
         if (!$newPassword) {
@@ -61,14 +59,6 @@ class UsernamePasswordUpdater
 
         $passwordHasher = $this->hasherFactory->getPasswordHasher(User::class);
 
-        if ($verifyOldPassword && !$oldPassword) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater('old_password_empty');
-        }
-
-        if ($verifyOldPassword && !$passwordHasher->verify($authentication->getData('password'), $oldPassword)) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater('old_password_not_match');
-        }
-
         $passwordEncoded = $passwordHasher->hash($newPassword);
         $oldPasswordEncoded = $authentication->getData('password');
 
@@ -92,8 +82,6 @@ class UsernamePasswordUpdater
     public function updateUsername(
         Authentication|string $authenticationOrUuid,
         string $newUsername,
-        bool $verifyPassword = false,
-        string $password = '',
         bool $autoFlush = true
     ): Authentication {
         if (!$newUsername) {
@@ -114,16 +102,6 @@ class UsernamePasswordUpdater
 
         if ($authentication->getType() != AuthenticationType::USERNAME_PASSWORD) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_is_not_username_password_type');
-        }
-
-        $passwordHasher = $this->hasherFactory->getPasswordHasher(User::class);
-
-        if ($verifyPassword && !$password) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater('password_empty');
-        }
-
-        if ($verifyPassword && !$passwordHasher->verify($authentication->getData('password'), $password)) {
-            throw new Exception\AuthenticationUsernamePasswordUpdater('password_not_match');
         }
 
         $oldUsername = $authentication->getKey();

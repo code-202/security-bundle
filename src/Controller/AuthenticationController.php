@@ -97,7 +97,7 @@ class AuthenticationController
         $data = $this->handleRequest($form, $request);
 
         try {
-            $updater->updatePassword($authentication, $data->new, true, $data->old);
+            $updater->updatePassword($authentication, $data->new);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -123,7 +123,7 @@ class AuthenticationController
         $data = $this->handleRequest($form, $request);
 
         try {
-            $updater->updateUsername($authentication, $data->username, true, $data->password);
+            $updater->updateUsername($authentication, $data->username);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }

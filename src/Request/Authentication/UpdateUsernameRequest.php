@@ -9,7 +9,4 @@ class UpdateUsernameRequest implements ServiceRequest
 {
     #[NotBlank]
     public string $username = '';
-
-    #[NotBlank]
-    public string $password = '';
 }

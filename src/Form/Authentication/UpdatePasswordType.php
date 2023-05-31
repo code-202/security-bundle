@@ -13,7 +13,6 @@ class UpdatePasswordType extends AbstractType
     {
         $builder
             ->setMethod('put')
-            ->add('old')
             ->add('new')
         ;
     }

@@ -9,6 +9,4 @@ class UpdatePasswordRequest implements ServiceRequest
 {
     #[NotBlank]
     public string $new = '';
-
-    public string $old = '';
 }

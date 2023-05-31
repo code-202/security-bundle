@@ -14,7 +14,6 @@ class UpdateUsernameType extends AbstractType
         $builder
             ->setMethod('put')
             ->add('username')
-            ->add('password')
         ;
     }
 
