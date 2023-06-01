@@ -14,7 +14,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 use Code202\Security\Controller\FormHelperTrait;
-use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 use Code202\Security\Exception\ExceptionInterface;
 use Code202\Security\Form\Session\PagerType;
@@ -81,6 +80,7 @@ class SessionController
     #[Route('/{uuid}/trust', name: '.trust', methods: 'PUT')]
     #[IsGranted('SECURITY.SESSION.TRUST', subject: 'session')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the session')]
+    #[OAA\PutBody(new Model(type: TrustPasswordRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function trust(
