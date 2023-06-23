@@ -29,4 +29,17 @@ class Provider
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    public function findOne(string $key, AuthenticationType $type): ?Authentication
+    {
+        $qb = $this->em->getRepository(Authentication::class)
+            ->createQueryBuilder('a')
+            ->andWhere('a.type = :type')
+            ->setParameter('type', $type)
+            ->andWhere('a.key = :key')
+            ->setParameter('key', $key)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
