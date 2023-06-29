@@ -12,24 +12,17 @@ use Code202\Security\Event\Authentication\CreatedEvent;
 use Code202\Security\Exception;
 use Code202\Security\User\User;
 use Code202\Security\Uuid\UuidGeneratorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UsernamePasswordCreator
 {
-    private EntityManagerInterface $em;
-    private UuidGeneratorInterface $uuidGenerator;
-    private EventDispatcherInterface $eventDispatcher;
-    private PasswordHasherFactoryInterface $passwordHasherFactory;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UuidGeneratorInterface $uuidGenerator,
-        EventDispatcherInterface $eventDispatcher,
-        PasswordHasherFactoryInterface $passwordHasherFactory
+        private EntityManagerInterface $em,
+        private UuidGeneratorInterface $uuidGenerator,
+        private EventDispatcherInterface $eventDispatcher,
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
+        private ValidatorInterface $validator,
     ) {
-        $this->em = $em;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->passwordHasherFactory = $passwordHasherFactory;
     }
 
     public function create(Account|string $accountOrUuid, string $username, string $password = null, bool $autoFlush = true): Authentication
@@ -55,6 +48,12 @@ class UsernamePasswordCreator
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::USERNAME_PASSWORD, $account);
         $authentication->setKey($username);
+
+        $violations = $this->validator->validate($authentication);
+
+        if (count($violations) > 0) {
+            throw new Exception\ValidationFailed($authentication, $violations);
+        }
 
         if ($password) {
             $passwordHasher = $this->passwordHasherFactory->getPasswordHasher(User::class);
