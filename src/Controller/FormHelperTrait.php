@@ -2,6 +2,7 @@
 
 namespace Code202\Security\Controller;
 
+use Code202\Security\Exception\FormValidationFailedException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -30,7 +31,7 @@ trait FormHelperTrait
         }
 
         if (!$form->isValid()) {
-            throw new BadRequestHttpException($form->getErrors(true, false));
+            throw new BadRequestHttpException($form->getErrors(true, false), new FormValidationFailedException($form));
         }
 
         return $form->getData();
