@@ -20,10 +20,10 @@ class Activity
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'string', length: 30, enumType: Type::class)]
+    #[ORM\Column(type: 'string', length: 30)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
-    protected Type $type;
+    protected string $type;
 
     #[ORM\ManyToOne(targetEntity: Target::class, inversedBy: 'activities', cascade: ['persist'])]
     #[Groups(['list'])]
@@ -38,7 +38,7 @@ class Activity
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     protected array $datas;
 
-    public function __construct(Type $type, Target $target, Trigger $trigger)
+    public function __construct(string $type, Target $target, Trigger $trigger)
     {
         $this->type = $type;
         $this->target = $target;
@@ -63,7 +63,7 @@ class Activity
         return $this->id;
     }
 
-    public function getType(): Type
+    public function getType(): string
     {
         return $this->type;
     }
