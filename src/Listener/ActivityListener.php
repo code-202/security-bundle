@@ -93,6 +93,7 @@ class ActivityListener
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ACCOUNT_CREATED, $target, $this->triggerProvider->get());
+        $activity->setDatas($event->getArguments());
 
         $this->em->persist($activity);
     }
@@ -146,6 +147,7 @@ class ActivityListener
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::AUTHENTICATION_CREATED, $target, $this->triggerProvider->get());
+        $activity->setDatas($event->getArguments());
 
         $this->em->persist($activity);
     }

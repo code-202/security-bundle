@@ -62,7 +62,7 @@ class UsernamePasswordCreator
 
         $this->em->persist($authentication);
 
-        $event = new CreatedEvent($authentication);
+        $event = new CreatedEvent($authentication, ['username' => $username]);
         $this->eventDispatcher->dispatch($event);
 
         if ($autoFlush) {

@@ -32,7 +32,7 @@ class TokenByEmailCreator
         $this->validator = $validator;
     }
 
-    public function createEmail(Account|string $accountOrUuid, string $newEmail, bool $autoFlush = true)
+    public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true)
     {
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
@@ -44,7 +44,7 @@ class TokenByEmailCreator
             throw new Exception\AuthenticationTokenByEmailCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
         }
 
-        if (!$newEmail) {
+        if (!$email) {
             throw new Exception\AuthenticationTokenByEmailCreator('email_empty');
         }
 
@@ -58,7 +58,7 @@ class TokenByEmailCreator
         }
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::TOKEN_BY_EMAIL, $account);
-        $authentication->setKey($newEmail);
+        $authentication->setKey($email);
 
         $violations = $this->validator->validate($authentication);
 
@@ -68,7 +68,7 @@ class TokenByEmailCreator
 
         $this->em->persist($authentication);
 
-        $event = new CreatedEvent($authentication);
+        $event = new CreatedEvent($authentication, ['email' => $email]);
         $this->eventDispatcher->dispatch($event);
 
         if ($autoFlush) {
