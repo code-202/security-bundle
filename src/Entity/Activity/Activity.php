@@ -20,7 +20,7 @@ class Activity
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'string', length: 30)]
+    #[ORM\Column(type: 'string', length: 64)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $type;
