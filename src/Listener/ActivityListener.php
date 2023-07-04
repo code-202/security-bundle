@@ -66,7 +66,7 @@ class ActivityListener
         }
 
         $target = $this->targetProvider->get($authentication);
-        $activity = new Activity->value(ActivityType::LOGIN, $target, $this->triggerProvider->get());
+        $activity = new Activity(ActivityType::LOGIN->value, $target, $this->triggerProvider->get());
 
         $this->em->persist($activity);
         $this->em->flush();
