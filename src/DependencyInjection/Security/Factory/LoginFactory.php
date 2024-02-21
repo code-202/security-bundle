@@ -35,7 +35,7 @@ class LoginFactory extends AbstractFactory
         return 'code202-login';
     }
 
-    public function addConfiguration(NodeDefinition $node)
+    public function addConfiguration(NodeDefinition $node): void
     {
         parent::addConfiguration($node);
 

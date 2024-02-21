@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 trait JsonLoginAuthenticatorTrait
 {
@@ -47,7 +47,7 @@ trait JsonLoginAuthenticatorTrait
                 throw new BadRequestHttpException(sprintf('The key "%s" must be a string.', $this->options['username_parameter']));
             }
 
-            if (\strlen($credentials['key']) > Security::MAX_USERNAME_LENGTH) {
+            if (\strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
                 throw new BadCredentialsException('Invalid key.');
             }
         } catch (AccessException $e) {

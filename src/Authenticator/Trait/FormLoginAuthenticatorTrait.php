@@ -5,8 +5,8 @@ namespace Code202\Security\Authenticator\Trait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 
@@ -39,7 +39,7 @@ trait FormLoginAuthenticatorTrait
             throw new BadRequestHttpException(sprintf('The key "%s" must be a string.', $this->options['username_parameter']));
         }
 
-        if (\strlen($credentials['key']) > Security::MAX_USERNAME_LENGTH) {
+        if (\strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
             throw new BadCredentialsException('Invalid key.');
         }
 

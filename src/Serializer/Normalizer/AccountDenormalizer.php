@@ -20,13 +20,20 @@ class AccountDenormalizer implements DenormalizerInterface
         $this->uuidValidator = $uuidValidator;
     }
 
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
     {
         return $this->repository->findOneByUuid($data);
     }
 
-    public function supportsDenormalization(mixed $data, string $type, string $format = null)
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === Account::class && is_string($data) && $this->uuidValidator->validate($data);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Account::class,
+        ];
     }
 }
