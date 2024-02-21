@@ -3,15 +3,18 @@
 namespace Code202\Security\Serializer;
 
 use Pagerfanta\Pagerfanta;
-use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PagerFantaNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
+class PagerFantaNormalizer implements NormalizerInterface
 {
-    use NormalizerAwareTrait;
+    public function __construct(
+        #[Autowire(service: 'serializer.normalizer.object')]
+        private readonly NormalizerInterface $normalizer,
+    ) {
+    }
 
-    public function normalize($pager, $format = null, array $context = [])
+    public function normalize($pager, string $format = null, array $context = []): array
     {
         $results = [];
         foreach ($pager->getCurrentPageResults()->getArrayCopy() as $res) {
