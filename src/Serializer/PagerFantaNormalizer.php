@@ -40,4 +40,11 @@ class PagerFantaNormalizer implements ContextAwareNormalizerInterface, Normalize
     {
         return $data instanceof Pagerfanta;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Pagerfanta::class => true,
+        ];
+    }
 }
