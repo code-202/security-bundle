@@ -47,7 +47,7 @@ security:
 ```
 
 ### Routing
-Add to folowing route in your `routing.yaml` :
+Add to folowing route in your `routes.yaml` :
 ```
 security:
     resource: '@Code202SecurityBundle/Resources/config/routing.yml'
@@ -128,7 +128,7 @@ By default, if `to_revoke` option in note define, the `to_grant` option is apply
 
 ### Nelmio/ApiDocBundle
 
-This bundle already use OpenApi attributes. The best way to use it is to import our configuration in your `nelmio-apièdoc.yaml` file
+This bundle already use OpenApi attributes. The best way to use it is to import our configuration in your `nelmio_api_doc.yaml` file
 ```
 imports:
     - { resource: '@Code202SecurityBundle/Resources/config/nelmio_api_doc.yaml' }
