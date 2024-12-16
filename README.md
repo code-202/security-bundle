@@ -172,7 +172,7 @@ In cases where you change key, password or remember_me parameters on authenticat
 You can add these route in your configuration to show login routes in your API documentation:
 ```
 security-login:
-    resource: '@Code202SecurityBundle/Resources/config/routing-loging.yml'
+    resource: '@Code202SecurityBundle/Resources/config/routing-login.yml'
     name_prefix: api.security
 ```
 
