@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Code202\Security\Service\Session;
 
+use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 use Code202\Security\Exception\SessionTrust;
@@ -24,7 +25,7 @@ class PasswordTruster
 
         if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             $authentication = $this->authenticationProvider->getOne($authentication->getAccount(), AuthenticationType::USERNAME_PASSWORD);
-            if (!$authentication) {
+            if (!$authentication instanceof Authentication) {
                 throw new SessionTrust('no_username_password_authentication');
             }
         }

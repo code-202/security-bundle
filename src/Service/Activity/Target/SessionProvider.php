@@ -29,7 +29,7 @@ class SessionProvider implements ProviderInterface
             'reference' => $reference,
         ]);
 
-        if (!$res) {
+        if (!$res instanceof TargetSession) {
             $res = new TargetSession($reference);
         }
 

@@ -27,7 +27,7 @@ class Provider
 
         $res = $repository->findOneBy([]);
 
-        if (!$res) {
+        if (!$res instanceof TriggerUnknown) {
             $res = new TriggerUnknown();
         }
 

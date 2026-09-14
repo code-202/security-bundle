@@ -42,7 +42,7 @@ class TokenByEmailCreator
             'type' => AuthenticationType::TOKEN_BY_EMAIL,
         ]);
 
-        if ($authentication) {
+        if ($authentication instanceof Authentication) {
             throw new Exception\AuthenticationTokenByEmailCreator(sprintf('This account has already got an email/token authentication mode'));
         }
 

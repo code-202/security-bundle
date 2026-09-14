@@ -55,7 +55,7 @@ class ConsoleProvider implements ProviderInterface
 
         $res = $repository->findOneBy([]);
 
-        if (!$res) {
+        if (!$res instanceof TriggerConsole) {
             $res = new TriggerConsole(new Console());
         }
 

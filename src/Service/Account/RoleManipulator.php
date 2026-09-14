@@ -74,7 +74,7 @@ class RoleManipulator
             $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
         }
 
-        if (!$account) {
+        if (!$account instanceof Account) {
             throw new Exception\RoleManipulator(sprintf('Account not found for uuid : %s', $accountOrUuid));
         }
 

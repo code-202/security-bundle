@@ -27,7 +27,7 @@ class AccountProvider implements ProviderInterface
             'reference' => $reference,
         ]);
 
-        if (!$res) {
+        if (!$res instanceof TargetAccount) {
             $res = new TargetAccount($reference);
         }
 

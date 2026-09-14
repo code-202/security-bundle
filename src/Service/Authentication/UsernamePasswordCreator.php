@@ -32,7 +32,7 @@ class UsernamePasswordCreator
             $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
         }
 
-        if (!$account) {
+        if (!$account instanceof Account) {
             throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
         }
 
@@ -41,7 +41,7 @@ class UsernamePasswordCreator
             'type' => AuthenticationType::USERNAME_PASSWORD,
         ]);
 
-        if ($authentication) {
+        if ($authentication instanceof Authentication) {
             throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('This account has already got an username/password authentication mode'));
         }
 
