@@ -46,7 +46,7 @@ class LoginFactory extends AbstractFactory
             $n->canBeEnabled();
 
             $keys = array_keys($this->options);
-            $keys = array_filter($keys, fn ($key): bool => 'check_path' !== $key && 'login_path' !== $key);
+            $keys = array_filter($keys, fn (int|string $key): bool => 'check_path' !== $key && 'login_path' !== $key);
             $factory->addShortConfiguration($n, $keys);
             $n->end();
         }
