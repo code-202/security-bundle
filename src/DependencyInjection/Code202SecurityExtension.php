@@ -4,10 +4,12 @@ namespace Code202\Security\DependencyInjection;
 
 use Code202\Security\Bridge\Ramsey\Uuid\UuidGenerator;
 use Code202\Security\Bridge\Ramsey\Uuid\UuidValidator;
+use Code202\Security\Service\Authentication\TokenByEmailRefresher;
 use Code202\Security\Service\Common\NumberBaseTokenGenerator;
 use Code202\Security\Service\Common\TokenGeneratorInterface;
 use Code202\Security\Service\RoleStrategy\Provider;
 use Code202\Security\Service\Session\Truster;
+use Code202\Security\Service\Session\TTLProvider;
 use Code202\Security\Uuid\UuidGeneratorInterface;
 use Code202\Security\Uuid\UuidValidatorInterface;
 use Symfony\Component\Config\FileLocator;
@@ -44,7 +46,7 @@ class Code202SecurityExtension extends Extension
 
     protected function loadTTLProvider(array $config, ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition('Code202\Security\Service\Session\TTLProvider');
+        $definition = $container->getDefinition(TTLProvider::class);
         $definition->setArgument('$config', $config['sessionTTL']);
     }
 
@@ -91,7 +93,7 @@ class Code202SecurityExtension extends Extension
 
     protected function configureTokenByEmailRefresher(array $config, ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition('Code202\Security\Service\Authentication\TokenByEmailRefresher');
+        $definition = $container->getDefinition(TokenByEmailRefresher::class);
         $definition->setArgument('$minimalRefreshInterval', $config['token_by_email']['refresher']['minimal_refresh_interval']);
         $definition->setArgument('$lifetimeInterval', $config['token_by_email']['refresher']['lifetime_interval']);
     }
