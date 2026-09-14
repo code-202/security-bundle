@@ -32,7 +32,7 @@ abstract class Target
     #[Groups(['list'])]
     public function getType(): string
     {
-        return $this::class;
+        return static::class;
     }
 
     #[Groups(['list'])]
