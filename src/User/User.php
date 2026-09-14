@@ -60,10 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getData($key): mixed
     {
         return $this->getAuthentication()->getData($key);
-        if (isset($this->datas[$key])) {
-            return $this->datas[$key];
-        }
 
-        return null;
+        return $this->datas[$key] ?? null;
     }
 }
