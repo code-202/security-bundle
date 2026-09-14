@@ -43,7 +43,7 @@ class AuthenticationListener
 
     public function onLoginSuccess(LoginSuccessEvent $event): void
     {
-        $request = $event->getRequest();
+        $event->getRequest();
         $user = $event->getUser();
 
         if (!$user instanceof UserInterface) {

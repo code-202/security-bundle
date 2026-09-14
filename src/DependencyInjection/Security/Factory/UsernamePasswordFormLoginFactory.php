@@ -38,9 +38,7 @@ class UsernamePasswordFormLoginFactory extends AbstractSubLoginFactory
     public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId): string
     {
         $authenticatorId = parent::createAuthenticator($container, $firewallName, $config, $userProviderId);
-        $options = array_intersect_key($config, $this->options);
-
-        $definition = $container->getDefinition($authenticatorId);
+        $container->getDefinition($authenticatorId);
 
         return $authenticatorId;
     }
