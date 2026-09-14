@@ -6,13 +6,13 @@ use Code202\Security\Entity\Activity\Trigger;
 use Code202\Security\Entity\Activity\TriggerReference;
 use Code202\Security\Entity\Activity\TriggerUnknown;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class Provider
 {
     public function __construct(
         protected EntityManagerInterface $em,
-        #[TaggedIterator('code202.security.activity.trigger.provider')] protected iterable $providers
+        #[AutowireIterator('code202.security.activity.trigger.provider')] protected iterable $providers
     ) {}
 
     public function get(): Trigger

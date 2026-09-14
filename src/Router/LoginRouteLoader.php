@@ -3,13 +3,13 @@
 namespace Code202\Security\Router;
 
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Routing\RouteCollection;
 
 class LoginRouteLoader implements RouteLoaderInterface
 {
     public function __construct(
-        #[TaggedIterator('code202.security.router.login_route_register')] protected iterable $registers
+        #[AutowireIterator('code202.security.router.login_route_register')] protected iterable $registers
     ) {}
 
     public function loadRoutes(): RouteCollection
