@@ -14,13 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 #[AutoconfigureTag('controller.argument_value_resolver', attributes: ['priority' => 150])]
 class AccountMeResolver implements ValueResolverInterface
 {
-    protected TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->tokenStorage = $tokenStorage;
-    }
+        protected TokenStorageInterface $tokenStorage
+    ) {}
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {

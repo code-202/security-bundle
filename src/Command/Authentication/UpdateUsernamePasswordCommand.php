@@ -16,14 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class UpdateUsernamePasswordCommand extends Command
 {
-    private readonly UsernamePasswordUpdater $updater;
-
     public function __construct(
-        UsernamePasswordUpdater $updater
+        private readonly UsernamePasswordUpdater $updater
     ) {
         parent::__construct();
-
-        $this->updater = $updater;
     }
 
     protected function configure()

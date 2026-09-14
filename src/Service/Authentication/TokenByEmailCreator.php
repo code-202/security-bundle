@@ -14,22 +14,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailCreator
 {
-    private readonly EntityManagerInterface $em;
-    private readonly UuidGeneratorInterface $uuidGenerator;
-    private readonly EventDispatcherInterface $eventDispatcher;
-    private readonly ValidatorInterface $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UuidGeneratorInterface $uuidGenerator,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        private readonly EntityManagerInterface $em,
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ValidatorInterface $validator
+    ) {}
 
     public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true)
     {

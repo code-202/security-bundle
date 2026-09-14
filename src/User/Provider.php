@@ -17,22 +17,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Provider implements UserProviderInterface
 {
-    protected EntityManagerInterface $em;
-    protected UuidGeneratorInterface $uuidGenerator;
-    protected UuidValidatorInterface $uuidValidator;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UuidGeneratorInterface $uuidGenerator,
-        UuidValidatorInterface $uuidValidator,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->uuidValidator = $uuidValidator;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected UuidGeneratorInterface $uuidGenerator,
+        protected UuidValidatorInterface $uuidValidator,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     /**
      * Refreshes the user.

@@ -9,16 +9,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class AccountDenormalizer implements DenormalizerInterface
 {
-    protected AccountRepository $repository;
-    protected UuidValidatorInterface $uuidValidator;
-
     public function __construct(
-        AccountRepository $repository,
-        UuidValidatorInterface $uuidValidator
-    ) {
-        $this->repository = $repository;
-        $this->uuidValidator = $uuidValidator;
-    }
+        protected AccountRepository $repository,
+        protected UuidValidatorInterface $uuidValidator
+    ) {}
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {

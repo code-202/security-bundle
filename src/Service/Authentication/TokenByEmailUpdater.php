@@ -12,19 +12,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailUpdater
 {
-    protected EntityManagerInterface $em;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ValidatorInterface $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ValidatorInterface $validator
+    ) {}
 
     public function updateEmail(Authentication|string $authenticationOrUuid, string $newEmail, bool $autoFlush = true): void
     {

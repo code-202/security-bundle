@@ -9,15 +9,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    protected Session $session;
-
     protected array $datas;
 
     public function __construct(
-        Session $session
-    ) {
-        $this->session = $session;
-    }
+        protected Session $session
+    ) {}
 
     public function getRoles(): array
     {

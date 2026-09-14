@@ -15,14 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class GrantCommand extends Command
 {
-    private readonly RoleManipulator $manipulator;
-
     public function __construct(
-        RoleManipulator $manipulator
+        private readonly RoleManipulator $manipulator
     ) {
         parent::__construct();
-
-        $this->manipulator = $manipulator;
     }
 
     protected function configure()

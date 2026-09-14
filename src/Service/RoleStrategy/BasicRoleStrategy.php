@@ -8,21 +8,11 @@ use Symfony\Component\ExpressionLanguage\Expression;
 
 class BasicRoleStrategy implements RoleStrategyInterface
 {
-    protected array $roles;
-
-    protected Expression|string $conditionsToGrant;
-
-    protected Expression|string $conditionsToRevoke;
-
     public function __construct(
-        array $roles,
-        Expression|string $conditionsToGrant,
-        Expression|string $conditionsToRevoke
-    ) {
-        $this->roles = $roles;
-        $this->conditionsToGrant = $conditionsToGrant;
-        $this->conditionsToRevoke = $conditionsToRevoke;
-    }
+        protected array $roles,
+        protected Expression|string $conditionsToGrant,
+        protected Expression|string $conditionsToRevoke
+    ) {}
 
     public function getConditionsToGrant(): Expression|string
     {

@@ -15,14 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class DisableCommand extends Command
 {
-    private readonly Enabler $enabler;
-
     public function __construct(
-        Enabler $enabler
+        private readonly Enabler $enabler
     ) {
         parent::__construct();
-
-        $this->enabler = $enabler;
     }
 
     protected function configure()

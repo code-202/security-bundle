@@ -16,8 +16,6 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener(event: ConsoleTerminateEvent::class, method: 'onConsoleTerminateEvent')]
 class ConsoleProvider implements ProviderInterface
 {
-    protected EntityManagerInterface $em;
-
     protected ?string $runningCommandName = null;
 
     protected ?array $runningArguments = null;
@@ -25,10 +23,8 @@ class ConsoleProvider implements ProviderInterface
     protected ?array $runningOptions = null;
 
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function onConsoleCommandEvent(ConsoleCommandEvent $event): void
     {

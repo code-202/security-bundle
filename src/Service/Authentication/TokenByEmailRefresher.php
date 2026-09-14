@@ -16,28 +16,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailRefresher
 {
-    protected EntityManagerInterface $em;
-    protected PasswordHasherFactoryInterface $passwordHasherFactory;
-    protected TokenGeneratorInterface $tokenGenerator;
-    protected string $minimalRefreshInterval;
-    protected string $lifetimeInterval;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        PasswordHasherFactoryInterface $passwordHasherFactory,
-        TokenGeneratorInterface $tokenGenerator,
-        $minimalRefreshInterval,
-        $lifetimeInterval,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->tokenGenerator = $tokenGenerator;
-        $this->minimalRefreshInterval = $minimalRefreshInterval;
-        $this->lifetimeInterval = $lifetimeInterval;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected PasswordHasherFactoryInterface $passwordHasherFactory,
+        protected TokenGeneratorInterface $tokenGenerator,
+        protected string $minimalRefreshInterval,
+        protected string $lifetimeInterval,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function refresh(Authentication|string $authenticationOrUuid, bool $autoFlush = true): string
     {

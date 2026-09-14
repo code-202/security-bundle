@@ -16,14 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class CreateUsernamePasswordCommand extends Command
 {
-    private readonly UsernamePasswordCreator $creator;
-
     public function __construct(
-        UsernamePasswordCreator $creator
+        private readonly UsernamePasswordCreator $creator
     ) {
         parent::__construct();
-
-        $this->creator = $creator;
     }
 
     protected function configure()

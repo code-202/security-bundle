@@ -13,17 +13,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Deleter
 {
-    protected EntityManagerInterface $em;
-
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function delete(Session $session, bool $autoFlush = true): void
     {

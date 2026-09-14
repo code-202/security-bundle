@@ -8,13 +8,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class LoginRouteLoader implements RouteLoaderInterface
 {
-    protected iterable $registers;
-
     public function __construct(
-        #[TaggedIterator('code202.security.router.login_route_register')] iterable $registers
-    ) {
-        $this->registers = $registers;
-    }
+        #[TaggedIterator('code202.security.router.login_route_register')] protected iterable $registers
+    ) {}
 
     public function loadRoutes(): RouteCollection
     {

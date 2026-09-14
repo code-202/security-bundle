@@ -11,16 +11,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RoleManipulator
 {
-    protected EntityManagerInterface $em;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function grant(Account|string $accountOrUuid, string $role, bool $autoFlush = true): void
     {

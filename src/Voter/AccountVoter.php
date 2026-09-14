@@ -22,13 +22,9 @@ class AccountVoter extends Voter
     public const DISABLE = 'SECURITY.ACCOUNT.DISABLE';
     public const AUTHENTICATIONS = 'SECURITY.ACCOUNT.AUTHENTICATIONS';
 
-    protected Security $security;
-
     public function __construct(
-        Security $security
-    ) {
-        $this->security = $security;
-    }
+        protected Security $security
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {

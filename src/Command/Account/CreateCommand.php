@@ -15,14 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class CreateCommand extends Command
 {
-    private readonly Creator $creator;
-
     public function __construct(
-        Creator $creator
+        private readonly Creator $creator
     ) {
         parent::__construct();
-
-        $this->creator = $creator;
     }
 
     protected function configure()

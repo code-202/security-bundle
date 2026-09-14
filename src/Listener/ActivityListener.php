@@ -34,21 +34,11 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 #[AsEventListener(event: SessionEvent\UntrustEvent::class, method: 'onSessionUntrusted')]
 class ActivityListener
 {
-    protected EntityManagerInterface $em;
-
-    protected TargetProvider $targetProvider;
-
-    protected TriggerProvider $triggerProvider;
-
     public function __construct(
-        EntityManagerInterface $em,
-        TargetProvider $targetProvider,
-        TriggerProvider $triggerProvider
-    ) {
-        $this->em = $em;
-        $this->targetProvider = $targetProvider;
-        $this->triggerProvider = $triggerProvider;
-    }
+        protected EntityManagerInterface $em,
+        protected TargetProvider $targetProvider,
+        protected TriggerProvider $triggerProvider
+    ) {}
 
     public function onLoginSuccess(LoginSuccessEvent $event): void
     {

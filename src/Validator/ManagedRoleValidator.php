@@ -12,13 +12,9 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ManagedRoleValidator extends ConstraintValidator
 {
-    protected Provider $provider;
-
     public function __construct(
-        Provider $provider
-    ) {
-        $this->provider = $provider;
-    }
+        protected Provider $provider
+    ) {}
 
     public function validate($value, Constraint $constraint): void
     {

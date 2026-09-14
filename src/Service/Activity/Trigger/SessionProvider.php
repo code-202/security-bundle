@@ -13,21 +13,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionProvider implements ProviderInterface
 {
-    protected EntityManagerInterface $em;
-
-    protected Security $security;
-
-    protected RequestStack $requestStack;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Security $security,
-        RequestStack $requestStack
-    ) {
-        $this->em = $em;
-        $this->security = $security;
-        $this->requestStack = $requestStack;
-    }
+        protected EntityManagerInterface $em,
+        protected Security $security,
+        protected RequestStack $requestStack
+    ) {}
 
     public function supports(): bool
     {

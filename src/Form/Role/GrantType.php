@@ -12,13 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GrantType extends AbstractType
 {
-    private readonly UuidToAccountTransformer $transformer;
-
     public function __construct(
-        UuidToAccountTransformer $transformer
-    ) {
-        $this->transformer = $transformer;
-    }
+        private readonly UuidToAccountTransformer $transformer
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

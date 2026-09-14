@@ -14,13 +14,9 @@ class RoleManipulationVoter extends Voter
     public const GRANT = 'SECURITY.ROLE.GRANT';
     public const REVOKE = 'SECURITY.ROLE.REVOKE';
 
-    protected RoleStrategiesManager $manager;
-
     public function __construct(
-        RoleStrategiesManager $manager
-    ) {
-        $this->manager = $manager;
-    }
+        protected RoleStrategiesManager $manager
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {

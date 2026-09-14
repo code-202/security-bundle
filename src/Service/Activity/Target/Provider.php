@@ -10,17 +10,10 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class Provider
 {
-    protected EntityManagerInterface $em;
-
-    protected iterable $providers = [];
-
     public function __construct(
-        EntityManagerInterface $em,
-        #[TaggedIterator('code202.security.activity.target.provider')] iterable $providers
-    ) {
-        $this->em = $em;
-        $this->providers = $providers;
-    }
+        protected EntityManagerInterface $em,
+        #[TaggedIterator('code202.security.activity.target.provider')] protected iterable $providers
+    ) {}
 
     public function get(TargetReference $reference): Target
     {

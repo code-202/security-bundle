@@ -23,26 +23,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInterface
 {
     protected array $options;
-    protected HttpUtils $httpUtils;
-    protected UserProviderInterface $userProvider;
     protected PropertyAccessorInterface $propertyAccessor;
-    protected ?AuthenticationSuccessHandlerInterface $successHandler;
-    protected ?AuthenticationFailureHandlerInterface $failureHandler;
     protected ?TranslatorInterface $translator = null;
 
     public function __construct(
-        HttpUtils $httpUtils,
-        UserProviderInterface $userProvider,
-        ?AuthenticationSuccessHandlerInterface $successHandler = null,
-        ?AuthenticationFailureHandlerInterface $failureHandler = null,
+        protected HttpUtils $httpUtils,
+        protected UserProviderInterface $userProvider,
+        protected ?AuthenticationSuccessHandlerInterface $successHandler = null,
+        protected ?AuthenticationFailureHandlerInterface $failureHandler = null,
         array $options = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->options = array_merge([], $this->getDefaultOptions(), $options);
-        $this->httpUtils = $httpUtils;
-        $this->successHandler = $successHandler;
-        $this->failureHandler = $failureHandler;
-        $this->userProvider = $userProvider;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 

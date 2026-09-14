@@ -11,13 +11,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SecurityUserResolver implements ValueResolverInterface
 {
-    protected TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->tokenStorage = $tokenStorage;
-    }
+        protected TokenStorageInterface $tokenStorage
+    ) {}
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
