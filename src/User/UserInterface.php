@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;

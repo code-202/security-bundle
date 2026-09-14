@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\RoleStrategy;
 
 use Symfony\Component\ExpressionLanguage\Expression;

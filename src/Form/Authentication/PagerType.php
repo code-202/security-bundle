@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form\Authentication;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

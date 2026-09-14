@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Request\Session;
 
 use Symfony\Component\Validator\Constraints\NotBlank;

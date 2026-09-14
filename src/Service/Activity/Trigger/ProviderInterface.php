@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\Activity\Trigger;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
