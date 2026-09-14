@@ -22,7 +22,7 @@ class CreateUsernamePasswordCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Creates a new authentication mode for account.')

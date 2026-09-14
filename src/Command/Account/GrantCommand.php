@@ -21,7 +21,7 @@ class GrantCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Grant role for an account.')

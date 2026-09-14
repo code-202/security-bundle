@@ -21,7 +21,7 @@ class DisableCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Disable an account.')
