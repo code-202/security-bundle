@@ -39,7 +39,7 @@ class UsernamePasswordUpdater
             ]);
         }
 
-        if (!$authentication) {
+        if (!$authentication instanceof Authentication) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_not_found');
         }
 
@@ -86,7 +86,7 @@ class UsernamePasswordUpdater
             ]);
         }
 
-        if (!$authentication) {
+        if (!$authentication instanceof Authentication) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_not_found');
         }
 

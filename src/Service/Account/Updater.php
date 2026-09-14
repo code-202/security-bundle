@@ -34,7 +34,7 @@ class Updater
             ]);
         }
 
-        if (!$account) {
+        if (!$account instanceof Account) {
             throw new Exception\AccountUpdater('account_not_found');
         }
 
