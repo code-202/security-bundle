@@ -28,9 +28,7 @@ class AccountVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (in_array($attribute, [
-            self::_LIST,
-        ])) {
+        if ($attribute == self::_LIST) {
             return true;
         }
 
