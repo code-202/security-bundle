@@ -86,7 +86,7 @@ class LoginFactory extends AbstractFactory
                 $firewallName,
                 array_merge($base, $c, [
                     'check_path' => $base['check_path'] . $c['check_path'],
-                    'login_path' => $base['login_path'] . (isset($c['login_path']) ? $c['login_path'] : $c['check_path']),
+                    'login_path' => $base['login_path'] . ($c['login_path'] ?? $c['check_path']),
                     'route_merged' => $checkPaths[$c['check_path']] > 1,
                 ]),
                 $userProviderId

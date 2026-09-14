@@ -92,7 +92,7 @@ class Activity
 
     public function getData(string $name): string|array|null
     {
-        return isset($this->datas[$name]) ? $this->datas[$name] : null;
+        return $this->datas[$name] ?? null;
     }
 
     public function setData(string $name, string|array $value): self

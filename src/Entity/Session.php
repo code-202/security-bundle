@@ -84,7 +84,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
 
     public function getData(string $name): ?string
     {
-        return isset($this->datas[$name]) ? $this->datas[$name] : null;
+        return $this->datas[$name] ?? null;
     }
 
     public function setData(string $name, string $value): self
