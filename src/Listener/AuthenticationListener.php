@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]
 class AuthenticationListener
 {
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         EntityManagerInterface $em

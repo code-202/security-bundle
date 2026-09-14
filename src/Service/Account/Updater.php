@@ -11,9 +11,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Updater
 {
-    protected $em;
-    protected $eventDispatcher;
-    protected $validator;
+    protected EntityManagerInterface $em;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected ValidatorInterface $validator;
 
     public function __construct(
         EntityManagerInterface $em,

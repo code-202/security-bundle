@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Provider
 {
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         EntityManagerInterface $em

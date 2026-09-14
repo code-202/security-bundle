@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Lister
 {
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         EntityManagerInterface $em
