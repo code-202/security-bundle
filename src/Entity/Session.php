@@ -99,7 +99,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
 
     public function setExpiredAt(?DateTimeInterface $expiredAt = null): self
     {
-        $this->expiredAt = null !== $expiredAt ? DateTimeImmutable::createFromInterface($expiredAt) : null;
+        $this->expiredAt = $expiredAt instanceof DateTimeInterface ? DateTimeImmutable::createFromInterface($expiredAt) : null;
 
         return $this;
     }
@@ -111,7 +111,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
 
     public function setTrustUntil(?DateTimeInterface $trustUntil = null): self
     {
-        $this->trustUntil = null !== $trustUntil ? DateTimeImmutable::createFromInterface($trustUntil) : null;
+        $this->trustUntil = $trustUntil instanceof DateTimeInterface ? DateTimeImmutable::createFromInterface($trustUntil) : null;
 
         return $this;
     }

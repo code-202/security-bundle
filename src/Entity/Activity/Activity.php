@@ -48,13 +48,13 @@ class Activity
 
         $targetDatas = $this->target->getDatas();
 
-        if ($targetDatas !== []) {
+        if ([] !== $targetDatas) {
             $this->datas['target'] = $targetDatas;
         }
 
         $triggerDatas = $this->trigger->getDatas();
 
-        if ($triggerDatas !== []) {
+        if ([] !== $triggerDatas) {
             $this->datas['trigger'] = $triggerDatas;
         }
     }

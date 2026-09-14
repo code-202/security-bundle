@@ -11,6 +11,7 @@ use Code202\Security\Service\Session\TTLProvider as SessionTTLProvider;
 use Code202\Security\User\UserInterface;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
@@ -131,7 +132,7 @@ class SessionListener
         $now = new DateTimeImmutable();
         $session->setUpdatedAt($now);
 
-        if (null !== $session->getExpiredAt()) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface) {
             $ttl = $this->sessionTTLProvider->getSessionTTL($session->getAuthentication()->getType()->value);
             $session->setExpiredAt($now->modify('+' . $ttl . ' seconds'));
         }

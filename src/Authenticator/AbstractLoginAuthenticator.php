@@ -97,7 +97,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if (null === $this->successHandler) {
+        if (!$this->successHandler instanceof AuthenticationSuccessHandlerInterface) {
             return null; // let the original request continue
         }
 
@@ -106,7 +106,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        if (null === $this->failureHandler) {
+        if (!$this->failureHandler instanceof AuthenticationFailureHandlerInterface) {
             return null; // let the original request continue
         }
 

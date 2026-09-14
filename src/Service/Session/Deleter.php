@@ -7,6 +7,7 @@ namespace Code202\Security\Service\Session;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\Session\DeletedEvent;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +28,7 @@ class Deleter
     public function delete(Session $session, bool $autoFlush = true): void
     {
         $now = new DateTime();
-        if (null !== $session->getExpiredAt() && $session->getExpiredAt() < $now) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < $now) {
             return;
         }
 
