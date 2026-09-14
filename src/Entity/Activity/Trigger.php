@@ -32,7 +32,7 @@ abstract class Trigger
     #[Groups(['list'])]
     public function getType(): string
     {
-        return get_class($this);
+        return $this::class;
     }
 
     #[Groups(['list'])]
