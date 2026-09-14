@@ -4,6 +4,7 @@ namespace Code202\Security\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,27 +18,27 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
     #[ORM\ManyToOne(targetEntity: Authentication::class, inversedBy: 'sessions')]
     protected Authentication $authentication;
 
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: Types::GUID)]
     #[Groups(['list'])]
     protected string $uuid;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     protected array $datas;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Groups(['session.info'])]
     protected ?DateTimeImmutable $expiredAt = null;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Groups(['session.info'])]
     protected ?DateTimeImmutable $trustUntil = null;
 

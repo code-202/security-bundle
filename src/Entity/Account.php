@@ -5,6 +5,7 @@ namespace Code202\Security\Entity;
 use Code202\Security\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -27,16 +28,16 @@ class Account implements Activity\TargetReference
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(type: Types::GUID, unique: true)]
     #[Groups(['list'])]
     protected string $uuid;
 
-    #[ORM\Column(type: 'string', length: 50, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 50, unique: true)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $name;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     private array $roles = [];
 

@@ -4,16 +4,17 @@ namespace Code202\Security\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 trait Timestampable
 {
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['timestampable'])]
     protected DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['timestampable'])]
     protected DateTimeImmutable $updatedAt;
 

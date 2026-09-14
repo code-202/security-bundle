@@ -4,6 +4,7 @@ namespace Code202\Security\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,36 +20,36 @@ class Authentication implements Activity\TargetReference
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: Types::GUID)]
     #[Groups(['list'])]
     protected string $uuid;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'authentications')]
     protected Account $account;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups(['list'])]
     protected bool $enabled;
 
-    #[ORM\Column(type: 'string', length: 20, enumType: AuthenticationType::class)]
+    #[ORM\Column(type: Types::STRING, length: 20, enumType: AuthenticationType::class)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected AuthenticationType $type;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $key;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups(['list'])]
     protected bool $verified;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     protected array $datas;
 
     #[ORM\OneToMany(targetEntity: 'Session', mappedBy: 'authentication')]

@@ -3,6 +3,7 @@
 namespace Code202\Security\Entity\Activity;
 
 use Code202\Security\Entity\Timestampable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -16,11 +17,11 @@ class Activity
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'string', length: 64)]
+    #[ORM\Column(type: Types::STRING, length: 64)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $type;
@@ -33,7 +34,7 @@ class Activity
     #[Groups(['list'])]
     protected Trigger $trigger;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     protected array $datas;
