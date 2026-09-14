@@ -26,7 +26,7 @@ class TokenByEmailUpdater
         $this->validator = $validator;
     }
 
-    public function updateEmail(Authentication|string $authenticationOrUuid, string $newEmail, bool $autoFlush = true)
+    public function updateEmail(Authentication|string $authenticationOrUuid, string $newEmail, bool $autoFlush = true): void
     {
         if ($authenticationOrUuid instanceof Authentication) {
             $authentication = $authenticationOrUuid;

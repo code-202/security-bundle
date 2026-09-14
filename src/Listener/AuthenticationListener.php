@@ -25,7 +25,7 @@ class AuthenticationListener
         $this->em = $em;
     }
 
-    public function onCheckPassport(CheckPassportEvent $event)
+    public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -41,7 +41,7 @@ class AuthenticationListener
         }
     }
 
-    public function onLoginSuccess(LoginSuccessEvent $event)
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event->getUser();
@@ -64,7 +64,7 @@ class AuthenticationListener
         $this->em->flush();
     }
 
-    public function onUserRefreshed(RefreshedEvent $event)
+    public function onUserRefreshed(RefreshedEvent $event): void
     {
         $authentication = $event->getUser()->getAuthentication();
 

@@ -29,7 +29,7 @@ class Updater
         Account|string $accountOrUuid,
         string $newName,
         bool $autoFlush = true
-    ) {
+    ): void {
         if (!$newName) {
             throw new Exception\AccountUpdater('new_name_empty');
         }

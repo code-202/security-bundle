@@ -24,7 +24,7 @@ class Deleter
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function delete(Session $session, bool $autoFlush = true)
+    public function delete(Session $session, bool $autoFlush = true): void
     {
         $now = new DateTime();
         if (null !== $session->getExpiredAt() && $session->getExpiredAt() < $now) {

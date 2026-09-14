@@ -8,7 +8,7 @@ use Code202\Security\Authenticator\UsernamePasswordJsonAuthenticator;
 
 class UsernamePasswordJsonLoginFactory extends AbstractSubLoginFactory
 {
-    public function buildOptions()
+    public function buildOptions(): void
     {
         $this->addOption('check_path', '/username');
         $this->addOption('username_parameter', 'key');

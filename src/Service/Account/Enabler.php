@@ -21,7 +21,7 @@ class Enabler
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function enable(Account|string $accountOrUuid, bool $autoFlush = true)
+    public function enable(Account|string $accountOrUuid, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 
@@ -37,7 +37,7 @@ class Enabler
         }
     }
 
-    public function disable(Account|string $accountOrUuid, bool $autoFlush = true)
+    public function disable(Account|string $accountOrUuid, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 

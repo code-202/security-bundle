@@ -8,7 +8,7 @@ use Code202\Security\Authenticator\TokenByEmailJsonAuthenticator;
 
 class TokenByEmailJsonLoginFactory extends AbstractSubLoginFactory
 {
-    public function buildOptions()
+    public function buildOptions(): void
     {
         $this->addOption('check_path', '/email');
         $this->addOption('username_parameter', 'key');

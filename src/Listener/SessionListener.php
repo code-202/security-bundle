@@ -33,7 +33,7 @@ class SessionListener
         private SessionTruster $sessionTruster,
     ) {}
 
-    public function onCheckPassport(CheckPassportEvent $event)
+    public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -49,7 +49,7 @@ class SessionListener
         }
     }
 
-    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
+    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
         $token = $event->getAuthenticationToken();
 
@@ -62,7 +62,7 @@ class SessionListener
         $this->updateExpiredAt($session);
     }
 
-    public function onLoginSuccess(LoginSuccessEvent $event)
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event->getUser();
@@ -97,7 +97,7 @@ class SessionListener
         $this->em->flush();
     }
 
-    public function onLogout(LogoutEvent $event)
+    public function onLogout(LogoutEvent $event): void
     {
         $token = $event->getToken();
 
@@ -114,7 +114,7 @@ class SessionListener
         }
     }
 
-    public function onUserRefreshed(RefreshedEvent $event)
+    public function onUserRefreshed(RefreshedEvent $event): void
     {
         $session = $event->getUser()->getSession();
 

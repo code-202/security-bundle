@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TokenByEmailFormLoginFactory extends AbstractSubLoginFactory
 {
-    public function buildOptions()
+    public function buildOptions(): void
     {
         $this->addOption('check_path', '/email');
         $this->addOption('username_parameter', 'key');

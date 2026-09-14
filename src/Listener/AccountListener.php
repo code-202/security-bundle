@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]
 class AccountListener
 {
-    public function onCheckPassport(CheckPassportEvent $event)
+    public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -30,7 +30,7 @@ class AccountListener
         }
     }
 
-    public function onUserRefreshed(RefreshedEvent $event)
+    public function onUserRefreshed(RefreshedEvent $event): void
     {
         $account = $event->getUser()->getAccount();
 

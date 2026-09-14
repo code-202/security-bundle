@@ -14,7 +14,7 @@ class LoginRouteRegister implements LoginRouteRegisterInterface
         $this->collection = new RouteCollection();
     }
 
-    public function register(string $name, string $route, string $method, string $controller, string $alias)
+    public function register(string $name, string $route, string $method, string $controller, string $alias): void
     {
         $this->collection->add($name, new Route(
             $route,

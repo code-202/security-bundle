@@ -30,14 +30,14 @@ class ConsoleProvider implements ProviderInterface
         $this->em = $em;
     }
 
-    public function onConsoleCommandEvent(ConsoleCommandEvent $event)
+    public function onConsoleCommandEvent(ConsoleCommandEvent $event): void
     {
         $this->runningCommandName = $event->getCommand()?->getName();
         $this->runningArguments = $event->getInput()->getArguments();
         $this->runningOptions = $event->getInput()->getOptions();
     }
 
-    public function onConsoleTerminateEvent(ConsoleTerminateEvent $event)
+    public function onConsoleTerminateEvent(ConsoleTerminateEvent $event): void
     {
         $this->runningCommandName = null;
         $this->runningArguments = null;

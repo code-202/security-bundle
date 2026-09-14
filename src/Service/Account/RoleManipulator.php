@@ -22,7 +22,7 @@ class RoleManipulator
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function grant(Account|string $accountOrUuid, string $role, bool $autoFlush = true)
+    public function grant(Account|string $accountOrUuid, string $role, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 
@@ -46,7 +46,7 @@ class RoleManipulator
         }
     }
 
-    public function revoke(Account|string $accountOrUuid, string $role, bool $autoFlush = true)
+    public function revoke(Account|string $accountOrUuid, string $role, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 

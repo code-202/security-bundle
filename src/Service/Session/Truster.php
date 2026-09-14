@@ -19,7 +19,7 @@ class Truster
         private int $trustDuration
     ) {}
 
-    public function trust(Session $session, bool $autoFlush = true)
+    public function trust(Session $session, bool $autoFlush = true): void
     {
         $now = new DateTime();
 
@@ -35,7 +35,7 @@ class Truster
         }
     }
 
-    public function untrust(Session $session, bool $autoFlush = true)
+    public function untrust(Session $session, bool $autoFlush = true): void
     {
         $now = new DateTime();
 

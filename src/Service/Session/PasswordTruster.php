@@ -18,7 +18,7 @@ class PasswordTruster
         private UsernamePasswordVerifier $usernamePasswordVerifier,
     ) {}
 
-    public function trust(Session $session, string $password, bool $autoFlush = true)
+    public function trust(Session $session, string $password, bool $autoFlush = true): void
     {
         $authentication = $session->getAuthentication();
 

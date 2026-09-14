@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class UsernamePasswordFormLoginFactory extends AbstractSubLoginFactory
 {
-    public function buildOptions()
+    public function buildOptions(): void
     {
         $this->addOption('check_path', '/username');
         $this->addOption('login_path', '');
