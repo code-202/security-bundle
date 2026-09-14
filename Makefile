@@ -15,6 +15,12 @@ cs-fix: vendor/autoload.php ## Fix PHP CS
 phpstan: vendor/autoload.php ## PHP Static analyser
 	${bin_dir}/phpstan analyse --memory-limit 1G -c phpstan.dist.neon
 
+rector-dry: vendor/autoload.php ## Check with Rector
+	${bin_dir}/rector process --dry-run
+
+rector: vendor/autoload.php ## Check with Rector
+	${bin_dir}/rector process
+
 build: ## Build console image
 	docker build \
 		--tag=security_bundle_console \
