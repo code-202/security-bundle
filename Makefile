@@ -12,6 +12,8 @@ cs-fix: vendor/autoload.php ## Fix PHP CS
 	${bin_dir}/php-cs-fixer --version
 	${bin_dir}/php-cs-fixer fix -v --diff
 
+phpstan: vendor/autoload.php ## PHP Static analyser
+	${bin_dir}/phpstan analyse --memory-limit 1G -c phpstan.dist.neon
 
 build: ## Build console image
 	docker build \
