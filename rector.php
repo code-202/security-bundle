@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Attribute\SortAttributeNamedArgsRector;
 use Rector\Config\RectorConfig;
+use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 
 return RectorConfig::configure()
@@ -37,5 +38,6 @@ return RectorConfig::configure()
             __DIR__ . '/src/Entity',
         ],
         SortAttributeNamedArgsRector::class,
+        RemoveExtraParametersRector::class,
     ])
 ;
