@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class CreateCommand extends Command
 {
-    private Creator $creator;
+    private readonly Creator $creator;
 
     public function __construct(
         Creator $creator

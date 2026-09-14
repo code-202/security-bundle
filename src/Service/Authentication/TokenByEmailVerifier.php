@@ -16,9 +16,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class TokenByEmailVerifier
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private PasswordHasherFactoryInterface $passwordHasherFactory,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly EntityManagerInterface $em,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function verify(Authentication|string $authenticationOrUuid, string $token, bool $autoFlush = true): string

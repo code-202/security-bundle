@@ -14,9 +14,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class Truster
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private EventDispatcherInterface $eventDispatcher,
-        private int $trustDuration
+        private readonly EntityManagerInterface $em,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly int $trustDuration
     ) {}
 
     public function trust(Session $session, bool $autoFlush = true): void

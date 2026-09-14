@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PagerType extends BasePagerType
 {
-    private UuidToAccountTransformer $transformer;
+    private readonly UuidToAccountTransformer $transformer;
 
     public function __construct(
         UuidToAccountTransformer $transformer

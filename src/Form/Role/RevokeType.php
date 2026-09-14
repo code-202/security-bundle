@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RevokeType extends AbstractType
 {
-    private UuidToAccountTransformer $transformer;
+    private readonly UuidToAccountTransformer $transformer;
 
     public function __construct(
         UuidToAccountTransformer $transformer

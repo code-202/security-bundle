@@ -17,11 +17,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class UsernamePasswordCreator
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private UuidGeneratorInterface $uuidGenerator,
-        private EventDispatcherInterface $eventDispatcher,
-        private PasswordHasherFactoryInterface $passwordHasherFactory,
-        private ValidatorInterface $validator,
+        private readonly EntityManagerInterface $em,
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private readonly ValidatorInterface $validator,
     ) {}
 
     public function create(Account|string $accountOrUuid, string $username, ?string $password = null, bool $autoFlush = true): Authentication

@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 class UsernamePasswordVerifier
 {
     public function __construct(
-        private PasswordHasherFactoryInterface $hasherFactory,
+        private readonly PasswordHasherFactoryInterface $hasherFactory,
     ) {}
 
     public function verify(

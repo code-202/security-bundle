@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class EnableCommand extends Command
 {
-    private Enabler $enabler;
+    private readonly Enabler $enabler;
 
     public function __construct(
         Enabler $enabler

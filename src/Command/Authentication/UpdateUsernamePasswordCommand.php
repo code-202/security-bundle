@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class UpdateUsernamePasswordCommand extends Command
 {
-    private UsernamePasswordUpdater $updater;
+    private readonly UsernamePasswordUpdater $updater;
 
     public function __construct(
         UsernamePasswordUpdater $updater

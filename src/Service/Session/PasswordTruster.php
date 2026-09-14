@@ -13,9 +13,9 @@ use Code202\Security\Service\Authentication\UsernamePasswordVerifier;
 class PasswordTruster
 {
     public function __construct(
-        private Truster $truster,
-        private AuthenticationProvider $authenticationProvider,
-        private UsernamePasswordVerifier $usernamePasswordVerifier,
+        private readonly Truster $truster,
+        private readonly AuthenticationProvider $authenticationProvider,
+        private readonly UsernamePasswordVerifier $usernamePasswordVerifier,
     ) {}
 
     public function trust(Session $session, string $password, bool $autoFlush = true): void

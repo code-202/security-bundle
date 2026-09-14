@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class AbstractAuthenticationEvent extends GenericEvent
 {
-    private Authentication $authentication;
+    private readonly Authentication $authentication;
 
     public function __construct(Authentication $authentication, array $arguments = [])
     {

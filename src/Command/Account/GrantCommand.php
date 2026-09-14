@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class GrantCommand extends Command
 {
-    private RoleManipulator $manipulator;
+    private readonly RoleManipulator $manipulator;
 
     public function __construct(
         RoleManipulator $manipulator

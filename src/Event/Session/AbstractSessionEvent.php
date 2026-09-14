@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class AbstractSessionEvent extends GenericEvent
 {
-    private Session $session;
+    private readonly Session $session;
 
     public function __construct(Session $session, array $arguments = [])
     {

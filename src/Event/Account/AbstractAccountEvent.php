@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class AbstractAccountEvent extends GenericEvent
 {
-    private Account $account;
+    private readonly Account $account;
 
     public function __construct(Account $account, array $arguments = [])
     {

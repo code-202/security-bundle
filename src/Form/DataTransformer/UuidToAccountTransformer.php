@@ -12,9 +12,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class UuidToAccountTransformer implements DataTransformerInterface
 {
     public function __construct(
-        private AccountRepository $repository,
-        private TokenStorageInterface $tokenStorage,
-        private UuidValidatorInterface $uuidValidator
+        private readonly AccountRepository $repository,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly UuidValidatorInterface $uuidValidator
     ) {}
 
     public function transform($account): string

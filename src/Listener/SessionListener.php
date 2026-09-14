@@ -29,9 +29,9 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 class SessionListener
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private SessionTTLProvider $sessionTTLProvider,
-        private SessionTruster $sessionTruster,
+        private readonly EntityManagerInterface $em,
+        private readonly SessionTTLProvider $sessionTTLProvider,
+        private readonly SessionTruster $sessionTruster,
     ) {}
 
     public function onCheckPassport(CheckPassportEvent $event): void

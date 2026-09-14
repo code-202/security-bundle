@@ -14,10 +14,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Creator
 {
-    private EntityManagerInterface $em;
-    private UuidGeneratorInterface $uuidGenerator;
-    private EventDispatcherInterface $eventDispatcher;
-    private ValidatorInterface $validator;
+    private readonly EntityManagerInterface $em;
+    private readonly UuidGeneratorInterface $uuidGenerator;
+    private readonly EventDispatcherInterface $eventDispatcher;
+    private readonly ValidatorInterface $validator;
 
     public function __construct(
         EntityManagerInterface $em,
