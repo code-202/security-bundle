@@ -15,22 +15,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UsernamePasswordUpdater
 {
-    protected EntityManagerInterface $em;
-    protected PasswordHasherFactoryInterface $hasherFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ValidatorInterface $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        PasswordHasherFactoryInterface $hasherFactory,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->hasherFactory = $hasherFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        protected EntityManagerInterface $em,
+        protected PasswordHasherFactoryInterface $hasherFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ValidatorInterface $validator
+    ) {}
 
     public function updatePassword(
         Authentication|string $authenticationOrUuid,

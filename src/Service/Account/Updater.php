@@ -11,19 +11,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Updater
 {
-    protected EntityManagerInterface $em;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ValidatorInterface $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ValidatorInterface $validator
+    ) {}
 
     public function updateName(
         Account|string $accountOrUuid,

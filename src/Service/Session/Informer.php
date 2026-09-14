@@ -9,13 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Informer
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+    public function __construct(protected EntityManagerInterface $em) {}
 
     public function getSummary(Account $account): array
     {

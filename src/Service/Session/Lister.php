@@ -13,13 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Lister
 {
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function get(array $options): Pagerfanta
     {

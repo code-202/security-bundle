@@ -9,13 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Provider
 {
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function getOne(Account $account, AuthenticationType $type): ?Authentication
     {

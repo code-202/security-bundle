@@ -17,13 +17,9 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]
 class AuthenticationListener
 {
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function onCheckPassport(CheckPassportEvent $event): void
     {
