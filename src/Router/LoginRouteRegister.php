@@ -25,7 +25,7 @@ class LoginRouteRegister implements LoginRouteRegisterInterface
             [],
             $method
         ));
-        if ($alias != $name) {
+        if ($alias !== $name) {
             $this->collection->addAlias($alias, $name);
         }
     }

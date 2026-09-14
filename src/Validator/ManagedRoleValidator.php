@@ -32,7 +32,7 @@ class ManagedRoleValidator extends ConstraintValidator
 
         $collection = $this->provider->getStrategiesFor($value);
 
-        if (0 == count($collection)) {
+        if (0 === count($collection)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ role }}', $value)
                 ->addViolation()

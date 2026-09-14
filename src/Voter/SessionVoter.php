@@ -19,7 +19,7 @@ class SessionVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (self::TRUSTED == $attribute) {
+        if (self::TRUSTED === $attribute) {
             return true;
         }
 
