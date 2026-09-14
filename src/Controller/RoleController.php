@@ -38,7 +38,7 @@ class RoleController
         return new JsonResponse($serializer->serialize([
             'grantables' => $manager->getGrantableRoles(),
             'revocables' => $manager->getRevocableRoles(),
-        ], 'json', []), 200, [], true);
+        ], 'json', []), Response::HTTP_OK, [], true);
     }
 
     #[Route('/grant', name: '.grant', methods: 'PUT')]
@@ -62,7 +62,7 @@ class RoleController
 
         $manipulator->grant($data->account, $data->role);
 
-        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/revoke', name: '.revoke', methods: 'PUT')]
@@ -86,6 +86,6 @@ class RoleController
 
         $manipulator->revoke($data->account, $data->role);
 
-        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

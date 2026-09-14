@@ -52,6 +52,6 @@ class ActivityController
             'targets' => $targets,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

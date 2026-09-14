@@ -39,7 +39,7 @@ class LoginController
     )]
     public function username(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 
     #[OA\Post(
@@ -63,7 +63,7 @@ class LoginController
     )]
     public function usernameJson(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 
     #[OA\Post(
@@ -91,7 +91,7 @@ class LoginController
     )]
     public function usernameForm(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 
     #[OA\Post(
@@ -123,7 +123,7 @@ class LoginController
     )]
     public function email(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 
     #[OA\Post(
@@ -147,7 +147,7 @@ class LoginController
     )]
     public function emailJson(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 
     #[OA\Post(
@@ -175,6 +175,6 @@ class LoginController
     )]
     public function emailForm(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, [], true);
     }
 }

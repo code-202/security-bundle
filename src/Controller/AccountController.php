@@ -57,7 +57,7 @@ class AccountController
             'sort' => $data->sort,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}', name: '.show', methods: 'GET')]
@@ -68,7 +68,7 @@ class AccountController
         #[UuidOrMe] Account $account,
         SerializerInterface $serializer
     ): Response {
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/update-name', name: '.update-name', methods: 'PUT')]
@@ -90,7 +90,7 @@ class AccountController
 
         $updater->updateName($account, $data->name);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/roles', name: '.roles', methods: 'GET')]
@@ -114,7 +114,7 @@ class AccountController
             ];
         }
 
-        return new JsonResponse($serializer->serialize($roles, 'json', []), 200, [], true);
+        return new JsonResponse($serializer->serialize($roles, 'json', []), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/enable', name: '.enable', methods: 'PUT')]
@@ -128,7 +128,7 @@ class AccountController
     ): Response {
         $enabler->enable($account);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/disable', name: '.disable', methods: 'PUT')]
@@ -142,6 +142,6 @@ class AccountController
     ): Response {
         $enabler->disable($account);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

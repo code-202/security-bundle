@@ -61,7 +61,7 @@ class SessionController
             'account' => $user->getAccount(),
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/summary', name: '.summary', methods: 'GET')]
@@ -73,7 +73,7 @@ class SessionController
     ): Response {
         $summary = $informer->getSummary($user->getAccount());
 
-        return new JsonResponse($serializer->serialize($summary, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($summary, 'json'), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/trust', name: '.trust', methods: 'PUT')]
@@ -99,7 +99,7 @@ class SessionController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/untrust', name: '.untrust', methods: 'PUT')]
@@ -116,7 +116,7 @@ class SessionController
     ): Response {
         $truster->untrust($session);
 
-        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}', name: '.delete', methods: 'DELETE')]
@@ -131,6 +131,6 @@ class SessionController
     ): Response {
         $deleter->delete($session);
 
-        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($session, 'json', ['groups' => ['list', 'session.info', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

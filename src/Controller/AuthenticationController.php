@@ -75,7 +75,7 @@ class AuthenticationController
             'account' => $data->account,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/update-password', name: '.update-password', methods: 'PUT')]
@@ -102,7 +102,7 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/update-username', name: '.update-username', methods: 'PUT')]
@@ -129,7 +129,7 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/create-email', name: '.create-email', methods: 'POST')]
@@ -154,7 +154,7 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/send-token-by-email', name: '.send-token-by-email', methods: 'PUT')]
@@ -172,7 +172,7 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new Response(null, 204);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/{uuid}/verify-token-by-email', name: '.verify-token-by-email', methods: 'PUT')]
@@ -198,7 +198,7 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/update-email', name: '.update-email', methods: 'PUT')]
@@ -225,6 +225,6 @@ class AuthenticationController
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($authentication, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }
