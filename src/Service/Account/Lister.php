@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Service\Account;
 
+use Code202\Security\Entity\Account;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Entity\Account;
 
 class Lister
 {

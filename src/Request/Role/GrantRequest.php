@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Code202\Security\Request\Role;
 
+use Code202\Security\Entity\Account;
+use Code202\Security\Request\ServiceRequest;
+use Code202\Security\Validator\ManagedRole;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Code202\Security\Request\ServiceRequest;
-use Code202\Security\Entity\Account;
-use Code202\Security\Validator\ManagedRole;
 
 class GrantRequest implements ServiceRequest
 {

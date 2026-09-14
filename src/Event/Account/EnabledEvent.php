@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Code202\Security\Event\Account;
 
-class EnabledEvent extends AbstractAccountEvent
-{
-}
+class EnabledEvent extends AbstractAccountEvent {}

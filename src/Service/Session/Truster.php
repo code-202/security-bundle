@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Code202\Security\Service\Session;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\Session\TrustEvent;
 use Code202\Security\Event\Session\UntrustEvent;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Truster
 {
@@ -16,14 +17,13 @@ class Truster
         private EntityManagerInterface $em,
         private EventDispatcherInterface $eventDispatcher,
         private int $trustDuration
-    ) {
-    }
+    ) {}
 
     public function trust(Session $session, bool $autoFlush = true)
     {
-        $now = new \Datetime();
+        $now = new DateTime();
 
-        $session->setTrustUntil($now->modify('+'.$this->trustDuration.' seconds'));
+        $session->setTrustUntil($now->modify('+' . $this->trustDuration . ' seconds'));
 
         $this->em->persist($session);
 
@@ -37,7 +37,7 @@ class Truster
 
     public function untrust(Session $session, bool $autoFlush = true)
     {
-        $now = new \Datetime();
+        $now = new DateTime();
 
         $session->setTrustUntil($now);
 

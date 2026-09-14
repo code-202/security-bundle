@@ -21,7 +21,7 @@ class SecurityUserResolver implements ValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        if ($argument->getType() !== UserInterface::class) {
+        if (UserInterface::class !== $argument->getType()) {
             return [];
         }
 

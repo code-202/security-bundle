@@ -9,19 +9,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class PagerFantaNormalizer implements NormalizerInterface
 {
     public function __construct(
-        #[Autowire(service: 'serializer.normalizer.object')]
-        private readonly NormalizerInterface $normalizer,
-    ) {
-    }
+        #[Autowire(service: 'serializer.normalizer.object')] private readonly NormalizerInterface $normalizer,
+    ) {}
 
-    public function normalize($pager, string $format = null, array $context = []): array
+    public function normalize($pager, ?string $format = null, array $context = []): array
     {
         $results = [];
         foreach ($pager->getCurrentPageResults()->getArrayCopy() as $res) {
             $results[] = $this->normalizer->normalize($res, $format, $context);
         }
 
-        $data = [
+        return [
             'nbResults' => $pager->getNbResults(),
             'currentPage' => $pager->getCurrentPage(),
             'maxPerPage' => $pager->getMaxPerPage(),
@@ -35,8 +33,6 @@ class PagerFantaNormalizer implements NormalizerInterface
             'currentPageOffsetEnd' => $pager->getCurrentPageOffsetEnd(),
             'results' => $results,
         ];
-
-        return $data;
     }
 
     public function supportsNormalization($data, $format = null, array $context = []): bool

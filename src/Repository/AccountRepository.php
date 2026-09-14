@@ -2,9 +2,9 @@
 
 namespace Code202\Security\Repository;
 
+use Code202\Security\Entity\Account;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Code202\Security\Entity\Account;
 
 class AccountRepository extends ServiceEntityRepository
 {

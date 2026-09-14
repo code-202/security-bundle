@@ -10,6 +10,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 
+use function is_string;
+use function strlen;
+
 trait FormLoginAuthenticatorTrait
 {
     public function supports(Request $request): ?bool
@@ -35,11 +38,11 @@ trait FormLoginAuthenticatorTrait
         $credentials['csrf_token'] = ParameterBagUtils::getRequestParameterValue($request, $this->options['csrf_parameter']);
         $credentials['key'] = ParameterBagUtils::getParameterBagValue($request->request, $this->options['username_parameter']);
 
-        if (!\is_string($credentials['key'])) {
+        if (!is_string($credentials['key'])) {
             throw new BadRequestHttpException(sprintf('The key "%s" must be a string.', $this->options['username_parameter']));
         }
 
-        if (\strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
+        if (strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
             throw new BadCredentialsException('Invalid key.');
         }
 

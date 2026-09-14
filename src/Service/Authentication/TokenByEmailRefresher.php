@@ -2,16 +2,17 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Event\Authentication\TokenByEmailRefreshedEvent;
-use Code202\Security\Exception;
 use Code202\Security\Exception\AuthenticationTokenByEmailRefresher;
 use Code202\Security\Service\Common\TokenGeneratorInterface;
 use Code202\Security\User\User;
+use DateTime;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailRefresher
 {
@@ -49,21 +50,21 @@ class TokenByEmailRefresher
         }
 
         if (!$authentication || !$authentication->isEnabled()) {
-            throw new Exception\AuthenticationTokenByEmailRefresher('authentication_not_found');
+            throw new AuthenticationTokenByEmailRefresher('authentication_not_found');
         }
 
-        if ($authentication->getType() != AuthenticationType::TOKEN_BY_EMAIL) {
-            throw new Exception\AuthenticationTokenByEmailRefresher('authentication_is_not_token_by_email_type');
+        if (AuthenticationType::TOKEN_BY_EMAIL != $authentication->getType()) {
+            throw new AuthenticationTokenByEmailRefresher('authentication_is_not_token_by_email_type');
         }
 
-        $now = new \DatetimeImmutable();
-        $limitGeneratedAt = $now->modify('-'.$this->minimalRefreshInterval);
+        $now = new DateTimeImmutable();
+        $limitGeneratedAt = $now->modify('-' . $this->minimalRefreshInterval);
 
         if ($authentication->getData('generated_at')) {
-            $generatedAt = new \Datetime($authentication->getData('generated_at'));
+            $generatedAt = new DateTime($authentication->getData('generated_at'));
 
             if ($generatedAt > $limitGeneratedAt) {
-                throw new Exception\AuthenticationTokenByEmailRefresher('too_soon');
+                throw new AuthenticationTokenByEmailRefresher('too_soon');
             }
         }
 
@@ -76,7 +77,7 @@ class TokenByEmailRefresher
         $authentication
             ->setData('password', $passwordEncoded)
             ->setData('generated_at', $now->format('Y-m-d H:i:s'))
-            ->setData('expired_at', $now->modify('+'.$this->lifetimeInterval)->format('Y-m-d H:i:s'))
+            ->setData('expired_at', $now->modify('+' . $this->lifetimeInterval)->format('Y-m-d H:i:s'))
         ;
 
         $this->em->persist($authentication);

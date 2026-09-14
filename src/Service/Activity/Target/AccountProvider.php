@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetAccount;
 use Code202\Security\Entity\Activity\TargetReference;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AccountProvider implements ProviderInterface
 {
@@ -28,7 +28,7 @@ class AccountProvider implements ProviderInterface
         $repository = $this->em->getRepository(TargetAccount::class);
 
         $res = $repository->findOneBy([
-            'reference' => $reference
+            'reference' => $reference,
         ]);
 
         if (!$res) {
@@ -43,11 +43,9 @@ class AccountProvider implements ProviderInterface
         if ($reference instanceof Account) {
             $repository = $this->em->getRepository(TargetAccount::class);
 
-            $res = $repository->findBy([
-                'reference' => $reference
+            return $repository->findBy([
+                'reference' => $reference,
             ]);
-
-            return $res;
         }
 
         return [];

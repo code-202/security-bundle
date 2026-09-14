@@ -2,12 +2,12 @@
 
 namespace Code202\Security\Service\Account;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Event\Account\GrantedEvent;
 use Code202\Security\Event\Account\RevokedEvent;
 use Code202\Security\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RoleManipulator
 {
@@ -77,7 +77,7 @@ class RoleManipulator
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
         } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
+            $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
         }
 
         if (!$account) {

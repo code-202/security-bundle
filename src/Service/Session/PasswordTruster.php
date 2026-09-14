@@ -16,14 +16,13 @@ class PasswordTruster
         private Truster $truster,
         private AuthenticationProvider $authenticationProvider,
         private UsernamePasswordVerifier $usernamePasswordVerifier,
-    ) {
-    }
+    ) {}
 
     public function trust(Session $session, string $password, bool $autoFlush = true)
     {
         $authentication = $session->getAuthentication();
 
-        if ($authentication->getType() != AuthenticationType::USERNAME_PASSWORD) {
+        if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             $authentication = $this->authenticationProvider->getOne($authentication->getAccount(), AuthenticationType::USERNAME_PASSWORD);
             if (!$authentication) {
                 throw new SessionTrust('no_username_password_authentication');

@@ -3,6 +3,7 @@
 namespace Code202\Security\Service\RoleStrategy;
 
 use Symfony\Component\ExpressionLanguage\Expression;
+use Traversable;
 
 class Provider implements ProviderInterface
 {
@@ -37,7 +38,7 @@ class Provider implements ProviderInterface
         return $collection;
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return $this->collection;
     }

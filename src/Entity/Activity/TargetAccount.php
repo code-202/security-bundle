@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Code202\Security\Entity\Activity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Code202\Security\Entity\Account;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]

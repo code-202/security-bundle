@@ -2,11 +2,12 @@
 
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Service\RoleStrategy\Manager as RoleStrategiesManager;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RoleManipulationVoter extends Voter
 {
@@ -49,7 +50,7 @@ class RoleManipulationVoter extends Voter
         return match ($attribute) {
             self::GRANT => $this->manager->canGrant($subject),
             self::REVOKE => $this->manager->canRevoke($subject),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

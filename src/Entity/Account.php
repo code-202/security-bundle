@@ -2,14 +2,14 @@
 
 namespace Code202\Security\Entity;
 
-use OpenApi\Attributes as OA;
+use Code202\Security\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Code202\Security\Repository\AccountRepository;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ORM\Table(schema: 'security')]

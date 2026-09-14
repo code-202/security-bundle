@@ -2,15 +2,15 @@
 
 namespace Code202\Security\Listener;
 
+use Code202\Security\Authenticator\Passport\Badge\ResetPasswordAuthenticationBadge;
+use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
+use Code202\Security\Event\User\RefreshedEvent;
+use Code202\Security\User\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Code202\Security\Authenticator\Passport\Badge\ResetPasswordAuthenticationBadge;
-use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
-use Code202\Security\Event\User\RefreshedEvent;
-use Code202\Security\User\UserInterface;
 
 #[AsEventListener(event: CheckPassportEvent::class, method: 'onCheckPassport')]
 #[AsEventListener(event: LoginSuccessEvent::class, method: 'onLoginSuccess')]

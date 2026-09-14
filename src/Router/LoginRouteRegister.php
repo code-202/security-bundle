@@ -18,7 +18,7 @@ class LoginRouteRegister implements LoginRouteRegisterInterface
     {
         $this->collection->add($name, new Route(
             $route,
-            [ '_controller' => $controller],
+            ['_controller' => $controller],
             [],
             [],
             '',

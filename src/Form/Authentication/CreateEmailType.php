@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Code202\Security\Form\Authentication;
 
+use Code202\Security\Request\Authentication\CreateEmailRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Request\Authentication\CreateEmailRequest;
 
 class CreateEmailType extends AbstractType
 {

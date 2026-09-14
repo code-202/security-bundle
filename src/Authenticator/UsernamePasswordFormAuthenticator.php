@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 
+use function is_string;
+
 class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator implements AuthenticationEntryPointInterface
 {
     use Trait\FormLoginAuthenticatorTrait;
@@ -38,7 +40,7 @@ class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator imple
         try {
             $credentials['password'] = ParameterBagUtils::getParameterBagValue($request->request, $this->options['password_parameter']);
 
-            if (!\is_string($credentials['password'])) {
+            if (!is_string($credentials['password'])) {
                 throw new BadRequestHttpException(sprintf('The password "%s" must be a string.', $this->options['password_parameter']));
             }
         } catch (AccessException $e) {
@@ -54,7 +56,7 @@ class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator imple
         return $credentials;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         $url = $this->httpUtils->generateUri($request, $this->options['login_path']);
 

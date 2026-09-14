@@ -2,12 +2,12 @@
 
 namespace Code202\Security\Service\Authentication;
 
+use Code202\Security\Entity\Account;
+use Code202\Security\Entity\Authentication;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Entity\Account;
-use Code202\Security\Entity\Authentication;
 
 class Lister
 {

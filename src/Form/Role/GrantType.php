@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Code202\Security\Form\Role;
 
+use Code202\Security\Form\DataTransformer\UuidToAccountTransformer;
+use Code202\Security\Request\Role\GrantRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Form\DataTransformer\UuidToAccountTransformer;
-use Code202\Security\Request\Role\GrantRequest;
 
 class GrantType extends AbstractType
 {
@@ -29,7 +29,8 @@ class GrantType extends AbstractType
         ;
 
         $builder->get('account')
-            ->addModelTransformer($this->transformer);
+            ->addModelTransformer($this->transformer)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

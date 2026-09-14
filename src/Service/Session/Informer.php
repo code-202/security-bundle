@@ -2,9 +2,10 @@
 
 namespace Code202\Security\Service\Session;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Session;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Informer
 {
@@ -25,7 +26,7 @@ class Informer
             ->innerJoin('s.authentication', 'a')
             ->andWhere('a.account = :account')
             ->setParameter('account', $account)
-            ->setParameter('now', new \Datetime())
+            ->setParameter('now', new DateTime())
         ;
 
         return $qb->getQuery()->getSingleResult();

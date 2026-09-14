@@ -10,26 +10,26 @@ class BasicRoleStrategy implements RoleStrategyInterface
 {
     protected array $roles;
 
-    protected string|Expression $conditionsToGrant;
+    protected Expression|string $conditionsToGrant;
 
-    protected string|Expression $conditionsToRevoke;
+    protected Expression|string $conditionsToRevoke;
 
     public function __construct(
         array $roles,
-        string|Expression $conditionsToGrant,
-        string|Expression $conditionsToRevoke
+        Expression|string $conditionsToGrant,
+        Expression|string $conditionsToRevoke
     ) {
         $this->roles = $roles;
         $this->conditionsToGrant = $conditionsToGrant;
         $this->conditionsToRevoke = $conditionsToRevoke;
     }
 
-    public function getConditionsToGrant(): string|Expression
+    public function getConditionsToGrant(): Expression|string
     {
         return $this->conditionsToGrant;
     }
 
-    public function getConditionsToRevoke(): string|Expression
+    public function getConditionsToRevoke(): Expression|string
     {
         return $this->conditionsToRevoke;
     }

@@ -2,13 +2,13 @@
 
 namespace Code202\Security;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Code202\Security\DependencyInjection\Security\Factory\LoginFactory;
 use Code202\Security\DependencyInjection\Security\Factory\TokenByEmailFormLoginFactory;
 use Code202\Security\DependencyInjection\Security\Factory\TokenByEmailJsonLoginFactory;
 use Code202\Security\DependencyInjection\Security\Factory\UsernamePasswordFormLoginFactory;
 use Code202\Security\DependencyInjection\Security\Factory\UsernamePasswordJsonLoginFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class Code202SecurityBundle extends Bundle
 {

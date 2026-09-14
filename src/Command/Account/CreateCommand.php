@@ -2,12 +2,12 @@
 
 namespace Code202\Security\Command\Account;
 
+use Code202\Security\Service\Account\Creator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Code202\Security\Service\Account\Creator;
 
 #[AsCommand(
     name: 'code202:security:account:create',

@@ -2,10 +2,11 @@
 
 namespace Code202\Security\Bridge\OpenApi\Attributes;
 
+use Attribute;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAA;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class PagerFantaResponse extends OAA\Response
 {
     public function __construct($item)
@@ -28,13 +29,13 @@ class PagerFantaResponse extends OAA\Response
                                             'property' => 'results',
                                             'type' => 'array',
                                             'items' => new OA\Items(['ref' => $item]),
-                                        ])
+                                        ]),
                                     ],
-                                ])
-                            ]
-                        ])
-                    ]
-                ])
+                                ]),
+                            ],
+                        ]),
+                    ],
+                ]),
             ]
         );
     }

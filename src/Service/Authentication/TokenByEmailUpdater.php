@@ -2,17 +2,13 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Event\Authentication\EmailChangedEvent;
-use Code202\Security\Event\Authentication\PasswordChangedEvent;
-use Code202\Security\Event\Authentication\UsernameChangedEvent;
 use Code202\Security\Exception;
-use Code202\Security\User\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailUpdater
 {
@@ -30,7 +26,7 @@ class TokenByEmailUpdater
         $this->validator = $validator;
     }
 
-    public function updateEmail(string|Authentication $authenticationOrUuid, string $newEmail, bool $autoFlush = true)
+    public function updateEmail(Authentication|string $authenticationOrUuid, string $newEmail, bool $autoFlush = true)
     {
         if ($authenticationOrUuid instanceof Authentication) {
             $authentication = $authenticationOrUuid;
@@ -44,7 +40,7 @@ class TokenByEmailUpdater
             throw new Exception\AuthenticationTokenByEmailUpdater('authentication_not_found');
         }
 
-        if ($authentication->getType() != AuthenticationType::TOKEN_BY_EMAIL) {
+        if (AuthenticationType::TOKEN_BY_EMAIL != $authentication->getType()) {
             throw new Exception\AuthenticationTokenByEmailUpdater('authentication_is_not_token_by_email_type');
         }
 

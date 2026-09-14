@@ -2,13 +2,13 @@
 
 namespace Code202\Security\Command\Authentication;
 
+use Code202\Security\Service\Authentication\UsernamePasswordCreator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Code202\Security\Service\Authentication\UsernamePasswordCreator;
 
 #[AsCommand(
     name: 'code202:security:authentication:create-username-password',

@@ -5,7 +5,6 @@ namespace Code202\Security\Controller;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
-use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 
 #[OA\Tag(name: ' Login')]
 #[Security(name: null)]
@@ -35,7 +34,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function username(): Response
@@ -59,7 +58,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function usernameJson(): Response
@@ -87,7 +86,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function usernameForm(): Response
@@ -119,7 +118,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function email(): Response
@@ -143,7 +142,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function emailJson(): Response
@@ -171,7 +170,7 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function emailForm(): Response

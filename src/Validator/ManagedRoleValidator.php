@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Code202\Security\Validator;
 
+use Code202\Security\Service\RoleStrategy\Provider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use Code202\Security\Service\RoleStrategy\Provider;
 
 class ManagedRoleValidator extends ConstraintValidator
 {
@@ -36,10 +36,11 @@ class ManagedRoleValidator extends ConstraintValidator
 
         $collection = $this->provider->getStrategiesFor($value);
 
-        if (count($collection) == 0) {
+        if (0 == count($collection)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ role }}', $value)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use Code202\Security\Authenticator\UsernamePasswordFormAuthenticator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class UsernamePasswordFormLoginFactory extends AbstractSubLoginFactory
 {

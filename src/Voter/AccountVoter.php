@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Code202\Security\Voter;
 
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Account;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class AccountVoter extends Voter
 {
@@ -67,7 +68,7 @@ class AccountVoter extends Voter
             self::ENABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ENABLE'),
             self::DISABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_DISABLE'),
             self::AUTHENTICATIONS => $this->isAccoutOwner($user, $subject) || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_AUTHENTICATIONS'),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 

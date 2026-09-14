@@ -49,12 +49,12 @@ abstract class Trigger
         return $this;
     }
 
-    public function getData(string $name): string|array|null
+    public function getData(string $name): array|string|null
     {
         return $this->datas[$name] ?? null;
     }
 
-    public function setData(string $name, string|array $value): self
+    public function setData(string $name, array|string $value): self
     {
         $this->datas[$name] = $value;
 

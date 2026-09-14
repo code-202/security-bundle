@@ -2,6 +2,16 @@
 
 namespace Code202\Security\Controller;
 
+use Code202\Security\Attribute\UuidOrMe;
+use Code202\Security\Bridge\OpenApi\Attributes as OAA;
+use Code202\Security\Entity\Account;
+use Code202\Security\Form\Account\PagerType;
+use Code202\Security\Form\Account\UpdateNameType;
+use Code202\Security\Request\Account\PagerRequest;
+use Code202\Security\Request\Account\UpdateNameRequest;
+use Code202\Security\Service\Account\Enabler;
+use Code202\Security\Service\Account\Lister;
+use Code202\Security\Service\Account\Updater;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -13,17 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
-use Code202\Security\Attribute\UuidOrMe;
-use Code202\Security\Bridge\OpenApi\Attributes as OAA;
-use Code202\Security\Controller\FormHelperTrait;
-use Code202\Security\Entity\Account;
-use Code202\Security\Form\Account\PagerType;
-use Code202\Security\Form\Account\UpdateNameType;
-use Code202\Security\Request\Account\PagerRequest;
-use Code202\Security\Request\Account\UpdateNameRequest;
-use Code202\Security\Service\Account\Enabler;
-use Code202\Security\Service\Account\Lister;
-use Code202\Security\Service\Account\Updater;
 
 #[AsController]
 #[Route('/accounts', name: '.accounts')]
@@ -97,7 +96,7 @@ class AccountController
     #[Route('/{uuid}/roles', name: '.roles', methods: 'GET')]
     #[IsGranted('SECURITY.ACCOUNT.ROLE', subject: 'account')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string'), description: 'Uuid of the account or "me"')]
-    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref :'#components/schemas/AccountRoleResponse'))]
+    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref : '#components/schemas/AccountRoleResponse'))]
     public function roles(
         #[UuidOrMe] Account $account,
         RoleHierarchyInterface $roleHierarchy,

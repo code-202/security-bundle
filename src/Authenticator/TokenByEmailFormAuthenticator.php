@@ -7,6 +7,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 
+use function is_string;
+
 class TokenByEmailFormAuthenticator extends AbstractLoginAuthenticator
 {
     use Trait\FormLoginAuthenticatorTrait;
@@ -24,7 +26,6 @@ class TokenByEmailFormAuthenticator extends AbstractLoginAuthenticator
         ]);
     }
 
-
     protected function getExtraCredentials(Request $request): array
     {
         $credentials = [];
@@ -32,7 +33,7 @@ class TokenByEmailFormAuthenticator extends AbstractLoginAuthenticator
         try {
             $credentials['password'] = ParameterBagUtils::getParameterBagValue($request->request, $this->options['password_parameter']);
 
-            if (!\is_string($credentials['password'])) {
+            if (!is_string($credentials['password'])) {
                 throw new BadRequestHttpException(sprintf('The password "%s" must be a string.', $this->options['password_parameter']));
             }
         } catch (AccessException $e) {

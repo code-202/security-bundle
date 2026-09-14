@@ -21,7 +21,7 @@ class LogoutController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     #[Route('', name: '', methods: 'POST')]

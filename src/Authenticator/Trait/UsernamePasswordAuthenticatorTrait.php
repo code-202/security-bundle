@@ -2,15 +2,15 @@
 
 namespace Code202\Security\Authenticator\Trait;
 
+use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
+use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
+use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
+use Code202\Security\Entity\AuthenticationType;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
-use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
-use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
-use Code202\Security\Entity\AuthenticationType;
 
 trait UsernamePasswordAuthenticatorTrait
 {
@@ -19,7 +19,7 @@ trait UsernamePasswordAuthenticatorTrait
         $passport = new Passport(
             new UserBadge($credentials['key'], function ($key) {
                 try {
-                    return $this->userProvider->loadUserByIdentifier(AuthenticationType::USERNAME_PASSWORD->value.':'.$key);
+                    return $this->userProvider->loadUserByIdentifier(AuthenticationType::USERNAME_PASSWORD->value . ':' . $key);
                 } catch (UserNotFoundException $e) {
                 }
 

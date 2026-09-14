@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Service\Activity\Trigger;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Code202\Security\Entity\Activity\Trigger;
 use Code202\Security\Entity\Activity\TriggerReference;
 use Code202\Security\Entity\Activity\TriggerUnknown;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class Provider
 {

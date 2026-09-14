@@ -2,11 +2,13 @@
 
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Session;
 use Code202\Security\User\UserInterface;
+use DateTime;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class SessionVoter extends Voter
 {
@@ -17,7 +19,7 @@ class SessionVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if ($attribute == self::TRUSTED) {
+        if (self::TRUSTED == $attribute) {
             return true;
         }
 
@@ -49,8 +51,8 @@ class SessionVoter extends Voter
             self::TRUST,
             self::UNTRUST,
             self::DELETE => $subject->getAuthentication()->getAccount() == $user->getAccount(),
-            self::TRUSTED => $user->getSession()->getTrustUntil() != null && $user->getSession()->getTrustUntil() > new \DateTime('now'),
-            default => throw new \LogicException('This code should not be reached!')
+            self::TRUSTED => null != $user->getSession()->getTrustUntil() && $user->getSession()->getTrustUntil() > new DateTime('now'),
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

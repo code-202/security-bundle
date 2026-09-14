@@ -2,16 +2,15 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Event\Authentication\CreatedEvent;
 use Code202\Security\Exception;
-use Code202\Security\User\User;
 use Code202\Security\Uuid\UuidGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailCreator
 {
@@ -37,7 +36,7 @@ class TokenByEmailCreator
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
         } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
+            $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
         }
 
         if (!$account || !$account->isEnabled()) {
@@ -50,7 +49,7 @@ class TokenByEmailCreator
 
         $authentication = $this->em->getRepository(Authentication::class)->findOneBy([
             'account' => $account,
-            'type' => AuthenticationType::TOKEN_BY_EMAIL
+            'type' => AuthenticationType::TOKEN_BY_EMAIL,
         ]);
 
         if ($authentication) {

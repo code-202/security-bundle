@@ -2,10 +2,6 @@
 
 namespace Code202\Security\Listener;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Code202\Security\Entity\Activity\Activity;
 use Code202\Security\Entity\Activity\Type as ActivityType;
 use Code202\Security\Event\Account as AccountEvent;
@@ -14,6 +10,10 @@ use Code202\Security\Event\Session as SessionEvent;
 use Code202\Security\Service\Activity\Target\Provider as TargetProvider;
 use Code202\Security\Service\Activity\Trigger\Provider as TriggerProvider;
 use Code202\Security\User\UserInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 #[AsEventListener(event: LoginSuccessEvent::class, method: 'onLoginSuccess')]
 #[AsEventListener(event: LogoutEvent::class, method: 'onLogout')]

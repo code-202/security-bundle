@@ -2,10 +2,11 @@
 
 namespace Code202\Security\Bridge\OpenApi\Attributes;
 
+use Attribute;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAA;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class PutBody extends OAA\RequestBody
 {
     public function __construct($item)
@@ -20,13 +21,13 @@ class PutBody extends OAA\RequestBody
                     'mediaType' => 'application/x-www-form-urlencoded',
                     'value' => [
                         new OAA\Schema($item),
-                    ]
+                    ],
                 ]),
                 new OA\MediaType([
                     'mediaType' => 'application/json',
                     'value' => [
                         new OAA\Schema($item),
-                    ]
+                    ],
                 ]),
             ]
         );

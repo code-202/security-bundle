@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Code202\Security\Authenticator\UsernamePasswordJsonAuthenticator;
 
 class UsernamePasswordJsonLoginFactory extends AbstractSubLoginFactory

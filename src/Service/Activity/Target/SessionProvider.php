@@ -2,13 +2,13 @@
 
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetReference;
 use Code202\Security\Entity\Activity\TargetSession;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\Session;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SessionProvider implements ProviderInterface
 {
@@ -30,7 +30,7 @@ class SessionProvider implements ProviderInterface
         $repository = $this->em->getRepository(TargetSession::class);
 
         $res = $repository->findOneBy([
-            'reference' => $reference
+            'reference' => $reference,
         ]);
 
         if (!$res) {
@@ -45,12 +45,14 @@ class SessionProvider implements ProviderInterface
         $repository = $this->em->getRepository(TargetSession::class);
 
         $qb = $repository->createQueryBuilder('ts')
-            ->setParameter('reference', $reference);
+            ->setParameter('reference', $reference)
+        ;
 
         if ($reference instanceof Session) {
             $qb = $repository->createQueryBuilder('ts')
                 ->andWhere('ts.reference = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }
@@ -59,7 +61,8 @@ class SessionProvider implements ProviderInterface
             $qb = $repository->createQueryBuilder('ts')
                 ->innerJoin('ts.reference', 's')
                 ->andWhere('s.authentication = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }
@@ -69,7 +72,8 @@ class SessionProvider implements ProviderInterface
                 ->innerJoin('ts.reference', 's')
                 ->innerJoin('s.authentication', 'a')
                 ->andWhere('a.account = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }

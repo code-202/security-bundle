@@ -2,21 +2,24 @@
 
 namespace Code202\Security\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader;
-use Code202\Security\Router\LoginRouteRegister;
+use Code202\Security\Bridge\Ramsey\Uuid\UuidGenerator;
+use Code202\Security\Bridge\Ramsey\Uuid\UuidValidator;
+use Code202\Security\Service\Common\NumberBaseTokenGenerator;
 use Code202\Security\Service\Common\TokenGeneratorInterface;
+use Code202\Security\Service\RoleStrategy\Provider;
+use Code202\Security\Service\Session\Truster;
 use Code202\Security\Uuid\UuidGeneratorInterface;
 use Code202\Security\Uuid\UuidValidatorInterface;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader;
 
 class Code202SecurityExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $configuration = new Configuration();
@@ -48,7 +51,7 @@ class Code202SecurityExtension extends Extension
     protected function configureUuidGenerator(array $config, ContainerBuilder $container): void
     {
         $uuidGeneratorClass = match ($config['uuid']['generator']) {
-            'ramsey/uuid' => \Code202\Security\Bridge\Ramsey\Uuid\UuidGenerator::class,
+            'ramsey/uuid' => UuidGenerator::class,
             'symfony/polyfill-uuid' => \Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidGenerator::class,
             default => $config['uuid']['generator'],
         };
@@ -62,7 +65,7 @@ class Code202SecurityExtension extends Extension
     protected function configureUuidValidator(array $config, ContainerBuilder $container): void
     {
         $uuidValidatorClass = match ($config['uuid']['validator']) {
-            'ramsey/uuid' => \Code202\Security\Bridge\Ramsey\Uuid\UuidValidator::class,
+            'ramsey/uuid' => UuidValidator::class,
             'symfony/polyfill-uuid' => \Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidValidator::class,
             default => $config['uuid']['validator'],
         };
@@ -76,7 +79,7 @@ class Code202SecurityExtension extends Extension
     protected function configureTokenGenerator(array $config, ContainerBuilder $container): void
     {
         $tokenGeneratorClass = match ($config['token_by_email']['refresher']['token_generator']) {
-            'number_base' => \Code202\Security\Service\Common\NumberBaseTokenGenerator::class,
+            'number_base' => NumberBaseTokenGenerator::class,
             default => $config['token_by_email']['refresher']['token_generator'],
         };
 
@@ -95,19 +98,19 @@ class Code202SecurityExtension extends Extension
 
     protected function configureNumberBaseTokenGenerator(array $config, ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition(\Code202\Security\Service\Common\NumberBaseTokenGenerator::class);
+        $definition = $container->getDefinition(NumberBaseTokenGenerator::class);
         $definition->setArgument('$size', $config['token_generator']['number_base']['size']);
     }
 
     protected function configureRoleManager(array $config, ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition(\Code202\Security\Service\RoleStrategy\Provider::class);
+        $definition = $container->getDefinition(Provider::class);
         $definition->setArgument('$strategies', $config['role_strategies']);
     }
 
     protected function configureSessionTruster(array $config, ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition(\Code202\Security\Service\Session\Truster::class);
+        $definition = $container->getDefinition(Truster::class);
         $definition->setArgument('$trustDuration', $config['trust_duration']);
     }
 }

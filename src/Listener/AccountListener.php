@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Code202\Security\Listener;
 
+use Code202\Security\Event\User\RefreshedEvent;
+use Code202\Security\User\UserInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
-use Code202\Security\Event\User\RefreshedEvent;
-use Code202\Security\User\UserInterface;
 
 #[AsEventListener(event: CheckPassportEvent::class, method: 'onCheckPassport')]
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]

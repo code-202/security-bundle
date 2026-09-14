@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Code202\Security\Form\Authentication;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Code202\Security\Form\DataTransformer\UuidToAccountTransformer;
 use Code202\Security\Form\PagerType as BasePagerType;
 use Code202\Security\Request\Authentication\PagerRequest;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PagerType extends BasePagerType
 {
@@ -31,7 +30,8 @@ class PagerType extends BasePagerType
         ;
 
         $builder->get('account')
-            ->addModelTransformer($this->transformer);
+            ->addModelTransformer($this->transformer)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

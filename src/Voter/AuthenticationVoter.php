@@ -2,11 +2,12 @@
 
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class AuthenticationVoter extends Voter
 {
@@ -36,7 +37,7 @@ class AuthenticationVoter extends Voter
 
         return match ($attribute) {
             self::EDIT => $subject->getAccount() == $user->getAccount(),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

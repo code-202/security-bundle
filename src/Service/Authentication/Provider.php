@@ -2,10 +2,10 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Provider
 {

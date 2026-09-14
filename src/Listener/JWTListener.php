@@ -2,9 +2,9 @@
 
 namespace Code202\Security\Listener;
 
+use Code202\Security\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Code202\Security\User\UserInterface;
 
 #[AsEventListener(event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated')]
 class JWTListener

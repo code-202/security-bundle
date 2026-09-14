@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Entity\Activity;
 
-use OpenApi\Attributes as OA;
+use Code202\Security\Entity\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Code202\Security\Entity\Timestampable;
 
 #[ORM\Entity]
 #[ORM\Table(schema: 'security')]
@@ -90,12 +90,12 @@ class Activity
         return $this;
     }
 
-    public function getData(string $name): string|array|null
+    public function getData(string $name): array|string|null
     {
         return $this->datas[$name] ?? null;
     }
 
-    public function setData(string $name, string|array $value): self
+    public function setData(string $name, array|string $value): self
     {
         $this->datas[$name] = $value;
 

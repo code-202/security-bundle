@@ -2,18 +2,18 @@
 
 namespace Code202\Security\User;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\User\RefreshedEvent;
 use Code202\Security\Uuid\UuidGeneratorInterface;
 use Code202\Security\Uuid\UuidValidatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Provider implements UserProviderInterface
 {
@@ -42,10 +42,8 @@ class Provider implements UserProviderInterface
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
-     * @throws UserNotFoundException    if the user is not found
+     * @throws UserNotFoundException if the user is not found
      */
     public function refreshUser(UserInterface $user): UserInterface
     {

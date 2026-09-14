@@ -2,10 +2,10 @@
 
 namespace Code202\Security\User;
 
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\Session;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -57,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getDatas(): array
     {
         return $this->getAuthentication()->getDatas();
+
         return $this->datas;
     }
 

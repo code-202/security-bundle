@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetReference;
 use Code202\Security\Entity\Activity\TargetUnknown;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class Provider
 {

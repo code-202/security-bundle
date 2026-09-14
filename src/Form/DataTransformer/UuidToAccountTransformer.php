@@ -2,13 +2,12 @@
 
 namespace Code202\Security\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Repository\AccountRepository;
 use Code202\Security\Uuid\UuidValidatorInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UuidToAccountTransformer implements DataTransformerInterface
 {
@@ -16,8 +15,7 @@ class UuidToAccountTransformer implements DataTransformerInterface
         private AccountRepository $repository,
         private TokenStorageInterface $tokenStorage,
         private UuidValidatorInterface $uuidValidator
-    ) {
-    }
+    ) {}
 
     public function transform($account): string
     {
@@ -35,7 +33,7 @@ class UuidToAccountTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($uuid == 'me') {
+        if ('me' == $uuid) {
             return $this->tokenStorage->getToken()->getUser()->getAccount();
         }
 

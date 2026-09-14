@@ -2,11 +2,11 @@
 
 namespace Code202\Security\Service\Account;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Event\Account\DisabledEvent;
 use Code202\Security\Event\Account\EnabledEvent;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Enabler
 {
@@ -58,7 +58,7 @@ class Enabler
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
         } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
+            $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
         }
 
         if (!$account) {

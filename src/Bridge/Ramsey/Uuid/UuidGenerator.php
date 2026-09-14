@@ -2,8 +2,8 @@
 
 namespace Code202\Security\Bridge\Ramsey\Uuid;
 
-use Ramsey\Uuid\Uuid;
 use Code202\Security\Uuid\UuidGeneratorInterface;
+use Ramsey\Uuid\Uuid;
 
 class UuidGenerator implements UuidGeneratorInterface
 {

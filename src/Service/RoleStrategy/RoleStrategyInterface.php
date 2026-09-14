@@ -8,8 +8,11 @@ use Symfony\Component\ExpressionLanguage\Expression;
 
 interface RoleStrategyInterface
 {
-    public function getConditionsToGrant(): string|Expression;
-    public function getConditionsToRevoke(): string|Expression;
+    public function getConditionsToGrant(): Expression|string;
+
+    public function getConditionsToRevoke(): Expression|string;
+
     public function getRoles(): array;
+
     public function hasRole(string $role): bool;
 }

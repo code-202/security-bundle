@@ -2,16 +2,16 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Event\Authentication\PasswordChangedEvent;
 use Code202\Security\Event\Authentication\UsernameChangedEvent;
 use Code202\Security\Exception;
 use Code202\Security\User\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UsernamePasswordUpdater
 {
@@ -33,7 +33,7 @@ class UsernamePasswordUpdater
     }
 
     public function updatePassword(
-        string|Authentication $authenticationOrUuid,
+        Authentication|string $authenticationOrUuid,
         string $newPassword,
         bool $autoFlush = true
     ): Authentication {
@@ -53,7 +53,7 @@ class UsernamePasswordUpdater
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_not_found');
         }
 
-        if ($authentication->getType() != AuthenticationType::USERNAME_PASSWORD) {
+        if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_is_not_username_password_type');
         }
 
@@ -100,7 +100,7 @@ class UsernamePasswordUpdater
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_not_found');
         }
 
-        if ($authentication->getType() != AuthenticationType::USERNAME_PASSWORD) {
+        if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             throw new Exception\AuthenticationUsernamePasswordUpdater('authentication_is_not_username_password_type');
         }
 
