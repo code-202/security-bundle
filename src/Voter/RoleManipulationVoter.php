@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Service\RoleStrategy\Manager as RoleStrategiesManager;
 use Code202\Security\User\UserInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 
 class RoleManipulationVoter extends Voter
 {
@@ -36,7 +37,7 @@ class RoleManipulationVoter extends Voter
         return true;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
 
