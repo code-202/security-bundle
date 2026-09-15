@@ -76,7 +76,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
 
     abstract protected function buildPassport(array $credentials): Passport;
 
-    protected function addExtraBadges(Passport $passport, array $credentials) {}
+    protected function addExtraBadges(Passport $passport, array $credentials): void {}
 
     public function createToken(Passport $passport, string $firewallName): TokenInterface
     {

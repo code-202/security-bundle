@@ -54,7 +54,7 @@ trait FormLoginAuthenticatorTrait
         return [];
     }
 
-    protected function addExtraBadges(Passport $passport, array $credentials)
+    protected function addExtraBadges(Passport $passport, array $credentials): void
     {
         parent::addExtraBadges($passport, $credentials);
 

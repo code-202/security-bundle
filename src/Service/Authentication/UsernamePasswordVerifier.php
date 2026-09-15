@@ -18,10 +18,6 @@ class UsernamePasswordVerifier
         Authentication $authentication,
         string $password = '',
     ): bool {
-        if (!$authentication) {
-            throw new Exception\AuthenticationUsernamePasswordVerifier('authentication_not_found');
-        }
-
         if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             throw new Exception\AuthenticationUsernamePasswordVerifier('authentication_is_not_username_password_type');
         }

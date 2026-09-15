@@ -8,6 +8,7 @@ use Code202\Security\Entity\Session;
 use Code202\Security\Event\User\RefreshedEvent;
 use Code202\Security\Service\Session\Truster as SessionTruster;
 use Code202\Security\Service\Session\TTLProvider as SessionTTLProvider;
+use Code202\Security\User\User;
 use Code202\Security\User\UserInterface;
 use DateTime;
 use DateTimeImmutable;
@@ -100,19 +101,17 @@ class SessionListener
 
     public function onLogout(LogoutEvent $event): void
     {
-        $token = $event->getToken();
+        $user = $event->getToken()->getUser();
 
-        if (!$token->getUser() instanceof UserInterface) {
+        if (!$user instanceof User) {
             return;
         }
 
-        $session = $token->getUser()->getSession();
+        $session = $user->getSession();
 
-        if ($session) {
-            $session->setExpiredAt(new DateTime());
-            $this->em->persist($session);
-            $this->em->flush();
-        }
+        $session->setExpiredAt(new DateTime());
+        $this->em->persist($session);
+        $this->em->flush();
     }
 
     public function onUserRefreshed(RefreshedEvent $event): void

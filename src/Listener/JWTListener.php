@@ -17,7 +17,7 @@ class JWTListener
 
         $payload['roles'] = $user->getRoles();
 
-        if ($user && $user instanceof UserInterface) {
+        if ($user instanceof UserInterface) {
             $ttl = 2678400; // 60 * 60 * 24 * 31;
             $payload['exp'] = time() + $ttl;
 
