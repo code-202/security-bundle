@@ -14,6 +14,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
@@ -45,7 +46,7 @@ class SessionListener
 
         $session = $user->getSession();
 
-        if ($session->getExpiredAt() && $session->getExpiredAt() < new DateTimeImmutable()) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < new DateTimeImmutable()) {
             throw new AuthenticationException('session expired');
         }
     }
@@ -74,7 +75,7 @@ class SessionListener
 
         $session = $user->getSession();
 
-        if ($request && $request->headers->has('user-agent')) {
+        if ($request instanceof Request && $request->headers->has('user-agent')) {
             $session->setData('user_agent', $request->headers->get('user-agent'));
         }
 
@@ -119,7 +120,7 @@ class SessionListener
     {
         $session = $event->getUser()->getSession();
 
-        if ($session->getExpiredAt() && $session->getExpiredAt() < new DateTimeImmutable()) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < new DateTimeImmutable()) {
             throw new AuthenticationException('session expired');
         }
 

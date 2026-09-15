@@ -9,6 +9,7 @@ use Code202\Security\User\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionProvider implements ProviderInterface
@@ -48,7 +49,7 @@ class SessionProvider implements ProviderInterface
 
         $request = $this->requestStack->getCurrentRequest();
 
-        if ($request && $request->headers->has('user-agent')) {
+        if ($request instanceof Request && $request->headers->has('user-agent')) {
             $res->setData('user_agent', $request->headers->get('user-agent'));
         }
 
