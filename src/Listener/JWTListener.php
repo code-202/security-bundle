@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Listener;
 
 use Code202\Security\User\UserInterface;
