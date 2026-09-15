@@ -15,7 +15,7 @@ class AuthenticationVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (self::EDIT != $attribute) {
+        if (self::EDIT !== $attribute) {
             return false;
         }
         return $subject instanceof Authentication;
