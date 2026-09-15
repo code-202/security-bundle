@@ -42,7 +42,7 @@ class UsernamePasswordCreator
         ]);
 
         if ($authentication instanceof Authentication) {
-            throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('This account has already got an username/password authentication mode'));
+            throw new Exception\AuthenticationUsernamePasswordCreator('This account has already got an username/password authentication mode');
         }
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::USERNAME_PASSWORD, $account);

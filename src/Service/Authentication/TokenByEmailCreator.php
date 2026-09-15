@@ -43,7 +43,7 @@ class TokenByEmailCreator
         ]);
 
         if ($authentication instanceof Authentication) {
-            throw new Exception\AuthenticationTokenByEmailCreator(sprintf('This account has already got an email/token authentication mode'));
+            throw new Exception\AuthenticationTokenByEmailCreator('This account has already got an email/token authentication mode');
         }
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::TOKEN_BY_EMAIL, $account);
