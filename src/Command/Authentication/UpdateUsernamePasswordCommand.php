@@ -12,7 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'code202:security:authentication:update-username-password',
-    hidden: false
+    hidden: false,
+    description: 'Creates a new authentication mode for account.'
 )]
 class UpdateUsernamePasswordCommand extends Command
 {
@@ -25,7 +26,6 @@ class UpdateUsernamePasswordCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new authentication mode for account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
             ->addOption('username', 'u', InputOption::VALUE_REQUIRED, 'The username for the authentication.')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'The password for this authentication')

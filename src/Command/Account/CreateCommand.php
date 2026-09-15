@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'code202:security:account:create',
-    hidden: false
+    hidden: false,
+    description: 'Creates a new account.'
 )]
 class CreateCommand extends Command
 {
@@ -24,7 +25,6 @@ class CreateCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new account.')
             ->setHelp('This command allows you to create an account.')
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the account.')
         ;

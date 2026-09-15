@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'code202:security:account:disable',
-    hidden: false
+    hidden: false,
+    description: 'Disable an account.'
 )]
 class DisableCommand extends Command
 {
@@ -24,7 +25,6 @@ class DisableCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Disable an account.')
             ->setHelp('This command allows you to disable an account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
         ;
