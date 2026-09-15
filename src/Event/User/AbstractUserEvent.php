@@ -7,8 +7,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class AbstractUserEvent extends GenericEvent
 {
-    private $user;
-
     public function __construct(UserInterface $user, array $arguments = [])
     {
         parent::__construct($user, $arguments);
