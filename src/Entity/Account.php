@@ -97,6 +97,9 @@ class Account implements Activity\TargetReference
         return $this->enabled;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\Collection<int, \Code202\Security\Entity\Authentication>
+     */
     public function getAuthentications(): Collection
     {
         return $this->authentications;

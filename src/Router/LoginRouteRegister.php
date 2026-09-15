@@ -7,7 +7,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 class LoginRouteRegister implements LoginRouteRegisterInterface
 {
-    protected RouteCollection $routes;
+    protected RouteCollection $collection;
 
     public function __construct()
     {
