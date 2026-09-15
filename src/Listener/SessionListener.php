@@ -75,7 +75,7 @@ class SessionListener
 
         $session = $user->getSession();
 
-        if ($request instanceof Request && $request->headers->has('user-agent')) {
+        if ($request->headers->has('user-agent')) {
             $session->setData('user_agent', $request->headers->get('user-agent'));
         }
 
