@@ -27,7 +27,7 @@ class AccountDenormalizer implements DenormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Account::class,
+            Account::class => true,
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Code202\Security\Form\DataTransformer;
 
 use Code202\Security\Entity\Account;
 use Code202\Security\Repository\AccountRepository;
+use Code202\Security\User\UserInterface;
 use Code202\Security\Uuid\UuidValidatorInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -34,7 +35,14 @@ class UuidToAccountTransformer implements DataTransformerInterface
         }
 
         if ('me' == $uuid) {
-            return $this->tokenStorage->getToken()->getUser()->getAccount();
+            $user = $this->tokenStorage->getToken()->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new TransformationFailedException(
+                    'Me user is no good !',
+                );
+            }
+
+            return $user->getAccount();
         }
 
         if (!$this->uuidValidator->validate($uuid)) {

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/** @implements UserProviderInterface<User> */
 class Provider implements UserProviderInterface
 {
     public function __construct(
@@ -74,7 +75,7 @@ class Provider implements UserProviderInterface
         return $this->loadUserByTypeAndKey(AuthenticationType::USERNAME_PASSWORD->value, $identifier);
     }
 
-    protected function loadUserByUuuid(string $uuid): UserInterface
+    protected function loadUserByUuuid(string $uuid): User
     {
         $qb = $this->em->getRepository(Session::class)->createQueryBuilder('s')
             ->addSelect('a')
@@ -94,7 +95,7 @@ class Provider implements UserProviderInterface
         return new User($session);
     }
 
-    protected function loadUserByTypeAndKey(string $type, string $key): UserInterface
+    protected function loadUserByTypeAndKey(string $type, string $key): User
     {
         $qb = $this->em->getRepository(Authentication::class)->createQueryBuilder('a')
             ->addSelect('c')

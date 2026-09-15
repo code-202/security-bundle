@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /** @var mixed[] */
     protected array $datas;
 
     public function __construct(
@@ -50,12 +51,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->session->getAuthentication()->getAccount();
     }
 
+    /** @return mixed[] */
     public function getDatas(): array
     {
         return $this->getAuthentication()->getDatas();
     }
 
-    public function getData($key): mixed
+    public function getData(string $key): mixed
     {
         return $this->getAuthentication()->getData($key);
     }

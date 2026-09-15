@@ -24,7 +24,7 @@ use Code202\Security\Service\Authentication\TokenByEmailUpdater;
 use Code202\Security\Service\Authentication\TokenByEmailVerifier;
 use Code202\Security\Service\Authentication\UsernamePasswordUpdater;
 use Code202\Security\User\UserInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

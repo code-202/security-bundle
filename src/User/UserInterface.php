@@ -17,5 +17,5 @@ interface UserInterface extends BaseUserInterface
 
     public function getSession(): Session;
 
-    public function getData($key): mixed;
+    public function getData(string $key): mixed;
 }

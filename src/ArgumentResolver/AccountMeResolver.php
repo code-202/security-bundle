@@ -4,6 +4,7 @@ namespace Code202\Security\ArgumentResolver;
 
 use Code202\Security\Attribute\UuidOrMe;
 use Code202\Security\Entity\Account;
+use Code202\Security\User\User;
 use Code202\Security\User\UserInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class AccountMeResolver implements ValueResolverInterface
         }
 
         foreach ($argument->getAttributesOfType(UuidOrMe::class) as $attribute) {
-            if ('me' != $request->get($attribute->name)) {
+            if ('me' != $request->attributes->get($attribute->name)) {
                 return false;
             }
         }
@@ -39,6 +40,11 @@ class AccountMeResolver implements ValueResolverInterface
             return [];
         }
 
-        yield $this->tokenStorage->getToken()->getUser()->getAccount();
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (!$user instanceof User) {
+            return [];
+        }
+
+        yield $user->getAccount();
     }
 }

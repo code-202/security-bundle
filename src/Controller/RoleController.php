@@ -10,7 +10,7 @@ use Code202\Security\Request\Role\GrantRequest;
 use Code202\Security\Request\Role\RevokeRequest;
 use Code202\Security\Service\Account\RoleManipulator;
 use Code202\Security\Service\RoleStrategy\Manager as RoleManager;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

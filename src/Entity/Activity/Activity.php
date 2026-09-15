@@ -6,7 +6,7 @@ use Code202\Security\Entity\Timestampable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -27,10 +27,12 @@ class Activity
     protected string $type;
 
     #[ORM\ManyToOne(targetEntity: Target::class, inversedBy: 'activities', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['list'])]
     protected Target $target;
 
     #[ORM\ManyToOne(targetEntity: Trigger::class, inversedBy: 'activities', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['list'])]
     protected Trigger $trigger;
 

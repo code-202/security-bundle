@@ -6,7 +6,7 @@ namespace Code202\Security\Entity\Activity;
 
 use Code202\Security\Entity\Session;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 class TargetSession extends Target

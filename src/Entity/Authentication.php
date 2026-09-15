@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -29,6 +29,7 @@ class Authentication implements Activity\TargetReference
     protected string $uuid;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'authentications')]
+    #[ORM\JoinColumn(nullable: false)]
     protected Account $account;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -52,6 +53,7 @@ class Authentication implements Activity\TargetReference
     #[ORM\Column(type: Types::JSON)]
     protected array $datas;
 
+    /** @var Collection<Session> */
     #[ORM\OneToMany(targetEntity: 'Session', mappedBy: 'authentication')]
     protected Collection $sessions;
 

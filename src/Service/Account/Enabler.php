@@ -5,6 +5,7 @@ namespace Code202\Security\Service\Account;
 use Code202\Security\Entity\Account;
 use Code202\Security\Event\Account\DisabledEvent;
 use Code202\Security\Event\Account\EnabledEvent;
+use Code202\Security\Exception\RoleManipulator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -19,7 +20,7 @@ class Enabler
     {
         $account = $this->getAccount($accountOrUuid);
 
-        $account->enable(true);
+        $account->enable();
 
         $this->em->persist($account);
 
@@ -35,7 +36,7 @@ class Enabler
     {
         $account = $this->getAccount($accountOrUuid);
 
-        $account->disable(false);
+        $account->disable();
 
         $this->em->persist($account);
 
@@ -56,7 +57,7 @@ class Enabler
         }
 
         if (!$account instanceof Account) {
-            throw new Exception\RoleManipulator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            throw new RoleManipulator(sprintf('Account not found for uuid : %s', $accountOrUuid));
         }
 
         return $account;

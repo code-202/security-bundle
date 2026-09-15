@@ -29,6 +29,6 @@ class LogoutController
     {
         $security->logout(false);
 
-        return new Response(null, Response::HTTP_NO_CONTENT, [], true);
+        return new Response(null, Response::HTTP_NO_CONTENT, []);
     }
 }

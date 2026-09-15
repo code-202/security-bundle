@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait Timestampable
 {
@@ -38,9 +38,9 @@ trait Timestampable
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
-    public function setUpdatedAt(): self
+    public function setUpdatedAt(?DateTimeImmutable $date): self
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = $date ?: new DateTimeImmutable();
 
         return $this;
     }

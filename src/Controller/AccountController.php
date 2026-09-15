@@ -12,7 +12,7 @@ use Code202\Security\Request\Account\UpdateNameRequest;
 use Code202\Security\Service\Account\Enabler;
 use Code202\Security\Service\Account\Lister;
 use Code202\Security\Service\Account\Updater;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

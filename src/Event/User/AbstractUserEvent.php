@@ -7,14 +7,16 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class AbstractUserEvent extends GenericEvent
 {
+    private UserInterface $user;
+
     public function __construct(UserInterface $user, array $arguments = [])
     {
         parent::__construct($user, $arguments);
-        $this->account = $user;
+        $this->user = $user;
     }
 
     public function getUser(): UserInterface
     {
-        return $this->account;
+        return $this->user;
     }
 }

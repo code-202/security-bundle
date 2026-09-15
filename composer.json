@@ -26,7 +26,8 @@
         "symfony/yaml": "6.4.*||^7.0",
         "zircote/swagger-php": "^4.7",
         "symfony/routing": "6.4.*||^7.0",
-        "symfony/doctrine-bridge": "6.4.*||^7.0"
+        "symfony/doctrine-bridge": "6.4.*||^7.0",
+        "doctrine/doctrine-bundle": "^3.3"
     },
     "suggest": {
         "lexik/jwt-authentication-bundle": "This bundle provides JWT (Json Web Token) authentication for your Symfony API.",
@@ -42,7 +43,11 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpstan/extension-installer": "^1.4",
         "rector/rector": "^2.6",
-        "friendsofphp/php-cs-fixer": "^3.95"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "lexik/jwt-authentication-bundle": "^3.2",
+        "ramsey/uuid": "^4.9",
+        "nelmio/api-doc-bundle": "^5.10"
     },
     "config": {
         "allow-plugins": {

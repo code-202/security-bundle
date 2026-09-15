@@ -2,9 +2,12 @@
 
 namespace Code202\Security\Service\Activity\Trigger;
 
+use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Trigger;
 use Code202\Security\Entity\Activity\TriggerReference;
 use Code202\Security\Entity\Activity\TriggerSession;
+use Code202\Security\Entity\Authentication;
+use Code202\Security\Entity\Session;
 use Code202\Security\User\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;

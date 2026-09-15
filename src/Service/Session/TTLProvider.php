@@ -5,6 +5,7 @@ namespace Code202\Security\Service\Session;
 class TTLProvider
 {
     public function __construct(
+        /** @var int[] */
         protected array $config
     ) {}
 

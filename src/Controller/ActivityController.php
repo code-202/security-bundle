@@ -9,7 +9,7 @@ use Code202\Security\Request\PagerRequest;
 use Code202\Security\Service\Activity\Lister;
 use Code202\Security\Service\Activity\Target\Provider as TargetProvider;
 use Code202\Security\User\UserInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

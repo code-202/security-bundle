@@ -7,7 +7,7 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(schema: 'security')]
@@ -23,6 +23,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     protected int $id;
 
     #[ORM\ManyToOne(targetEntity: Authentication::class, inversedBy: 'sessions')]
+    #[ORM\JoinColumn(nullable: false)]
     protected Authentication $authentication;
 
     #[ORM\Column(type: Types::GUID)]
