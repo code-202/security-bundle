@@ -12,6 +12,6 @@ class NumberBaseTokenGenerator implements TokenGeneratorInterface
     {
         $max = 10 ** $this->size - 1;
 
-        return str_pad(random_int(0, $max), $this->size, '0');
+        return str_pad((string) random_int(0, $max), $this->size, '0');
     }
 }

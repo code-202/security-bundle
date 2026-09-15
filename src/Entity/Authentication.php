@@ -54,7 +54,7 @@ class Authentication implements Activity\TargetReference
     protected array $datas;
 
     /** @var Collection<Session> */
-    #[ORM\OneToMany(targetEntity: 'Session', mappedBy: 'authentication')]
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'authentication')]
     protected Collection $sessions;
 
     public function __construct(string $uuid, AuthenticationType $type, Account $account)

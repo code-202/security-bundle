@@ -8,6 +8,7 @@ use Code202\Security\Entity\Activity\TargetReference;
 use Code202\Security\Entity\Activity\TargetSession;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\Session;
+use Code202\Security\Exception\LogicException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SessionProvider implements ProviderInterface
@@ -23,6 +24,10 @@ class SessionProvider implements ProviderInterface
 
     public function get(TargetReference $reference): Target
     {
+        if (!$reference instanceof Session) {
+            throw new LogicException('reference is not a session');
+        }
+
         $repository = $this->em->getRepository(TargetSession::class);
 
         $res = $repository->findOneBy([

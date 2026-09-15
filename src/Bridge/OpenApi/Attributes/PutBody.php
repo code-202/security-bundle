@@ -3,13 +3,12 @@
 namespace Code202\Security\Bridge\OpenApi\Attributes;
 
 use Attribute;
-use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAA;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class PutBody extends OAA\RequestBody
 {
-    public function __construct($item)
+    public function __construct(object|string|null $item)
     {
         parent::__construct(
             null,
@@ -17,18 +16,14 @@ class PutBody extends OAA\RequestBody
             null,
             null,
             [
-                new OA\MediaType([
-                    'mediaType' => 'application/x-www-form-urlencoded',
-                    'value' => [
-                        new OAA\Schema($item),
-                    ],
-                ]),
-                new OA\MediaType([
-                    'mediaType' => 'application/json',
-                    'value' => [
-                        new OAA\Schema($item),
-                    ],
-                ]),
+                new OAA\MediaType(
+                    'application/x-www-form-urlencoded',
+                    new OAA\Schema($item),
+                ),
+                new OAA\MediaType(
+                    'application/json',
+                    new OAA\Schema($item),
+                ),
             ]
         );
     }

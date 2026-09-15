@@ -6,6 +6,7 @@ use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetAccount;
 use Code202\Security\Entity\Activity\TargetReference;
+use Code202\Security\Exception\LogicException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AccountProvider implements ProviderInterface
@@ -21,6 +22,10 @@ class AccountProvider implements ProviderInterface
 
     public function get(TargetReference $reference): Target
     {
+        if (!$reference instanceof Account) {
+            throw new LogicException('reference is not an account');
+        }
+
         $repository = $this->em->getRepository(TargetAccount::class);
 
         $res = $repository->findOneBy([
