@@ -4,6 +4,7 @@ namespace Code202\Security\DependencyInjection\Security\Factory;
 
 use Code202\Security\Router\LoginRouteRegister;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -41,6 +42,10 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
 
     public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = [])
     {
+        if (!$node instanceof ArrayNodeDefinition) {
+            return;
+        }
+
         $builder = $node->children();
 
         foreach (array_merge($this->options, $this->defaultSuccessHandlerOptions, $this->defaultFailureHandlerOptions) as $name => $default) {

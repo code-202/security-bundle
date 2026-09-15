@@ -3,6 +3,7 @@
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -38,6 +39,10 @@ class LoginFactory extends AbstractFactory
     public function addConfiguration(NodeDefinition $node): void
     {
         parent::addConfiguration($node);
+
+        if (!$node instanceof ArrayNodeDefinition) {
+            return;
+        }
 
         $builder = $node->children();
 
