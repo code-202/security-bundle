@@ -10,7 +10,7 @@ class NumberBaseTokenGenerator implements TokenGeneratorInterface
 
     public function generate(): string
     {
-        $max = pow(10, $this->size) - 1;
+        $max = 10 ** $this->size - 1;
 
         return str_pad(rand(0, $max), $this->size, '0');
     }
