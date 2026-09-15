@@ -20,7 +20,7 @@ trait UsernamePasswordAuthenticatorTrait
             new UserBadge($credentials['key'], function ($key) {
                 try {
                     return $this->userProvider->loadUserByIdentifier(AuthenticationType::USERNAME_PASSWORD->value . ':' . $key);
-                } catch (UserNotFoundException $e) {
+                } catch (UserNotFoundException) {
                 }
 
                 // trying to basicly get user (for incompitable user provider)

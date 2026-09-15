@@ -49,7 +49,7 @@ class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator imple
 
         try {
             $credentials['remember_me'] = filter_var(ParameterBagUtils::getParameterBagValue($request->request, $this->options['remember_me_parameter']), FILTER_VALIDATE_BOOLEAN);
-        } catch (NoSuchPropertyException $e) {
+        } catch (NoSuchPropertyException) {
             $credentials['remember_me'] = false;
         }
 

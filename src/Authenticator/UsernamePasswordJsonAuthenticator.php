@@ -40,7 +40,7 @@ class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
 
         try {
             $credentials['remember_me'] = filter_var($this->propertyAccessor->getValue($data, $this->options['remember_me_parameter']), FILTER_VALIDATE_BOOLEAN);
-        } catch (NoSuchPropertyException $e) {
+        } catch (NoSuchPropertyException) {
             $credentials['remember_me'] = false;
         }
 
