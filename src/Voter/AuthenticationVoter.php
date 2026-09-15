@@ -18,12 +18,7 @@ class AuthenticationVoter extends Voter
         if (self::EDIT != $attribute) {
             return false;
         }
-
-        if (!$subject instanceof Authentication) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Authentication;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool

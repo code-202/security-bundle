@@ -50,12 +50,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         if (isset($this->options['check_path']) && !$this->httpUtils->checkRequestPath($request, $this->options['check_path'])) {
             return false;
         }
-
-        if (!$request->isMethod('POST')) {
-            return false;
-        }
-
-        return true;
+        return $request->isMethod('POST');
     }
 
     public function authenticate(Request $request): Passport

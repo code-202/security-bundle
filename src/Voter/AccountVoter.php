@@ -42,12 +42,7 @@ class AccountVoter extends Voter
         ])) {
             return false;
         }
-
-        if (!$subject instanceof Account) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Account;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool

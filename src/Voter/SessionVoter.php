@@ -30,12 +30,7 @@ class SessionVoter extends Voter
         ])) {
             return false;
         }
-
-        if (!$subject instanceof Session) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Session;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool

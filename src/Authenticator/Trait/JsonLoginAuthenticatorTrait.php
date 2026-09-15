@@ -28,11 +28,7 @@ trait JsonLoginAuthenticatorTrait
         }
 
         $data = json_decode($request->getContent());
-        if (!$data instanceof stdClass) {
-            return false;
-        }
-
-        return true;
+        return $data instanceof stdClass;
     }
 
     protected function getCredentials(Request $request): array

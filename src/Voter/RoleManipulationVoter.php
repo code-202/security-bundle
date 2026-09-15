@@ -26,12 +26,7 @@ class RoleManipulationVoter extends Voter
         ])) {
             return false;
         }
-
-        if (!is_string($subject)) {
-            return false;
-        }
-
-        return true;
+        return is_string($subject);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
