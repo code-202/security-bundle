@@ -29,7 +29,7 @@ class AuthenticationProvider implements ProviderInterface
         ]);
 
         if (!$res instanceof TargetAuthentication) {
-            $res = new TargetAuthentication($reference);
+            return new TargetAuthentication($reference);
         }
 
         return $res;

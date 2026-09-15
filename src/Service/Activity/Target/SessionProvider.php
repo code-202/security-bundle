@@ -30,7 +30,7 @@ class SessionProvider implements ProviderInterface
         ]);
 
         if (!$res instanceof TargetSession) {
-            $res = new TargetSession($reference);
+            return new TargetSession($reference);
         }
 
         return $res;

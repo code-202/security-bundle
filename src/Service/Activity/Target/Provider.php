@@ -28,7 +28,7 @@ class Provider
         $res = $repository->findOneBy([]);
 
         if (!$res instanceof TargetUnknown) {
-            $res = new TargetUnknown();
+            return new TargetUnknown();
         }
 
         return $res;
