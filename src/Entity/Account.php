@@ -98,7 +98,7 @@ class Account implements Activity\TargetReference
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection<int, \Code202\Security\Entity\Authentication>
+     * @return Collection<int, Authentication>
      */
     public function getAuthentications(): Collection
     {

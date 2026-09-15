@@ -28,6 +28,7 @@ trait JsonLoginAuthenticatorTrait
         }
 
         $data = json_decode($request->getContent());
+
         return $data instanceof stdClass;
     }
 

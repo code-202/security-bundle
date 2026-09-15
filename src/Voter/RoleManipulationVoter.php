@@ -26,6 +26,7 @@ class RoleManipulationVoter extends Voter
         ])) {
             return false;
         }
+
         return is_string($subject);
     }
 

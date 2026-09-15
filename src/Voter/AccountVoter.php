@@ -42,6 +42,7 @@ class AccountVoter extends Voter
         ])) {
             return false;
         }
+
         return $subject instanceof Account;
     }
 

@@ -18,6 +18,7 @@ class AuthenticationVoter extends Voter
         if (self::EDIT !== $attribute) {
             return false;
         }
+
         return $subject instanceof Authentication;
     }
 

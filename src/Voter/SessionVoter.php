@@ -30,6 +30,7 @@ class SessionVoter extends Voter
         ])) {
             return false;
         }
+
         return $subject instanceof Session;
     }
 
