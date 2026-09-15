@@ -44,12 +44,18 @@ class Code202SecurityExtension extends Extension
         $this->configureSessionTruster($config, $container);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function loadTTLProvider(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(TTLProvider::class);
         $definition->setArgument('$config', $config['sessionTTL']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureUuidGenerator(array $config, ContainerBuilder $container): void
     {
         $uuidGeneratorClass = match ($config['uuid']['generator']) {
@@ -64,6 +70,9 @@ class Code202SecurityExtension extends Extension
         }
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureUuidValidator(array $config, ContainerBuilder $container): void
     {
         $uuidValidatorClass = match ($config['uuid']['validator']) {
@@ -78,6 +87,9 @@ class Code202SecurityExtension extends Extension
         }
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureTokenGenerator(array $config, ContainerBuilder $container): void
     {
         $tokenGeneratorClass = match ($config['token_by_email']['refresher']['token_generator']) {
@@ -91,6 +103,9 @@ class Code202SecurityExtension extends Extension
         }
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureTokenByEmailRefresher(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(TokenByEmailRefresher::class);
@@ -98,18 +113,27 @@ class Code202SecurityExtension extends Extension
         $definition->setArgument('$lifetimeInterval', $config['token_by_email']['refresher']['lifetime_interval']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureNumberBaseTokenGenerator(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(NumberBaseTokenGenerator::class);
         $definition->setArgument('$size', $config['token_generator']['number_base']['size']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureRoleManager(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(Provider::class);
         $definition->setArgument('$strategies', $config['role_strategies']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function configureSessionTruster(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(Truster::class);

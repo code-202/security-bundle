@@ -34,6 +34,9 @@ class AccountMeResolver implements ValueResolverInterface
         return $this->tokenStorage->getToken()?->getUser() instanceof UserInterface;
     }
 
+    /**
+     * @return iterable<Account>
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         if (!$this->supports($request, $argument)) {

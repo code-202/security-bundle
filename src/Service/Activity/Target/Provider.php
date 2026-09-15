@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class Provider
 {
+    /** @param iterable<ProviderInterface> $providers */
     public function __construct(
         protected EntityManagerInterface $em,
         #[AutowireIterator('code202.security.activity.target.provider')] protected iterable $providers
@@ -34,6 +35,7 @@ class Provider
         return $res;
     }
 
+    /** @return Target[] */
     public function findAll(TargetReference $reference): array
     {
         $res = [];

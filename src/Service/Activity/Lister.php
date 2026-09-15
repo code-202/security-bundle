@@ -16,6 +16,10 @@ class Lister
         protected EntityManagerInterface $em
     ) {}
 
+    /**
+     * @param mixed[] $options
+     * @return Pagerfanta<Activity>
+     */
     public function get(array $options): Pagerfanta
     {
         $options = $this->createOptionResolver()->resolve($options);

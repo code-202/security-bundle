@@ -12,6 +12,7 @@ interface RoleStrategyInterface
 
     public function getConditionsToRevoke(): Expression|string;
 
+    /** @return array<string> */
     public function getRoles(): array;
 
     public function hasRole(string $role): bool;

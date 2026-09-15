@@ -11,6 +11,9 @@ class LoginFactory extends AbstractFactory
 {
     public const PRIORITY = -40;
 
+    /**
+     * @var array<SubLoginFactoryInterface>
+     */
     protected array $factories = [];
 
     public function __construct()

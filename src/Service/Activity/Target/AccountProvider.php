@@ -41,6 +41,7 @@ class AccountProvider implements ProviderInterface
         return $res;
     }
 
+    /** @return TargetAccount[] */
     public function findAll(TargetReference $reference): array
     {
         if ($reference instanceof Account) {

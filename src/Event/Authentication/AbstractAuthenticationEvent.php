@@ -11,6 +11,9 @@ abstract class AbstractAuthenticationEvent extends GenericEvent
 {
     private readonly Authentication $authentication;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(Authentication $authentication, array $arguments = [])
     {
         parent::__construct($authentication, $arguments);

@@ -19,9 +19,15 @@ abstract class Target
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
+    /**
+     * @var Collection<int, Activity>
+     */
     #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'target')]
     protected Collection $activities;
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $datas = [];
 
     public function __construct()
@@ -38,11 +44,17 @@ abstract class Target
     #[Groups(['list'])]
     abstract public function getReference(): TargetReference;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;
@@ -50,11 +62,17 @@ abstract class Target
         return $this;
     }
 
+    /**
+     * @return null|array<string>|string
+     */
     public function getData(string $name): array|string|null
     {
         return $this->datas[$name] ?? null;
     }
 
+    /**
+     * @param array<string>|string $value
+     */
     public function setData(string $name, array|string $value): self
     {
         $this->datas[$name] = $value;

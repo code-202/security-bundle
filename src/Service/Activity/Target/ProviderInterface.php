@@ -15,5 +15,6 @@ interface ProviderInterface
 
     public function get(TargetReference $reference): Target;
 
+    /** @return Target[] */
     public function findAll(TargetReference $reference): array;
 }

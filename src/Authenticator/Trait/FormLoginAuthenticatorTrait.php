@@ -31,6 +31,9 @@ trait FormLoginAuthenticatorTrait
         return true;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getCredentials(Request $request): array
     {
         $credentials = [];
@@ -54,6 +57,9 @@ trait FormLoginAuthenticatorTrait
         return [];
     }
 
+    /**
+     * @param array<string, mixed> $credentials
+     */
     protected function addExtraBadges(Passport $passport, array $credentials): void
     {
         parent::addExtraBadges($passport, $credentials);

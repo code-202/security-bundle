@@ -30,6 +30,9 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     #[Groups(['list'])]
     protected string $uuid;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
@@ -74,11 +77,17 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         return $this->uuid;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;

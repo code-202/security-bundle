@@ -19,6 +19,9 @@ class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator imple
     use Trait\FormLoginAuthenticatorTrait;
     use Trait\UsernamePasswordAuthenticatorTrait;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDefaultOptions(): array
     {
         return array_merge(parent::getDefaultOptions(), [
@@ -33,6 +36,9 @@ class UsernamePasswordFormAuthenticator extends AbstractLoginAuthenticator imple
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getExtraCredentials(Request $request): array
     {
         $credentials = [];

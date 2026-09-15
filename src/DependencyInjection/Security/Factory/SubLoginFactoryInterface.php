@@ -11,5 +11,8 @@ interface SubLoginFactoryInterface extends AuthenticatorFactoryInterface
 {
     public function getShortKey(): string;
 
-    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []);
+    /**
+     * @param array<string> $overrideOptions
+     */
+    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []): void;
 }

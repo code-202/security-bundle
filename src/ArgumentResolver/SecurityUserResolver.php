@@ -15,6 +15,9 @@ class SecurityUserResolver implements ValueResolverInterface
         protected TokenStorageInterface $tokenStorage
     ) {}
 
+    /**
+     * @return iterable<UserInterface>
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         if (UserInterface::class !== $argument->getType()) {

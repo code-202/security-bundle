@@ -37,6 +37,9 @@ class Account implements Activity\TargetReference
     #[Groups(['list'])]
     protected string $name;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column(type: Types::JSON)]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     private array $roles = [];
@@ -45,7 +48,9 @@ class Account implements Activity\TargetReference
     #[Groups(['list'])]
     protected bool $enabled;
 
-    /** @var Collection<Authentication> */
+    /**
+     * @var Collection<int, Authentication>
+     */
     #[ORM\OneToMany(targetEntity: Authentication::class, mappedBy: 'account')]
     protected Collection $authentications;
 
@@ -106,11 +111,17 @@ class Account implements Activity\TargetReference
         return $this->authentications;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

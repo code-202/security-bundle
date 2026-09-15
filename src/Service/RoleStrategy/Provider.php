@@ -7,10 +7,16 @@ use Traversable;
 
 class Provider implements ProviderInterface
 {
+    /** @var RoleStrategyInterface[] */
     protected array $strategies;
 
     protected Collection $collection;
 
+    /** @param array{
+     * roles: string[],
+     * to_grant: string,
+     * to_revoke: null|string
+     * }[] $strategies */
     public function __construct(
         array $strategies = []
     ) {

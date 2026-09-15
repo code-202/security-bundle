@@ -41,6 +41,7 @@ class SessionProvider implements ProviderInterface
         return $res;
     }
 
+    /** @return TargetSession[] */
     public function findAll(TargetReference $reference): array
     {
         $repository = $this->em->getRepository(TargetSession::class);

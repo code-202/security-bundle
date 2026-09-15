@@ -40,6 +40,7 @@ class AuthenticationProvider implements ProviderInterface
         return $res;
     }
 
+    /** @return TargetAuthentication[] */
     public function findAll(TargetReference $reference): array
     {
         $repository = $this->em->getRepository(TargetAuthentication::class);

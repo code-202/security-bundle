@@ -2,6 +2,7 @@
 
 namespace Code202\Security\Authenticator;
 
+use Code202\Security\User\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -22,10 +23,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $options;
     protected PropertyAccessorInterface $propertyAccessor;
     protected ?TranslatorInterface $translator = null;
 
+    /**
+     * @param array<string, mixed> $options
+     * @param UserProviderInterface<UserInterface> $userProvider
+     */
     public function __construct(
         protected HttpUtils $httpUtils,
         protected UserProviderInterface $userProvider,
@@ -38,6 +46,9 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getDefaultOptions(): array
     {
         return [
@@ -74,8 +85,14 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         return $passport;
     }
 
+    /**
+     * @param array<string, mixed> $credentials
+     */
     abstract protected function buildPassport(array $credentials): Passport;
 
+    /**
+     * @param array<string, mixed> $credentials
+     */
     protected function addExtraBadges(Passport $passport, array $credentials): void {}
 
     public function createToken(Passport $passport, string $firewallName): TokenInterface
@@ -113,5 +130,8 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     abstract protected function getCredentials(Request $request): array;
 }

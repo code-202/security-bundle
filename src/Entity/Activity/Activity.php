@@ -36,6 +36,9 @@ class Activity
     #[Groups(['list'])]
     protected Trigger $trigger;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
@@ -81,11 +84,17 @@ class Activity
         return $this->trigger;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;
@@ -93,11 +102,17 @@ class Activity
         return $this;
     }
 
+    /**
+     * @return null|array<string>|string
+     */
     public function getData(string $name): array|string|null
     {
         return $this->datas[$name] ?? null;
     }
 
+    /**
+     * @param array<string>|string $value
+     */
     public function setData(string $name, array|string $value): self
     {
         $this->datas[$name] = $value;

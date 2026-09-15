@@ -125,7 +125,7 @@ class SessionListener
         $this->updateExpiredAt($session);
     }
 
-    protected function updateExpiredAt(Session $session)
+    protected function updateExpiredAt(Session $session): void
     {
         // Update expiredAt from now + ttl
         $now = new DateTimeImmutable();

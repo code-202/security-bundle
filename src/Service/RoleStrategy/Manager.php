@@ -33,6 +33,7 @@ class Manager
         return false;
     }
 
+    /** @return string[] */
     public function getGrantableRoles(): array
     {
         $grantableRoles = [];
@@ -46,6 +47,7 @@ class Manager
         return array_unique($grantableRoles);
     }
 
+    /** @return string[] */
     public function getRevocableRoles(): array
     {
         $revokableRoles = [];

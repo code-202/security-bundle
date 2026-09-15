@@ -12,6 +12,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 trait TokenByEmailAuthenticatorTrait
 {
+    /**
+     * @param array<string, mixed> $credentials
+     */
     protected function buildPassport(array $credentials): Passport
     {
         return new Passport(

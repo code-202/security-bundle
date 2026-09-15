@@ -18,8 +18,10 @@ class ConsoleProvider implements ProviderInterface
 {
     protected ?string $runningCommandName = null;
 
+    /** @var mixed[] */
     protected ?array $runningArguments = null;
 
+    /** @var mixed[] */
     protected ?array $runningOptions = null;
 
     public function __construct(
@@ -71,6 +73,7 @@ class ConsoleProvider implements ProviderInterface
         return $res;
     }
 
+    /** @return TriggerConsole[] */
     public function findAll(TriggerReference $reference): array
     {
         if ($reference instanceof Console) {

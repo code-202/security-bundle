@@ -11,6 +11,12 @@ class Informer
 {
     public function __construct(protected EntityManagerInterface $em) {}
 
+    /**
+     * @return array{
+     *   nbActives: int,
+     *   nbExpired: int,
+     * }
+     */
     public function getSummary(Account $account): array
     {
         $qb = $this->em->getRepository(Session::class)

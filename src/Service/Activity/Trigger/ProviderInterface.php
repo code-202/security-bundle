@@ -15,5 +15,6 @@ interface ProviderInterface
 
     public function get(): Trigger;
 
+    /** @return Trigger[] */
     public function findAll(TriggerReference $reference): array;
 }

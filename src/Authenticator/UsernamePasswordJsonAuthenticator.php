@@ -14,6 +14,9 @@ class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
     use Trait\JsonLoginAuthenticatorTrait;
     use Trait\UsernamePasswordAuthenticatorTrait;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDefaultOptions(): array
     {
         return array_merge(parent::getDefaultOptions(), [
@@ -24,6 +27,9 @@ class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getExtraCredentials(stdClass $data): array
     {
         $credentials = [];

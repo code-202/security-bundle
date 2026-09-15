@@ -50,10 +50,15 @@ class Authentication implements Activity\TargetReference
     #[Groups(['list'])]
     protected bool $verified;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column(type: Types::JSON)]
     protected array $datas;
 
-    /** @var Collection<Session> */
+    /**
+     * @var Collection<int, Session>
+     */
     #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'authentication')]
     protected Collection $sessions;
 
@@ -131,11 +136,17 @@ class Authentication implements Activity\TargetReference
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;

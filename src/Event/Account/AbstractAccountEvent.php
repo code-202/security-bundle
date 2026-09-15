@@ -11,6 +11,9 @@ abstract class AbstractAccountEvent extends GenericEvent
 {
     private readonly Account $account;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(Account $account, array $arguments = [])
     {
         parent::__construct($account, $arguments);

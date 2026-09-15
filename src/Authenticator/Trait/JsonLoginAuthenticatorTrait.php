@@ -32,6 +32,9 @@ trait JsonLoginAuthenticatorTrait
         return $data instanceof stdClass;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getCredentials(Request $request): array
     {
         $data = json_decode($request->getContent());

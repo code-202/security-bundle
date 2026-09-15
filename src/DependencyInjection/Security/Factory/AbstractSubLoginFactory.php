@@ -21,7 +21,7 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
         $this->buildOptions();
     }
 
-    public function buildOptions() {}
+    public function buildOptions(): void {}
 
     public function getPriority(): int
     {
@@ -40,7 +40,10 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
         return 'security.authenticator.' . $this->getKey() . '.' . $firewallName;
     }
 
-    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = [])
+    /**
+     * @param array<string> $overrideOptions
+     */
+    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []): void
     {
         if (!$node instanceof ArrayNodeDefinition) {
             return;

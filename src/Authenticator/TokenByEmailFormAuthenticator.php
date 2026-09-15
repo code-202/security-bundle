@@ -14,6 +14,9 @@ class TokenByEmailFormAuthenticator extends AbstractLoginAuthenticator
     use Trait\FormLoginAuthenticatorTrait;
     use Trait\TokenByEmailAuthenticatorTrait;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDefaultOptions(): array
     {
         return array_merge(parent::getDefaultOptions(), [
@@ -26,6 +29,9 @@ class TokenByEmailFormAuthenticator extends AbstractLoginAuthenticator
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getExtraCredentials(Request $request): array
     {
         $credentials = [];

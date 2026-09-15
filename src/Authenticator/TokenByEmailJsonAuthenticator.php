@@ -13,6 +13,9 @@ class TokenByEmailJsonAuthenticator extends AbstractLoginAuthenticator
     use Trait\JsonLoginAuthenticatorTrait;
     use Trait\TokenByEmailAuthenticatorTrait;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDefaultOptions(): array
     {
         return array_merge(parent::getDefaultOptions(), [
@@ -22,6 +25,9 @@ class TokenByEmailJsonAuthenticator extends AbstractLoginAuthenticator
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getExtraCredentials(stdClass $data): array
     {
         $credentials = [];

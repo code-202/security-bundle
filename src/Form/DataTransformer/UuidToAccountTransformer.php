@@ -10,6 +10,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @implements DataTransformerInterface<null|Account, string>
+ */
 class UuidToAccountTransformer implements DataTransformerInterface
 {
     public function __construct(

@@ -9,6 +9,9 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 class FormValidationFailedException extends ValidationFailedException implements ExceptionInterface
 {
+    /**
+     * @param FormInterface<mixed> $form
+     */
     public function __construct(
         FormInterface $form
     ) {

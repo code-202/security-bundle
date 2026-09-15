@@ -14,6 +14,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 trait UsernamePasswordAuthenticatorTrait
 {
+    /**
+     * @param array<string, mixed> $credentials
+     */
     protected function buildPassport(array $credentials): Passport
     {
         $passport = new Passport(

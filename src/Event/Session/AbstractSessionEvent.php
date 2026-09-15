@@ -11,6 +11,9 @@ abstract class AbstractSessionEvent extends GenericEvent
 {
     private readonly Session $session;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(Session $session, array $arguments = [])
     {
         parent::__construct($session, $arguments);
