@@ -82,12 +82,12 @@ class SessionListener
             $badge = $event->getPassport()->getBadge(RememberMeBadge::class);
 
             if ($badge->isEnabled()) {
-                $session->setExpiredAt(null);
+                $session->setExpiredAt();
             }
         }
 
         if ($event->getPassport()->hasBadge(PermanentSessionBadge::class)) {
-            $session->setExpiredAt(null);
+            $session->setExpiredAt();
         }
 
         if ($event->getPassport()->hasBadge(TrustSessionBadge::class)) {
