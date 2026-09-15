@@ -12,7 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(
     name: 'code202:security:account:enable',
     hidden: false,
-    description: 'Enable an account.'
+    description: 'Enable an account.',
+    help: <<<'TXT'
+This command allows you to enable an account.
+TXT
 )]
 class EnableCommand extends Command
 {
@@ -25,7 +28,6 @@ class EnableCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('This command allows you to enable an account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
         ;
     }

@@ -12,7 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(
     name: 'code202:security:account:grant',
     hidden: false,
-    description: 'Grant role for an account.'
+    description: 'Grant role for an account.',
+    help: <<<'TXT'
+This command allows you to grant a new role for an account.
+TXT
 )]
 class GrantCommand extends Command
 {
@@ -25,7 +28,6 @@ class GrantCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('This command allows you to grant a new role for an account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
             ->addArgument('role', InputArgument::REQUIRED, 'The name of the role.')
         ;
