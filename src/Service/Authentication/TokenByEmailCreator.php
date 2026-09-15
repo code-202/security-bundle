@@ -21,7 +21,7 @@ class TokenByEmailCreator
         private readonly ValidatorInterface $validator
     ) {}
 
-    public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true)
+    public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true): Authentication
     {
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
