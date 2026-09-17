@@ -43,7 +43,7 @@ class AccountMeResolver implements ValueResolverInterface
             return [];
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
         if (!$user instanceof User) {
             return [];
         }

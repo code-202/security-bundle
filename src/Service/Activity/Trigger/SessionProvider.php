@@ -53,7 +53,7 @@ class SessionProvider implements ProviderInterface
         $request = $this->requestStack->getCurrentRequest();
 
         if ($request instanceof Request && $request->headers->has('user-agent')) {
-            $res->setData('user_agent', $request->headers->get('user-agent'));
+            $res->setData('user_agent', $request->headers->get('user-agent') ?? 'unknown');
         }
 
         return $res;

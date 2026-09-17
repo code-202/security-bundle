@@ -30,6 +30,6 @@ class SecurityUserResolver implements ValueResolverInterface
             return [$user];
         }
 
-        throw new AccessDeniedException(sprintf('The logged-in user is an instance of "%s" but a user of type "%s" is expected.', $user::class, $argument->getType()));
+        throw new AccessDeniedException(sprintf('The logged-in user is not an instance of "%s".', $argument->getType()));
     }
 }

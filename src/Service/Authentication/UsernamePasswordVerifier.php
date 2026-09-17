@@ -28,6 +28,12 @@ class UsernamePasswordVerifier
             throw new Exception\AuthenticationUsernamePasswordVerifier('password_empty');
         }
 
-        return $passwordHasher->verify($authentication->getData('password'), $password);
+        $reference = $authentication->getData('password');
+
+        if (!$reference) {
+            throw new Exception\AuthenticationUsernamePasswordVerifier('password_reference_empty');
+        }
+
+        return $passwordHasher->verify($reference, $password);
     }
 }

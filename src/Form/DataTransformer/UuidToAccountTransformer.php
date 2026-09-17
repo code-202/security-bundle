@@ -38,7 +38,7 @@ class UuidToAccountTransformer implements DataTransformerInterface
         }
 
         if ('me' == $uuid) {
-            $user = $this->tokenStorage->getToken()->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
             if (!$user instanceof UserInterface) {
                 throw new TransformationFailedException(
                     'Me user is no good !',

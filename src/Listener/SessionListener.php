@@ -53,13 +53,13 @@ class SessionListener
 
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $token = $event->getAuthenticationToken();
+        $user = $event->getAuthenticationToken()->getUser();
 
-        if (!$token->getUser() instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $session = $token->getUser()->getSession();
+        $session = $user->getSession();
 
         $this->updateExpiredAt($session);
     }
@@ -76,13 +76,13 @@ class SessionListener
         $session = $user->getSession();
 
         if ($request->headers->has('user-agent')) {
-            $session->setData('user_agent', $request->headers->get('user-agent'));
+            $session->setData('user_agent', $request->headers->get('user-agent') ?? 'unknown');
         }
 
         if ($event->getPassport()->hasBadge(RememberMeBadge::class)) {
             $badge = $event->getPassport()->getBadge(RememberMeBadge::class);
 
-            if ($badge->isEnabled()) {
+            if ($badge instanceof RememberMeBadge && $badge->isEnabled()) {
                 $session->setExpiredAt();
             }
         }
@@ -101,7 +101,7 @@ class SessionListener
 
     public function onLogout(LogoutEvent $event): void
     {
-        $user = $event->getToken()->getUser();
+        $user = $event->getToken()?->getUser();
 
         if (!$user instanceof User) {
             return;

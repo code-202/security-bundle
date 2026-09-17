@@ -64,7 +64,7 @@ class ActivityListener
 
     public function onLogout(LogoutEvent $event): void
     {
-        $user = $event->getToken()->getUser();
+        $user = $event->getToken()?->getUser();
 
         if (!$user instanceof UserInterface) {
             return;
