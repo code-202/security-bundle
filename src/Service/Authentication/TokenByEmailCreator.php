@@ -2,46 +2,35 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Event\Authentication\CreatedEvent;
 use Code202\Security\Exception;
-use Code202\Security\User\User;
 use Code202\Security\Uuid\UuidGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TokenByEmailCreator
 {
-    private EntityManagerInterface $em;
-    private UuidGeneratorInterface $uuidGenerator;
-    private EventDispatcherInterface $eventDispatcher;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UuidGeneratorInterface $uuidGenerator,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        private readonly EntityManagerInterface $em,
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ValidatorInterface $validator
+    ) {}
 
-    public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true)
+    public function createEmail(Account|string $accountOrUuid, string $email, bool $autoFlush = true): Authentication
     {
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
         } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
-        }
+            $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
 
-        if (!$account || !$account->isEnabled()) {
-            throw new Exception\AuthenticationTokenByEmailCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            if (!$account || !$account->isEnabled()) {
+                throw new Exception\AuthenticationTokenByEmailCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            }
         }
 
         if (!$email) {
@@ -50,11 +39,11 @@ class TokenByEmailCreator
 
         $authentication = $this->em->getRepository(Authentication::class)->findOneBy([
             'account' => $account,
-            'type' => AuthenticationType::TOKEN_BY_EMAIL
+            'type' => AuthenticationType::TOKEN_BY_EMAIL,
         ]);
 
-        if ($authentication) {
-            throw new Exception\AuthenticationTokenByEmailCreator(sprintf('This account has already got an email/token authentication mode'));
+        if ($authentication instanceof Authentication) {
+            throw new Exception\AuthenticationTokenByEmailCreator('This account has already got an email/token authentication mode');
         }
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::TOKEN_BY_EMAIL, $account);

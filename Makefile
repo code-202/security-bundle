@@ -12,20 +12,34 @@ cs-fix: vendor/autoload.php ## Fix PHP CS
 	${bin_dir}/php-cs-fixer --version
 	${bin_dir}/php-cs-fixer fix -v --diff
 
+phpstan: vendor/autoload.php ## PHP Static analyser
+	${bin_dir}/phpstan analyse --memory-limit 1G -c phpstan.dist.neon
+
+rector-dry: vendor/autoload.php ## Check with Rector
+	${bin_dir}/rector process --dry-run
+
+rector: vendor/autoload.php ## Check with Rector
+	${bin_dir}/rector process
+
+build: ## Build console image
+	docker build \
+		--tag=security_bundle_console \
+		--build-arg USER=$(shell id -u -n) \
+		--build-arg UID=$(shell id -u) \
+		--build-arg CONTAINER_SHELL=/bin/zsh \
+		docker
+
 console: ## Launch zsh in docker container with PHP
 	docker run \
 		--name=security_bundle_console \
 		--volume=$(shell pwd):/srv \
 		--volume=$$DEV/.home-developer:/home/developer \
-		--env USERNAME=$(shell whoami) \
-		--env UNIX_UID=$(shell id -u) \
-		--env=CONTAINER_SHELL=/bin/zsh \
 		--workdir=/srv \
 		--interactive \
 		--tty \
 		--rm \
-		code202/php-console:8.1 \
-		/bin/login -p -f $(shell whoami)
+		security_bundle_console \
+		/bin/zsh 
 
 help:
     @grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

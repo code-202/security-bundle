@@ -2,20 +2,8 @@
 
 namespace Code202\Security\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 use Code202\Security\Attribute\UuidOrMe;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
-use Code202\Security\Controller\FormHelperTrait;
 use Code202\Security\Entity\Account;
 use Code202\Security\Form\Account\PagerType;
 use Code202\Security\Form\Account\UpdateNameType;
@@ -24,6 +12,17 @@ use Code202\Security\Request\Account\UpdateNameRequest;
 use Code202\Security\Service\Account\Enabler;
 use Code202\Security\Service\Account\Lister;
 use Code202\Security\Service\Account\Updater;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsController]
 #[Route('/accounts', name: '.accounts')]
@@ -58,7 +57,7 @@ class AccountController
             'sort' => $data->sort,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}', name: '.show', methods: 'GET')]
@@ -69,7 +68,7 @@ class AccountController
         #[UuidOrMe] Account $account,
         SerializerInterface $serializer
     ): Response {
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/update-name', name: '.update-name', methods: 'PUT')]
@@ -91,13 +90,13 @@ class AccountController
 
         $updater->updateName($account, $data->name);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/roles', name: '.roles', methods: 'GET')]
     #[IsGranted('SECURITY.ACCOUNT.ROLE', subject: 'account')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string'), description: 'Uuid of the account or "me"')]
-    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref :'#components/schemas/AccountRoleResponse'))]
+    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref : '#components/schemas/AccountRoleResponse'))]
     public function roles(
         #[UuidOrMe] Account $account,
         RoleHierarchyInterface $roleHierarchy,
@@ -115,7 +114,7 @@ class AccountController
             ];
         }
 
-        return new JsonResponse($serializer->serialize($roles, 'json', []), 200, [], true);
+        return new JsonResponse($serializer->serialize($roles, 'json', []), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/enable', name: '.enable', methods: 'PUT')]
@@ -129,7 +128,7 @@ class AccountController
     ): Response {
         $enabler->enable($account);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/{uuid}/disable', name: '.disable', methods: 'PUT')]
@@ -143,6 +142,6 @@ class AccountController
     ): Response {
         $enabler->disable($account);
 
-        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

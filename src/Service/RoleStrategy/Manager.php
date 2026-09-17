@@ -6,16 +6,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class Manager
 {
-    protected ProviderInterface $provider;
-    protected Security $security;
-
     public function __construct(
-        ProviderInterface $provider,
-        Security $security
-    ) {
-        $this->provider = $provider;
-        $this->security = $security;
-    }
+        protected ProviderInterface $provider,
+        protected Security $security
+    ) {}
 
     public function canGrant(string $role): bool
     {
@@ -39,6 +33,7 @@ class Manager
         return false;
     }
 
+    /** @return string[] */
     public function getGrantableRoles(): array
     {
         $grantableRoles = [];
@@ -52,6 +47,7 @@ class Manager
         return array_unique($grantableRoles);
     }
 
+    /** @return string[] */
     public function getRevocableRoles(): array
     {
         $revokableRoles = [];

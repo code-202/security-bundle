@@ -2,9 +2,13 @@
 
 namespace Code202\Security\Entity;
 
+use Code202\Security\Exception\SessionEmptyUuid;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(schema: 'security')]
@@ -15,29 +19,33 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
     #[ORM\ManyToOne(targetEntity: Authentication::class, inversedBy: 'sessions')]
+    #[ORM\JoinColumn(nullable: false)]
     protected Authentication $authentication;
 
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: Types::GUID)]
     #[Groups(['list'])]
     protected string $uuid;
 
-    #[ORM\Column(type: 'json')]
+    /**
+     * @var array<string, mixed>
+     */
+    #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     protected array $datas;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Groups(['session.info'])]
-    protected ?\DateTimeImmutable $expiredAt = null;
+    protected ?DateTimeImmutable $expiredAt = null;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Groups(['session.info'])]
-    protected ?\DateTimeImmutable $trustUntil = null;
+    protected ?DateTimeImmutable $trustUntil = null;
 
     protected bool $created = false;
 
@@ -46,7 +54,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         $this->uuid = $uuid;
         $this->authentication = $authentication;
         $this->datas = [];
-        $this->expiredAt = (new \DateTimeImmutable())->modify('+60 seconds');
+        $this->expiredAt = (new DateTimeImmutable())->modify('+60 seconds');
         $this->created = true;
     }
 
@@ -65,16 +73,27 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         return $this->authentication;
     }
 
+    /** @return non-empty-string */
     public function getUuid(): string
     {
+        if ('' === $this->uuid) {
+            throw new SessionEmptyUuid();
+        }
+
         return $this->uuid;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;
@@ -84,7 +103,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
 
     public function getData(string $name): ?string
     {
-        return isset($this->datas[$name]) ? $this->datas[$name] : null;
+        return $this->datas[$name] ?? null;
     }
 
     public function setData(string $name, string $value): self
@@ -94,27 +113,26 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         return $this;
     }
 
-
-    public function setExpiredAt(\DateTimeInterface $expiredAt = null): self
+    public function setExpiredAt(?DateTimeInterface $expiredAt = null): self
     {
-        $this->expiredAt = $expiredAt !== null ? \DateTimeImmutable::createFromInterface($expiredAt) : null;
+        $this->expiredAt = $expiredAt instanceof DateTimeInterface ? DateTimeImmutable::createFromInterface($expiredAt) : null;
 
         return $this;
     }
 
-    public function getExpiredAt(): ?\DateTimeInterface
+    public function getExpiredAt(): ?DateTimeInterface
     {
         return $this->expiredAt;
     }
 
-    public function setTrustUntil(\DateTimeInterface $trustUntil = null): self
+    public function setTrustUntil(?DateTimeInterface $trustUntil = null): self
     {
-        $this->trustUntil = $trustUntil !== null ? \DateTimeImmutable::createFromInterface($trustUntil) : null;
+        $this->trustUntil = $trustUntil instanceof DateTimeInterface ? DateTimeImmutable::createFromInterface($trustUntil) : null;
 
         return $this;
     }
 
-    public function getTrustUntil(): ?\DateTimeInterface
+    public function getTrustUntil(): ?DateTimeInterface
     {
         return $this->trustUntil;
     }

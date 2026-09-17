@@ -2,34 +2,32 @@
 
 namespace Code202\Security\Command\Account;
 
+use Code202\Security\Service\Account\Creator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Code202\Security\Service\Account\Creator;
 
 #[AsCommand(
     name: 'code202:security:account:create',
-    hidden: false
+    hidden: false,
+    description: 'Creates a new account.',
+    help: <<<'TXT'
+This command allows you to create an account.
+TXT
 )]
 class CreateCommand extends Command
 {
-    private Creator $creator;
-
     public function __construct(
-        Creator $creator
+        private readonly Creator $creator
     ) {
         parent::__construct();
-
-        $this->creator = $creator;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new account.')
-            ->setHelp('This command allows you to create an account.')
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the account.')
         ;
     }

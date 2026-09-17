@@ -2,25 +2,19 @@
 
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetReference;
 use Code202\Security\Entity\Activity\TargetUnknown;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class Provider
 {
-    protected EntityManagerInterface $em;
-
-    protected iterable $providers = [];
-
+    /** @param iterable<ProviderInterface> $providers */
     public function __construct(
-        EntityManagerInterface $em,
-        #[TaggedIterator('code202.security.activity.target.provider')] iterable $providers
-    ) {
-        $this->em = $em;
-        $this->providers = $providers;
-    }
+        protected EntityManagerInterface $em,
+        #[AutowireIterator('code202.security.activity.target.provider')] protected iterable $providers
+    ) {}
 
     public function get(TargetReference $reference): Target
     {
@@ -34,13 +28,14 @@ class Provider
 
         $res = $repository->findOneBy([]);
 
-        if (!$res) {
-            $res = new TargetUnknown();
+        if (!$res instanceof TargetUnknown) {
+            return new TargetUnknown();
         }
 
         return $res;
     }
 
+    /** @return Target[] */
     public function findAll(TargetReference $reference): array
     {
         $res = [];

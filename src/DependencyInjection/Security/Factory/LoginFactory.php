@@ -3,6 +3,7 @@
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -10,6 +11,9 @@ class LoginFactory extends AbstractFactory
 {
     public const PRIORITY = -40;
 
+    /**
+     * @var array<SubLoginFactoryInterface>
+     */
     protected array $factories = [];
 
     public function __construct()
@@ -39,6 +43,10 @@ class LoginFactory extends AbstractFactory
     {
         parent::addConfiguration($node);
 
+        if (!$node instanceof ArrayNodeDefinition) {
+            return;
+        }
+
         $builder = $node->children();
 
         foreach ($this->factories as $factory) {
@@ -46,7 +54,7 @@ class LoginFactory extends AbstractFactory
             $n->canBeEnabled();
 
             $keys = array_keys($this->options);
-            $keys = array_filter($keys, fn ($key) => $key !== 'check_path' && $key !== 'login_path');
+            $keys = array_filter($keys, fn (int|string $key): bool => 'check_path' !== $key && 'login_path' !== $key);
             $factory->addShortConfiguration($n, $keys);
             $n->end();
         }
@@ -68,7 +76,7 @@ class LoginFactory extends AbstractFactory
             }
 
             if (isset($checkPaths[$c['check_path']])) {
-                $checkPaths[$c['check_path']]++;
+                ++$checkPaths[$c['check_path']];
             } else {
                 $checkPaths[$c['check_path']] = 1;
             }
@@ -86,7 +94,7 @@ class LoginFactory extends AbstractFactory
                 $firewallName,
                 array_merge($base, $c, [
                     'check_path' => $base['check_path'] . $c['check_path'],
-                    'login_path' => $base['login_path'] . (isset($c['login_path']) ? $c['login_path'] : $c['check_path']),
+                    'login_path' => $base['login_path'] . ($c['login_path'] ?? $c['check_path']),
                     'route_merged' => $checkPaths[$c['check_path']] > 1,
                 ]),
                 $userProviderId

@@ -2,6 +2,17 @@
 
 namespace Code202\Security\Listener;
 
+use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
+use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
+use Code202\Security\Entity\Session;
+use Code202\Security\Event\User\RefreshedEvent;
+use Code202\Security\Service\Session\Truster as SessionTruster;
+use Code202\Security\Service\Session\TTLProvider as SessionTTLProvider;
+use Code202\Security\User\User;
+use Code202\Security\User\UserInterface;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
@@ -10,13 +21,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Code202\Security\Authenticator\Passport\Badge\PermanentSessionBadge;
-use Code202\Security\Authenticator\Passport\Badge\TrustSessionBadge;
-use Code202\Security\Entity\Session;
-use Code202\Security\Event\User\RefreshedEvent;
-use Code202\Security\Service\Session\Truster as SessionTruster;
-use Code202\Security\Service\Session\TTLProvider as SessionTTLProvider;
-use Code202\Security\User\UserInterface;
 
 #[AsEventListener(event: CheckPassportEvent::class, method: 'onCheckPassport')]
 #[AsEventListener(event: AuthenticationSuccessEvent::class, method: 'onAuthenticationSuccess')]
@@ -26,13 +30,12 @@ use Code202\Security\User\UserInterface;
 class SessionListener
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private SessionTTLProvider $sessionTTLProvider,
-        private SessionTruster $sessionTruster,
-    ) {
-    }
+        private readonly EntityManagerInterface $em,
+        private readonly SessionTTLProvider $sessionTTLProvider,
+        private readonly SessionTruster $sessionTruster,
+    ) {}
 
-    public function onCheckPassport(CheckPassportEvent $event)
+    public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -43,25 +46,25 @@ class SessionListener
 
         $session = $user->getSession();
 
-        if ($session->getExpiredAt() && $session->getExpiredAt() < new \DatetimeImmutable()) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < new DateTimeImmutable()) {
             throw new AuthenticationException('session expired');
         }
     }
 
-    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
+    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $token = $event->getAuthenticationToken();
+        $user = $event->getAuthenticationToken()->getUser();
 
-        if (!$token->getUser() instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $session = $token->getUser()->getSession();
+        $session = $user->getSession();
 
         $this->updateExpiredAt($session);
     }
 
-    public function onLoginSuccess(LoginSuccessEvent $event)
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event->getUser();
@@ -72,20 +75,20 @@ class SessionListener
 
         $session = $user->getSession();
 
-        if ($request && $request->headers->has('user-agent')) {
-            $session->setData('user_agent', $request->headers->get('user-agent'));
+        if ($request->headers->has('user-agent')) {
+            $session->setData('user_agent', $request->headers->get('user-agent') ?? 'unknown');
         }
 
         if ($event->getPassport()->hasBadge(RememberMeBadge::class)) {
-            $badge =  $event->getPassport()->getBadge(RememberMeBadge::class);
+            $badge = $event->getPassport()->getBadge(RememberMeBadge::class);
 
-            if ($badge->isEnabled()) {
-                $session->setExpiredAt(null);
+            if ($badge instanceof RememberMeBadge && $badge->isEnabled()) {
+                $session->setExpiredAt();
             }
         }
 
         if ($event->getPassport()->hasBadge(PermanentSessionBadge::class)) {
-            $session->setExpiredAt(null);
+            $session->setExpiredAt();
         }
 
         if ($event->getPassport()->hasBadge(TrustSessionBadge::class)) {
@@ -96,43 +99,41 @@ class SessionListener
         $this->em->flush();
     }
 
-    public function onLogout(LogoutEvent $event)
+    public function onLogout(LogoutEvent $event): void
     {
-        $token = $event->getToken();
+        $user = $event->getToken()?->getUser();
 
-        if (!$token->getUser() instanceof UserInterface) {
+        if (!$user instanceof User) {
             return;
         }
 
-        $session = $token->getUser()->getSession();
+        $session = $user->getSession();
 
-        if ($session) {
-            $session->setExpiredAt(new \Datetime());
-            $this->em->persist($session);
-            $this->em->flush();
-        }
+        $session->setExpiredAt(new DateTime());
+        $this->em->persist($session);
+        $this->em->flush();
     }
 
-    public function onUserRefreshed(RefreshedEvent $event)
+    public function onUserRefreshed(RefreshedEvent $event): void
     {
         $session = $event->getUser()->getSession();
 
-        if ($session->getExpiredAt() && $session->getExpiredAt() < new \DatetimeImmutable()) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < new DateTimeImmutable()) {
             throw new AuthenticationException('session expired');
         }
 
         $this->updateExpiredAt($session);
     }
 
-    protected function updateExpiredAt(Session $session)
+    protected function updateExpiredAt(Session $session): void
     {
         // Update expiredAt from now + ttl
-        $now = new \DatetimeImmutable();
+        $now = new DateTimeImmutable();
         $session->setUpdatedAt($now);
 
-        if ($session->getExpiredAt() !== null) {
+        if ($session->getExpiredAt() instanceof DateTimeInterface) {
             $ttl = $this->sessionTTLProvider->getSessionTTL($session->getAuthentication()->getType()->value);
-            $session->setExpiredAt($now->modify('+'.$ttl.' seconds'));
+            $session->setExpiredAt($now->modify('+' . $ttl . ' seconds'));
         }
 
         $this->em->persist($session);

@@ -1,24 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Validator;
 
+use Code202\Security\Service\RoleStrategy\Provider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use Code202\Security\Service\RoleStrategy\Provider;
 
 class ManagedRoleValidator extends ConstraintValidator
 {
-    protected Provider $provider;
-
     public function __construct(
-        Provider $provider
-    ) {
-        $this->provider = $provider;
-    }
+        protected Provider $provider
+    ) {}
 
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof ManagedRole) {
             throw new UnexpectedTypeException($constraint, ManagedRole::class);
@@ -34,10 +32,11 @@ class ManagedRoleValidator extends ConstraintValidator
 
         $collection = $this->provider->getStrategiesFor($value);
 
-        if (count($collection) == 0) {
+        if (0 === count($collection)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ role }}', $value)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

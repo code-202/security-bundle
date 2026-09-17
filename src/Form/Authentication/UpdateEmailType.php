@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form\Authentication;
 
+use Code202\Security\Request\Authentication\UpdateEmailRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Request\Authentication\UpdateEmailRequest;
 
+/**
+ * @extends AbstractType<UpdateEmailRequest>
+ */
 class UpdateEmailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

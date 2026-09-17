@@ -1,22 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetAccount;
 use Code202\Security\Entity\Activity\TargetReference;
+use Code202\Security\Exception\LogicException;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AccountProvider implements ProviderInterface
 {
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function supports(TargetReference $reference): bool
     {
@@ -25,29 +24,32 @@ class AccountProvider implements ProviderInterface
 
     public function get(TargetReference $reference): Target
     {
+        if (!$reference instanceof Account) {
+            throw new LogicException('reference is not an account');
+        }
+
         $repository = $this->em->getRepository(TargetAccount::class);
 
         $res = $repository->findOneBy([
-            'reference' => $reference
+            'reference' => $reference,
         ]);
 
-        if (!$res) {
-            $res = new TargetAccount($reference);
+        if (!$res instanceof TargetAccount) {
+            return new TargetAccount($reference);
         }
 
         return $res;
     }
 
+    /** @return TargetAccount[] */
     public function findAll(TargetReference $reference): array
     {
         if ($reference instanceof Account) {
             $repository = $this->em->getRepository(TargetAccount::class);
 
-            $res = $repository->findBy([
-                'reference' => $reference
+            return $repository->findBy([
+                'reference' => $reference,
             ]);
-
-            return $res;
         }
 
         return [];

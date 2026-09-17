@@ -2,22 +2,19 @@
 
 namespace Code202\Security\User;
 
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\Session;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    protected Session $session;
-
+    /** @var mixed[] */
     protected array $datas;
 
     public function __construct(
-        Session $session
-    ) {
-        $this->session = $session;
-    }
+        protected Session $session
+    ) {}
 
     public function getRoles(): array
     {
@@ -54,19 +51,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->session->getAuthentication()->getAccount();
     }
 
+    /** @return mixed[] */
     public function getDatas(): array
     {
         return $this->getAuthentication()->getDatas();
-        return $this->datas;
     }
 
-    public function getData($key): mixed
+    public function getData(string $key): mixed
     {
         return $this->getAuthentication()->getData($key);
-        if (isset($this->datas[$key])) {
-            return $this->datas[$key];
-        }
-
-        return null;
     }
 }

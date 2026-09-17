@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Session;
 use Code202\Security\User\UserInterface;
+use DateTime;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/** @extends Voter<string, Session> */
 class SessionVoter extends Voter
 {
     public const DELETE = 'SECURITY.SESSION.DELETE';
@@ -16,7 +22,7 @@ class SessionVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if ($attribute == self::TRUSTED) {
+        if (self::TRUSTED === $attribute) {
             return true;
         }
 
@@ -28,14 +34,10 @@ class SessionVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Session) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Session;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
 
@@ -48,8 +50,8 @@ class SessionVoter extends Voter
             self::TRUST,
             self::UNTRUST,
             self::DELETE => $subject->getAuthentication()->getAccount() == $user->getAccount(),
-            self::TRUSTED => $user->getSession()->getTrustUntil() != null && $user->getSession()->getTrustUntil() > new \DateTime('now'),
-            default => throw new \LogicException('This code should not be reached!')
+            self::TRUSTED => null != $user->getSession()->getTrustUntil() && $user->getSession()->getTrustUntil() > new DateTime('now'),
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

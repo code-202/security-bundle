@@ -6,7 +6,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[OA\Tag(name: ' Logout')]
@@ -21,7 +21,7 @@ class LogoutController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     #[Route('', name: '', methods: 'POST')]
@@ -29,6 +29,6 @@ class LogoutController
     {
         $security->logout(false);
 
-        return new Response(null, 204, [], true);
+        return new Response(null, Response::HTTP_NO_CONTENT, []);
     }
 }

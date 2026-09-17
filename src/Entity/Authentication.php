@@ -4,9 +4,10 @@ namespace Code202\Security\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -19,39 +20,46 @@ class Authentication implements Activity\TargetReference
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: Types::GUID)]
     #[Groups(['list'])]
     protected string $uuid;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'authentications')]
+    #[ORM\JoinColumn(nullable: false)]
     protected Account $account;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups(['list'])]
     protected bool $enabled;
 
-    #[ORM\Column(type: 'string', length: 20, enumType: AuthenticationType::class)]
+    #[ORM\Column(type: Types::STRING, length: 20, enumType: AuthenticationType::class)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected AuthenticationType $type;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $key;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups(['list'])]
     protected bool $verified;
 
-    #[ORM\Column(type: 'json')]
+    /**
+     * @var array<string, mixed>
+     */
+    #[ORM\Column(type: Types::JSON)]
     protected array $datas;
 
-    #[ORM\OneToMany(targetEntity: 'Session', mappedBy: 'authentication')]
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'authentication')]
     protected Collection $sessions;
 
     public function __construct(string $uuid, AuthenticationType $type, Account $account)
@@ -128,11 +136,17 @@ class Authentication implements Activity\TargetReference
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;
@@ -142,7 +156,7 @@ class Authentication implements Activity\TargetReference
 
     public function getData(string $name): ?string
     {
-        return isset($this->datas[$name]) ? $this->datas[$name] : null;
+        return $this->datas[$name] ?? null;
     }
 
     public function setData(string $name, string $value): self

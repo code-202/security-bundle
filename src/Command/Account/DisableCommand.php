@@ -2,34 +2,32 @@
 
 namespace Code202\Security\Command\Account;
 
+use Code202\Security\Service\Account\Enabler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Code202\Security\Service\Account\Enabler;
 
 #[AsCommand(
     name: 'code202:security:account:disable',
-    hidden: false
+    hidden: false,
+    description: 'Disable an account.',
+    help: <<<'TXT'
+This command allows you to disable an account.
+TXT
 )]
 class DisableCommand extends Command
 {
-    private Enabler $enabler;
-
     public function __construct(
-        Enabler $enabler
+        private readonly Enabler $enabler
     ) {
         parent::__construct();
-
-        $this->enabler = $enabler;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Disable an account.')
-            ->setHelp('This command allows you to disable an account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
         ;
     }

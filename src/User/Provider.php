@@ -2,37 +2,28 @@
 
 namespace Code202\Security\User;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\User\RefreshedEvent;
 use Code202\Security\Uuid\UuidGeneratorInterface;
 use Code202\Security\Uuid\UuidValidatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/** @implements UserProviderInterface<User> */
 class Provider implements UserProviderInterface
 {
-    protected EntityManagerInterface $em;
-    protected UuidGeneratorInterface $uuidGenerator;
-    protected UuidValidatorInterface $uuidValidator;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UuidGeneratorInterface $uuidGenerator,
-        UuidValidatorInterface $uuidValidator,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->uuidValidator = $uuidValidator;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected UuidGeneratorInterface $uuidGenerator,
+        protected UuidValidatorInterface $uuidValidator,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     /**
      * Refreshes the user.
@@ -42,15 +33,13 @@ class Provider implements UserProviderInterface
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
-     * @throws UserNotFoundException    if the user is not found
+     * @throws UserNotFoundException if the user is not found
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', $user::class));
         }
 
         $user = $this->loadUserByIdentifier($user->getUserIdentifier());
@@ -86,7 +75,7 @@ class Provider implements UserProviderInterface
         return $this->loadUserByTypeAndKey(AuthenticationType::USERNAME_PASSWORD->value, $identifier);
     }
 
-    protected function loadUserByUuuid(string $uuid): UserInterface
+    protected function loadUserByUuuid(string $uuid): User
     {
         $qb = $this->em->getRepository(Session::class)->createQueryBuilder('s')
             ->addSelect('a')
@@ -106,7 +95,7 @@ class Provider implements UserProviderInterface
         return new User($session);
     }
 
-    protected function loadUserByTypeAndKey(string $type, string $key): UserInterface
+    protected function loadUserByTypeAndKey(string $type, string $key): User
     {
         $qb = $this->em->getRepository(Authentication::class)->createQueryBuilder('a')
             ->addSelect('c')

@@ -7,25 +7,25 @@ use Symfony\Component\Routing\RouteCollection;
 
 class LoginRouteRegister implements LoginRouteRegisterInterface
 {
-    protected RouteCollection $routes;
+    protected RouteCollection $collection;
 
     public function __construct()
     {
         $this->collection = new RouteCollection();
     }
 
-    public function register(string $name, string $route, string $method, string $controller, string $alias)
+    public function register(string $name, string $route, string $method, string $controller, string $alias): void
     {
         $this->collection->add($name, new Route(
             $route,
-            [ '_controller' => $controller],
+            ['_controller' => $controller],
             [],
             [],
             '',
             [],
             $method
         ));
-        if ($alias != $name) {
+        if ($alias !== $name) {
             $this->collection->addAlias($alias, $name);
         }
     }

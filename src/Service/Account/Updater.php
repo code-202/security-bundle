@@ -1,35 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\Account;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Event\Account\NameChangedEvent;
 use Code202\Security\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Updater
 {
-    protected $em;
-    protected $eventDispatcher;
-    protected $validator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ValidatorInterface $validator
+    ) {}
 
     public function updateName(
         Account|string $accountOrUuid,
         string $newName,
         bool $autoFlush = true
-    ) {
+    ): void {
         if (!$newName) {
             throw new Exception\AccountUpdater('new_name_empty');
         }
@@ -42,7 +36,7 @@ class Updater
             ]);
         }
 
-        if (!$account) {
+        if (!$account instanceof Account) {
             throw new Exception\AccountUpdater('account_not_found');
         }
 

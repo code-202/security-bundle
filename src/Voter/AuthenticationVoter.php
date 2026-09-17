@@ -1,30 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/** @extends Voter<string, Authentication> */
 class AuthenticationVoter extends Voter
 {
     public const EDIT = 'SECURITY.AUTHENTICATION.EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::EDIT])) {
+        if (self::EDIT !== $attribute) {
             return false;
         }
 
-        if (!$subject instanceof Authentication) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Authentication;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
 
@@ -35,7 +36,7 @@ class AuthenticationVoter extends Voter
 
         return match ($attribute) {
             self::EDIT => $subject->getAccount() == $user->getAccount(),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

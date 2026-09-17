@@ -2,14 +2,15 @@
 
 namespace Code202\Security\Entity;
 
-use OpenApi\Attributes as OA;
+use Code202\Security\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Code202\Security\Repository\AccountRepository;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ORM\Table(schema: 'security')]
@@ -27,16 +28,19 @@ class Account implements Activity\TargetReference
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(type: Types::GUID, unique: true)]
     #[Groups(['list'])]
     protected string $uuid;
 
-    #[ORM\Column(type: 'string', length: 50, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 50, unique: true)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $name;
 
-    #[ORM\Column(type: 'json')]
+    /**
+     * @var array<string>
+     */
+    #[ORM\Column(type: Types::JSON)]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     private array $roles = [];
 
@@ -44,6 +48,9 @@ class Account implements Activity\TargetReference
     #[Groups(['list'])]
     protected bool $enabled;
 
+    /**
+     * @var Collection<int, Authentication>
+     */
     #[ORM\OneToMany(targetEntity: Authentication::class, mappedBy: 'account')]
     protected Collection $authentications;
 
@@ -96,16 +103,25 @@ class Account implements Activity\TargetReference
         return $this->enabled;
     }
 
+    /**
+     * @return Collection<int, Authentication>
+     */
     public function getAuthentications(): Collection
     {
         return $this->authentications;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

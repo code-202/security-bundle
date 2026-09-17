@@ -2,24 +2,25 @@
 
 namespace Code202\Security\Service\Session;
 
+use Code202\Security\Entity\Account;
+use Code202\Security\Entity\Authentication;
+use Code202\Security\Entity\Session;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Entity\Account;
-use Code202\Security\Entity\Authentication;
-use Code202\Security\Entity\Session;
 
 class Lister
 {
-    protected $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
+    /**
+     * @param array<mixed> $options
+     * @return Pagerfanta<Session>
+     */
     public function get(array $options): Pagerfanta
     {
         $options = $this->createOptionResolver()->resolve($options);
@@ -52,19 +53,19 @@ class Lister
         if ('active' == $options['show']) {
             $qb
                 ->andWhere('s.expiredAt IS NULL OR s.expiredAt > :now')
-                ->setParameter('now', new \Datetime())
+                ->setParameter('now', new DateTime())
             ;
         } elseif ('inactive' == $options['show']) {
             $qb
                 ->andWhere('s.expiredAt IS NOT NULL AND s.expiredAt < :now')
-                ->setParameter('now', new \Datetime())
+                ->setParameter('now', new DateTime())
             ;
         }
 
         if ($options['search']) {
             $qb
                 ->andWhere('CONCAT(s.uuid,\'\') LIKE :search')
-                ->setParameter(':search', '%'.$options['search'].'%')
+                ->setParameter(':search', '%' . $options['search'] . '%')
             ;
         }
 
@@ -109,7 +110,6 @@ class Lister
             ->default(null)
             ->allowedTypes('null', Authentication::class)
         ;
-
 
         return $resolver;
     }

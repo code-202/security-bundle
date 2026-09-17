@@ -1,7 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Event\Account;
 
-class CreatedEvent extends AbstractAccountEvent
-{
-}
+class CreatedEvent extends AbstractAccountEvent {}

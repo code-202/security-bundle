@@ -2,14 +2,15 @@
 
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
+use Code202\Security\Router\LoginRouteRegister;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Code202\Security\Router\LoginRouteRegister;
+
+use function is_bool;
 
 abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLoginFactoryInterface
 {
@@ -20,9 +21,7 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
         $this->buildOptions();
     }
 
-    public function buildOptions()
-    {
-    }
+    public function buildOptions(): void {}
 
     public function getPriority(): int
     {
@@ -33,21 +32,28 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
 
     public function getKey(): string
     {
-        return 'code202_'.$this->getShortKey().'_login';
+        return 'code202_' . $this->getShortKey() . '_login';
     }
 
     public function getAuthenticatorId(string $firewallName): string
     {
-        return 'security.authenticator.'.$this->getKey().'.'.$firewallName;
+        return 'security.authenticator.' . $this->getKey() . '.' . $firewallName;
     }
 
-    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = [])
+    /**
+     * @param array<string> $overrideOptions
+     */
+    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []): void
     {
+        if (!$node instanceof ArrayNodeDefinition) {
+            return;
+        }
+
         $builder = $node->children();
 
         foreach (array_merge($this->options, $this->defaultSuccessHandlerOptions, $this->defaultFailureHandlerOptions) as $name => $default) {
             if (!in_array($name, $overrideOptions)) {
-                if (\is_bool($default)) {
+                if (is_bool($default)) {
                     $builder->booleanNode($name)->defaultValue($default);
                 } else {
                     $builder->scalarNode($name)->defaultValue($default);
@@ -72,8 +78,8 @@ abstract class AbstractSubLoginFactory extends AbstractFactory implements SubLog
         ;
 
         $container
-            ->setDefinition($authenticatorId.'.login_route_register', new Definition(LoginRouteRegister::class))
-            ->addMethodCall('register', ['.login.'.$this->getRegisterAction($config['route_merged']), $options['check_path'], 'post', 'Code202\Security\Controller\LoginController::'.$this->getRegisterAction($config['route_merged']), '.login.'.$this->getRegisterAction(false)])
+            ->setDefinition($authenticatorId . '.login_route_register', new Definition(LoginRouteRegister::class))
+            ->addMethodCall('register', ['.login.' . $this->getRegisterAction($config['route_merged']), $options['check_path'], 'post', 'Code202\Security\Controller\LoginController::' . $this->getRegisterAction($config['route_merged']), '.login.' . $this->getRegisterAction(false)])
             ->addTag('code202.security.router.login_route_register')
         ;
 

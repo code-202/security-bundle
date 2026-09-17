@@ -2,27 +2,21 @@
 
 namespace Code202\Security\Service\Account;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Event\Account\GrantedEvent;
 use Code202\Security\Event\Account\RevokedEvent;
 use Code202\Security\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RoleManipulator
 {
-    protected EntityManagerInterface $em;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
-    public function grant(Account|string $accountOrUuid, string $role, bool $autoFlush = true)
+    public function grant(Account|string $accountOrUuid, string $role, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 
@@ -46,7 +40,7 @@ class RoleManipulator
         }
     }
 
-    public function revoke(Account|string $accountOrUuid, string $role, bool $autoFlush = true)
+    public function revoke(Account|string $accountOrUuid, string $role, bool $autoFlush = true): void
     {
         $account = $this->getAccount($accountOrUuid);
 
@@ -75,12 +69,11 @@ class RoleManipulator
     protected function getAccount(Account|string $accountOrUuid): Account
     {
         if ($accountOrUuid instanceof Account) {
-            $account = $accountOrUuid;
-        } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
+            return $accountOrUuid;
         }
+        $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
 
-        if (!$account) {
+        if (!$account instanceof Account) {
             throw new Exception\RoleManipulator(sprintf('Account not found for uuid : %s', $accountOrUuid));
         }
 

@@ -9,6 +9,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait FormHelperTrait
 {
+    /**
+     * @param FormInterface<mixed> $form
+     */
     protected function handleRequest(FormInterface $form, Request $request): mixed
     {
         $method = $form->getConfig()->getMethod();

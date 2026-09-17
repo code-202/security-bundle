@@ -1,31 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Listener;
 
+use Code202\Security\Authenticator\Passport\Badge\ResetPasswordAuthenticationBadge;
+use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
+use Code202\Security\Event\User\RefreshedEvent;
+use Code202\Security\User\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Code202\Security\Authenticator\Passport\Badge\ResetPasswordAuthenticationBadge;
-use Code202\Security\Authenticator\Passport\Badge\VerifyAuthenticationBadge;
-use Code202\Security\Event\User\RefreshedEvent;
-use Code202\Security\User\UserInterface;
 
 #[AsEventListener(event: CheckPassportEvent::class, method: 'onCheckPassport')]
 #[AsEventListener(event: LoginSuccessEvent::class, method: 'onLoginSuccess')]
 #[AsEventListener(event: RefreshedEvent::class, method: 'onUserRefreshed')]
 class AuthenticationListener
 {
-    protected $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
-    public function onCheckPassport(CheckPassportEvent $event)
+    public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -41,9 +39,9 @@ class AuthenticationListener
         }
     }
 
-    public function onLoginSuccess(LoginSuccessEvent $event)
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
-        $request = $event->getRequest();
+        $event->getRequest();
         $user = $event->getUser();
 
         if (!$user instanceof UserInterface) {
@@ -64,7 +62,7 @@ class AuthenticationListener
         $this->em->flush();
     }
 
-    public function onUserRefreshed(RefreshedEvent $event)
+    public function onUserRefreshed(RefreshedEvent $event): void
     {
         $authentication = $event->getUser()->getAuthentication();
 

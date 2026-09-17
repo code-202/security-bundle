@@ -2,11 +2,12 @@
 
 namespace Code202\Security\Entity\Activity;
 
-use OpenApi\Attributes as OA;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 use Code202\Security\Entity\Timestampable;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(schema: 'security')]
@@ -16,24 +17,29 @@ class Activity
     use Timestampable;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: 'string', length: 64)]
+    #[ORM\Column(type: Types::STRING, length: 64)]
     #[Assert\NotBlank]
     #[Groups(['list'])]
     protected string $type;
 
     #[ORM\ManyToOne(targetEntity: Target::class, inversedBy: 'activities', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['list'])]
     protected Target $target;
 
     #[ORM\ManyToOne(targetEntity: Trigger::class, inversedBy: 'activities', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['list'])]
     protected Trigger $trigger;
 
-    #[ORM\Column(type: 'json')]
+    /**
+     * @var array<string, mixed>
+     */
+    #[ORM\Column(type: Types::JSON)]
     #[Groups(['list'])]
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     protected array $datas;
@@ -47,13 +53,13 @@ class Activity
 
         $targetDatas = $this->target->getDatas();
 
-        if ($targetDatas) {
+        if ([] !== $targetDatas) {
             $this->datas['target'] = $targetDatas;
         }
 
         $triggerDatas = $this->trigger->getDatas();
 
-        if ($triggerDatas) {
+        if ([] !== $triggerDatas) {
             $this->datas['trigger'] = $triggerDatas;
         }
     }
@@ -78,11 +84,17 @@ class Activity
         return $this->trigger;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDatas(): array
     {
         return $this->datas;
     }
 
+    /**
+     * @param array<string, mixed> $datas
+     */
     public function setDatas(array $datas): self
     {
         $this->datas = $datas;
@@ -90,12 +102,18 @@ class Activity
         return $this;
     }
 
-    public function getData(string $name): string|array|null
+    /**
+     * @return null|array<string>|string
+     */
+    public function getData(string $name): array|string|null
     {
-        return isset($this->datas[$name]) ? $this->datas[$name] : null;
+        return $this->datas[$name] ?? null;
     }
 
-    public function setData(string $name, string|array $value): self
+    /**
+     * @param array<string>|string $value
+     */
+    public function setData(string $name, array|string $value): self
     {
         $this->datas[$name] = $value;
 

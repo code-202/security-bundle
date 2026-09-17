@@ -2,23 +2,22 @@
 
 namespace Code202\Security\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
-use Code202\Security\Controller\FormHelperTrait;
 use Code202\Security\Entity\Activity\Activity;
 use Code202\Security\Form\PagerType;
 use Code202\Security\Request\PagerRequest;
 use Code202\Security\Service\Activity\Lister;
 use Code202\Security\Service\Activity\Target\Provider as TargetProvider;
 use Code202\Security\User\UserInterface;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsController]
 #[Route('/activities', name: '.activities')]
@@ -53,6 +52,6 @@ class ActivityController
             'targets' => $targets,
         ]);
 
-        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

@@ -1,30 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\Session;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Session;
 use Code202\Security\Event\Session\DeletedEvent;
+use DateTime;
+use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Deleter
 {
-    protected EntityManagerInterface $em;
-
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected EntityManagerInterface $em,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
-    public function delete(Session $session, bool $autoFlush = true)
+    public function delete(Session $session, bool $autoFlush = true): void
     {
-        $now = new \Datetime();
-        if ($session->getExpiredAt() !== null && $session->getExpiredAt() < $now) {
+        $now = new DateTime();
+        if ($session->getExpiredAt() instanceof DateTimeInterface && $session->getExpiredAt() < $now) {
             return;
         }
 

@@ -2,20 +2,7 @@
 
 namespace Code202\Security\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\SerializerInterface;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
-use Code202\Security\Controller\FormHelperTrait;
 use Code202\Security\Entity\Account;
 use Code202\Security\Form\Role\GrantType;
 use Code202\Security\Form\Role\RevokeType;
@@ -23,6 +10,17 @@ use Code202\Security\Request\Role\GrantRequest;
 use Code202\Security\Request\Role\RevokeRequest;
 use Code202\Security\Service\Account\RoleManipulator;
 use Code202\Security\Service\RoleStrategy\Manager as RoleManager;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsController]
 #[Route('/roles', name: '.roles')]
@@ -32,7 +30,7 @@ class RoleController
     use FormHelperTrait;
 
     #[Route('/manipulatable', name: '.manipulatable', methods: 'GET')]
-    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref :'#components/schemas/RoleManipulateResponse'))]
+    #[OA\Response(response: 200, description: 'Successful', content: new OA\JsonContent(ref : '#components/schemas/RoleManipulateResponse'))]
     public function grantable(
         RoleManager $manager,
         SerializerInterface $serializer
@@ -40,7 +38,7 @@ class RoleController
         return new JsonResponse($serializer->serialize([
             'grantables' => $manager->getGrantableRoles(),
             'revocables' => $manager->getRevocableRoles(),
-        ], 'json', []), 200, [], true);
+        ], 'json', []), Response::HTTP_OK, [], true);
     }
 
     #[Route('/grant', name: '.grant', methods: 'PUT')]
@@ -59,12 +57,12 @@ class RoleController
         $data = $this->handleRequest($form, $request);
 
         if (!$authorizationChecker->isGranted('SECURITY.ROLE.GRANT', $data->role)) {
-            throw new AccessDeniedException('You are not allowed to grant the role : '.$data->role);
+            throw new AccessDeniedException('You are not allowed to grant the role : ' . $data->role);
         }
 
         $manipulator->grant($data->account, $data->role);
 
-        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 
     #[Route('/revoke', name: '.revoke', methods: 'PUT')]
@@ -83,11 +81,11 @@ class RoleController
         $data = $this->handleRequest($form, $request);
 
         if (!$authorizationChecker->isGranted('SECURITY.ROLE.REVOKE', $data->role)) {
-            throw new AccessDeniedException('You are not allowed to revoke the role : '.$data->role);
+            throw new AccessDeniedException('You are not allowed to revoke the role : ' . $data->role);
         }
 
         $manipulator->revoke($data->account, $data->role);
 
-        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), 200, [], true);
+        return new JsonResponse($serializer->serialize($data->account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }
 }

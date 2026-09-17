@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Service\Session;
 
+use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
 use Code202\Security\Exception\SessionTrust;
@@ -11,19 +14,18 @@ use Code202\Security\Service\Authentication\UsernamePasswordVerifier;
 class PasswordTruster
 {
     public function __construct(
-        private Truster $truster,
-        private AuthenticationProvider $authenticationProvider,
-        private UsernamePasswordVerifier $usernamePasswordVerifier,
-    ) {
-    }
+        private readonly Truster $truster,
+        private readonly AuthenticationProvider $authenticationProvider,
+        private readonly UsernamePasswordVerifier $usernamePasswordVerifier,
+    ) {}
 
-    public function trust(Session $session, string $password, bool $autoFlush = true)
+    public function trust(Session $session, string $password, bool $autoFlush = true): void
     {
         $authentication = $session->getAuthentication();
 
-        if ($authentication->getType() != AuthenticationType::USERNAME_PASSWORD) {
+        if (AuthenticationType::USERNAME_PASSWORD != $authentication->getType()) {
             $authentication = $this->authenticationProvider->getOne($authentication->getAccount(), AuthenticationType::USERNAME_PASSWORD);
-            if (!$authentication) {
+            if (!$authentication instanceof Authentication) {
                 throw new SessionTrust('no_username_password_authentication');
             }
         }

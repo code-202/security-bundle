@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Bridge\Ramsey\Uuid;
 
-use Ramsey\Uuid\Uuid;
 use Code202\Security\Uuid\UuidValidatorInterface;
+use Ramsey\Uuid\Uuid;
 
 class UuidValidator implements UuidValidatorInterface
 {

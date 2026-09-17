@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Voter;
 
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Entity\Account;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/** @extends Voter<string, Account> */
 class AccountVoter extends Voter
 {
     public const _LIST = 'SECURITY.ACCOUNT.LIST';
@@ -18,19 +23,13 @@ class AccountVoter extends Voter
     public const DISABLE = 'SECURITY.ACCOUNT.DISABLE';
     public const AUTHENTICATIONS = 'SECURITY.ACCOUNT.AUTHENTICATIONS';
 
-    protected Security $security;
-
     public function __construct(
-        Security $security
-    ) {
-        $this->security = $security;
-    }
+        protected Security $security
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (in_array($attribute, [
-            self::_LIST,
-        ])) {
+        if (self::_LIST === $attribute) {
             return true;
         }
 
@@ -45,14 +44,10 @@ class AccountVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Account) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Account;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
 
@@ -64,7 +59,7 @@ class AccountVoter extends Voter
             self::ENABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_ENABLE'),
             self::DISABLE => $this->security->isGranted('ROLE_SECURITY_ACCOUNT_DISABLE'),
             self::AUTHENTICATIONS => $this->isAccoutOwner($user, $subject) || $this->security->isGranted('ROLE_SECURITY_ACCOUNT_AUTHENTICATIONS'),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 

@@ -2,56 +2,53 @@
 
 namespace Code202\Security\Authenticator;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Code202\Security\User\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\InteractiveAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgradeBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\HttpUtils;
-use Symfony\Component\Security\Http\ParameterBagUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $options;
-    protected HttpUtils $httpUtils;
-    protected UserProviderInterface $userProvider;
     protected PropertyAccessorInterface $propertyAccessor;
-    protected ?AuthenticationSuccessHandlerInterface $successHandler;
-    protected ?AuthenticationFailureHandlerInterface $failureHandler;
     protected ?TranslatorInterface $translator = null;
 
+    /**
+     * @param array<string, mixed> $options
+     * @param UserProviderInterface<UserInterface> $userProvider
+     */
     public function __construct(
-        HttpUtils $httpUtils,
-        UserProviderInterface $userProvider,
-        AuthenticationSuccessHandlerInterface $successHandler = null,
-        AuthenticationFailureHandlerInterface $failureHandler = null,
+        protected HttpUtils $httpUtils,
+        protected UserProviderInterface $userProvider,
+        protected ?AuthenticationSuccessHandlerInterface $successHandler = null,
+        protected ?AuthenticationFailureHandlerInterface $failureHandler = null,
         array $options = [],
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->options = array_merge([], $this->getDefaultOptions(), $options);
-        $this->httpUtils = $httpUtils;
-        $this->successHandler = $successHandler;
-        $this->failureHandler = $failureHandler;
-        $this->userProvider = $userProvider;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getDefaultOptions(): array
     {
         return [
@@ -65,11 +62,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
             return false;
         }
 
-        if (!$request->isMethod('POST')) {
-            return false;
-        }
-
-        return true;
+        return $request->isMethod('POST');
     }
 
     public function authenticate(Request $request): Passport
@@ -92,11 +85,15 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         return $passport;
     }
 
+    /**
+     * @param array<string, mixed> $credentials
+     */
     abstract protected function buildPassport(array $credentials): Passport;
 
-    protected function addExtraBadges(Passport $passport, array $credentials)
-    {
-    }
+    /**
+     * @param array<string, mixed> $credentials
+     */
+    protected function addExtraBadges(Passport $passport, array $credentials): void {}
 
     public function createToken(Passport $passport, string $firewallName): TokenInterface
     {
@@ -105,7 +102,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if (null === $this->successHandler) {
+        if (!$this->successHandler instanceof AuthenticationSuccessHandlerInterface) {
             return null; // let the original request continue
         }
 
@@ -114,7 +111,7 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        if (null === $this->failureHandler) {
+        if (!$this->failureHandler instanceof AuthenticationFailureHandlerInterface) {
             return null; // let the original request continue
         }
 
@@ -133,5 +130,8 @@ abstract class AbstractLoginAuthenticator implements InteractiveAuthenticatorInt
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     abstract protected function getCredentials(Request $request): array;
 }

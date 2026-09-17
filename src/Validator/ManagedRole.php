@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Validator;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
+#[Attribute]
 class ManagedRole extends Constraint
 {
     public string $message = 'The role "{{ role }}" is not managed by the security role strategies manager.';

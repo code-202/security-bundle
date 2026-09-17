@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Bridge\OpenApi\Attributes;
 
-use OpenApi\Annotations as OA;
+use Attribute;
 use OpenApi\Attributes as OAA;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class PagerFantaResponse extends OAA\Response
 {
-    public function __construct($item)
+    public function __construct(object|string|null $item)
     {
         parent::__construct(
             null,
@@ -16,25 +18,23 @@ class PagerFantaResponse extends OAA\Response
             'Pager',
             [],
             [
-                new OA\MediaType([
-                    'mediaType' => 'application/json',
-                    'value' => [
-                        new OA\Schema([
-                            'allOf' => [
-                                new OAA\Schema('#components/schemas/PagerFantaResponse'),
-                                new OA\Schema([
-                                    'properties' => [
-                                        new OA\Property([
-                                            'property' => 'results',
-                                            'type' => 'array',
-                                            'items' => new OA\Items(['ref' => $item]),
-                                        ])
-                                    ],
-                                ])
-                            ]
-                        ])
-                    ]
-                ])
+                new OAA\MediaType(
+                    'application/json',
+                    new OAA\Schema(
+                        allOf: [
+                            new OAA\Schema('#components/schemas/PagerFantaResponse'),
+                            new OAA\Schema(
+                                properties: [
+                                    new OAA\Property(
+                                        property: 'results',
+                                        type: 'array',
+                                        items: new OAA\Items($item),
+                                    ),
+                                ],
+                            ),
+                        ],
+                    )
+                ),
             ]
         );
     }

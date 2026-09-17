@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Entity\Activity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Code202\Security\Entity\Authentication;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 class TargetAuthentication extends Target

@@ -2,25 +2,19 @@
 
 namespace Code202\Security\Service\Activity\Trigger;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Code202\Security\Entity\Activity\Trigger;
 use Code202\Security\Entity\Activity\TriggerReference;
 use Code202\Security\Entity\Activity\TriggerUnknown;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class Provider
 {
-    protected EntityManagerInterface $em;
-
-    protected iterable $providers = [];
-
+    /** @param iterable<int, ProviderInterface> $providers */
     public function __construct(
-        EntityManagerInterface $em,
-        #[TaggedIterator('code202.security.activity.trigger.provider')] iterable $providers
-    ) {
-        $this->em = $em;
-        $this->providers = $providers;
-    }
+        protected EntityManagerInterface $em,
+        #[AutowireIterator('code202.security.activity.trigger.provider')] protected iterable $providers
+    ) {}
 
     public function get(): Trigger
     {
@@ -34,13 +28,14 @@ class Provider
 
         $res = $repository->findOneBy([]);
 
-        if (!$res) {
-            $res = new TriggerUnknown();
+        if (!$res instanceof TriggerUnknown) {
+            return new TriggerUnknown();
         }
 
         return $res;
     }
 
+    /** @return Trigger[] */
     public function findAll(TriggerReference $reference): array
     {
         $res = [];

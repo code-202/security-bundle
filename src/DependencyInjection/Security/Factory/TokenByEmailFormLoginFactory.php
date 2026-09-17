@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use Code202\Security\Authenticator\TokenByEmailFormAuthenticator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TokenByEmailFormLoginFactory extends AbstractSubLoginFactory
 {
-    public function buildOptions()
+    public function buildOptions(): void
     {
         $this->addOption('check_path', '/email');
         $this->addOption('username_parameter', 'key');
@@ -35,9 +36,7 @@ class TokenByEmailFormLoginFactory extends AbstractSubLoginFactory
     public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId): string
     {
         $authenticatorId = parent::createAuthenticator($container, $firewallName, $config, $userProviderId);
-        $options = array_intersect_key($config, $this->options);
-
-        $definition = $container->getDefinition($authenticatorId);
+        $container->getDefinition($authenticatorId);
 
         return $authenticatorId;
     }

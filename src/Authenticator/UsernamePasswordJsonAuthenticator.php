@@ -2,15 +2,21 @@
 
 namespace Code202\Security\Authenticator;
 
+use stdClass;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+
+use function is_string;
 
 class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
 {
     use Trait\JsonLoginAuthenticatorTrait;
     use Trait\UsernamePasswordAuthenticatorTrait;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDefaultOptions(): array
     {
         return array_merge(parent::getDefaultOptions(), [
@@ -21,14 +27,17 @@ class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
         ]);
     }
 
-    protected function getExtraCredentials(\stdClass $data): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getExtraCredentials(stdClass $data): array
     {
         $credentials = [];
 
         try {
             $credentials['password'] = $this->propertyAccessor->getValue($data, $this->options['password_parameter']);
 
-            if (!\is_string($credentials['password'])) {
+            if (!is_string($credentials['password'])) {
                 throw new BadRequestHttpException(sprintf('The password "%s" must be a string.', $this->options['password_parameter']));
             }
         } catch (AccessException $e) {
@@ -37,7 +46,7 @@ class UsernamePasswordJsonAuthenticator extends AbstractLoginAuthenticator
 
         try {
             $credentials['remember_me'] = filter_var($this->propertyAccessor->getValue($data, $this->options['remember_me_parameter']), FILTER_VALIDATE_BOOLEAN);
-        } catch (NoSuchPropertyException $e) {
+        } catch (NoSuchPropertyException) {
             $credentials['remember_me'] = false;
         }
 

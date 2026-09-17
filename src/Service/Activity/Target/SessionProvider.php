@@ -2,23 +2,20 @@
 
 namespace Code202\Security\Service\Activity\Target;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Activity\Target;
 use Code202\Security\Entity\Activity\TargetReference;
 use Code202\Security\Entity\Activity\TargetSession;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\Session;
+use Code202\Security\Exception\LogicException;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SessionProvider implements ProviderInterface
 {
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function supports(TargetReference $reference): bool
     {
@@ -27,30 +24,37 @@ class SessionProvider implements ProviderInterface
 
     public function get(TargetReference $reference): Target
     {
+        if (!$reference instanceof Session) {
+            throw new LogicException('reference is not a session');
+        }
+
         $repository = $this->em->getRepository(TargetSession::class);
 
         $res = $repository->findOneBy([
-            'reference' => $reference
+            'reference' => $reference,
         ]);
 
-        if (!$res) {
-            $res = new TargetSession($reference);
+        if (!$res instanceof TargetSession) {
+            return new TargetSession($reference);
         }
 
         return $res;
     }
 
+    /** @return TargetSession[] */
     public function findAll(TargetReference $reference): array
     {
         $repository = $this->em->getRepository(TargetSession::class);
 
         $qb = $repository->createQueryBuilder('ts')
-            ->setParameter('reference', $reference);
+            ->setParameter('reference', $reference)
+        ;
 
         if ($reference instanceof Session) {
             $qb = $repository->createQueryBuilder('ts')
                 ->andWhere('ts.reference = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }
@@ -59,7 +63,8 @@ class SessionProvider implements ProviderInterface
             $qb = $repository->createQueryBuilder('ts')
                 ->innerJoin('ts.reference', 's')
                 ->andWhere('s.authentication = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }
@@ -69,7 +74,8 @@ class SessionProvider implements ProviderInterface
                 ->innerJoin('ts.reference', 's')
                 ->innerJoin('s.authentication', 'a')
                 ->andWhere('a.account = :reference')
-                ->setParameter('reference', $reference);
+                ->setParameter('reference', $reference)
+            ;
 
             return $qb->getQuery()->getResult();
         }

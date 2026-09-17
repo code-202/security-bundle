@@ -2,22 +2,24 @@
 
 namespace Code202\Security\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Code202\Security\Entity\Account;
+use Code202\Security\Repository\AccountRepository;
+use Code202\Security\User\UserInterface;
+use Code202\Security\Uuid\UuidValidatorInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Code202\Security\Entity\Account;
-use Code202\Security\Repository\AccountRepository;
-use Code202\Security\Uuid\UuidValidatorInterface;
 
+/**
+ * @implements DataTransformerInterface<null|Account, string>
+ */
 class UuidToAccountTransformer implements DataTransformerInterface
 {
     public function __construct(
-        private AccountRepository $repository,
-        private TokenStorageInterface $tokenStorage,
-        private UuidValidatorInterface $uuidValidator
-    ) {
-    }
+        private readonly AccountRepository $repository,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly UuidValidatorInterface $uuidValidator
+    ) {}
 
     public function transform($account): string
     {
@@ -35,8 +37,15 @@ class UuidToAccountTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($uuid == 'me') {
-            return $this->tokenStorage->getToken()->getUser()->getAccount();
+        if ('me' == $uuid) {
+            $user = $this->tokenStorage->getToken()?->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new TransformationFailedException(
+                    'Me user is no good !',
+                );
+            }
+
+            return $user->getAccount();
         }
 
         if (!$this->uuidValidator->validate($uuid)) {

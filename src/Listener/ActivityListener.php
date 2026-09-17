@@ -2,10 +2,6 @@
 
 namespace Code202\Security\Listener;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Code202\Security\Entity\Activity\Activity;
 use Code202\Security\Entity\Activity\Type as ActivityType;
 use Code202\Security\Event\Account as AccountEvent;
@@ -14,6 +10,10 @@ use Code202\Security\Event\Session as SessionEvent;
 use Code202\Security\Service\Activity\Target\Provider as TargetProvider;
 use Code202\Security\Service\Activity\Trigger\Provider as TriggerProvider;
 use Code202\Security\User\UserInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 #[AsEventListener(event: LoginSuccessEvent::class, method: 'onLoginSuccess')]
 #[AsEventListener(event: LogoutEvent::class, method: 'onLogout')]
@@ -34,23 +34,13 @@ use Code202\Security\User\UserInterface;
 #[AsEventListener(event: SessionEvent\UntrustEvent::class, method: 'onSessionUntrusted')]
 class ActivityListener
 {
-    protected EntityManagerInterface $em;
-
-    protected TargetProvider $targetProvider;
-
-    protected TriggerProvider $triggerProvider;
-
     public function __construct(
-        EntityManagerInterface $em,
-        TargetProvider $targetProvider,
-        TriggerProvider $triggerProvider
-    ) {
-        $this->em = $em;
-        $this->targetProvider = $targetProvider;
-        $this->triggerProvider = $triggerProvider;
-    }
+        protected EntityManagerInterface $em,
+        protected TargetProvider $targetProvider,
+        protected TriggerProvider $triggerProvider
+    ) {}
 
-    public function onLoginSuccess(LoginSuccessEvent $event)
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         $user = $event->getUser();
 
@@ -72,9 +62,9 @@ class ActivityListener
         $this->em->flush();
     }
 
-    public function onLogout(LogoutEvent $event)
+    public function onLogout(LogoutEvent $event): void
     {
-        $user = $event->getToken()->getUser();
+        $user = $event->getToken()?->getUser();
 
         if (!$user instanceof UserInterface) {
             return;
@@ -89,7 +79,7 @@ class ActivityListener
         $this->em->flush();
     }
 
-    public function onAccountCreated(AccountEvent\CreatedEvent $event)
+    public function onAccountCreated(AccountEvent\CreatedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ACCOUNT_CREATED->value, $target, $this->triggerProvider->get());
@@ -98,7 +88,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onAccountEnabled(AccountEvent\EnabledEvent $event)
+    public function onAccountEnabled(AccountEvent\EnabledEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ACCOUNT_ENABLED->value, $target, $this->triggerProvider->get());
@@ -107,7 +97,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onAccountDisabled(AccountEvent\DisabledEvent $event)
+    public function onAccountDisabled(AccountEvent\DisabledEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ACCOUNT_DISABLED->value, $target, $this->triggerProvider->get());
@@ -116,7 +106,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onRoleGranted(AccountEvent\GrantedEvent $event)
+    public function onRoleGranted(AccountEvent\GrantedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ROLE_GRANTED->value, $target, $this->triggerProvider->get());
@@ -125,7 +115,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onNameChanged(AccountEvent\NameChangedEvent $event)
+    public function onNameChanged(AccountEvent\NameChangedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ACCOUNT_NAME_CHANGED->value, $target, $this->triggerProvider->get());
@@ -134,7 +124,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onRoleRevoked(AccountEvent\RevokedEvent $event)
+    public function onRoleRevoked(AccountEvent\RevokedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAccount());
         $activity = new Activity(ActivityType::ROLE_REVOKED->value, $target, $this->triggerProvider->get());
@@ -143,7 +133,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onAuthenticationCreated(AuthenticationEvent\CreatedEvent $event)
+    public function onAuthenticationCreated(AuthenticationEvent\CreatedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::AUTHENTICATION_CREATED->value, $target, $this->triggerProvider->get());
@@ -152,7 +142,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onPasswordChanged(AuthenticationEvent\PasswordChangedEvent $event)
+    public function onPasswordChanged(AuthenticationEvent\PasswordChangedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::PASSWORD_CHANGED->value, $target, $this->triggerProvider->get());
@@ -161,7 +151,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onUsernameChanged(AuthenticationEvent\UsernameChangedEvent $event)
+    public function onUsernameChanged(AuthenticationEvent\UsernameChangedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::USERNAME_CHANGED->value, $target, $this->triggerProvider->get());
@@ -170,7 +160,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onTokenByEmailRefreshed(AuthenticationEvent\TokenByEmailRefreshedEvent $event)
+    public function onTokenByEmailRefreshed(AuthenticationEvent\TokenByEmailRefreshedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::TOKEN_BY_EMAIL_REFRESHED->value, $target, $this->triggerProvider->get());
@@ -181,7 +171,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onSessionDeleted(SessionEvent\DeletedEvent $event)
+    public function onSessionDeleted(SessionEvent\DeletedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getSession());
         $activity = new Activity(ActivityType::SESSION_DELETED->value, $target, $this->triggerProvider->get());
@@ -189,7 +179,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onSessionTrusted(SessionEvent\TrustEvent $event)
+    public function onSessionTrusted(SessionEvent\TrustEvent $event): void
     {
         $target = $this->targetProvider->get($event->getSession());
         $activity = new Activity(ActivityType::SESSION_TRUSTED->value, $target, $this->triggerProvider->get());
@@ -197,7 +187,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onSessionUntrusted(SessionEvent\UntrustEvent $event)
+    public function onSessionUntrusted(SessionEvent\UntrustEvent $event): void
     {
         $target = $this->targetProvider->get($event->getSession());
         $activity = new Activity(ActivityType::SESSION_UNTRUSTED->value, $target, $this->triggerProvider->get());
@@ -205,7 +195,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onTokenByEmailVerified(AuthenticationEvent\TokenByEmailVerifiedEvent $event)
+    public function onTokenByEmailVerified(AuthenticationEvent\TokenByEmailVerifiedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::TOKEN_BY_EMAIL_VERIFIED->value, $target, $this->triggerProvider->get());
@@ -214,7 +204,7 @@ class ActivityListener
         $this->em->persist($activity);
     }
 
-    public function onEmailChanged(AuthenticationEvent\EmailChangedEvent $event)
+    public function onEmailChanged(AuthenticationEvent\EmailChangedEvent $event): void
     {
         $target = $this->targetProvider->get($event->getAuthentication());
         $activity = new Activity(ActivityType::EMAIL_CHANGED->value, $target, $this->triggerProvider->get());

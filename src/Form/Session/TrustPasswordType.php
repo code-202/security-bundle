@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form\Session;
 
+use Code202\Security\Request\Session\TrustPasswordRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Request\Session\TrustPasswordRequest;
 
+/** @extends AbstractType<TrustPasswordRequest> */
 class TrustPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

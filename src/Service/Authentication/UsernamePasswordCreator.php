@@ -2,9 +2,6 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
@@ -12,38 +9,40 @@ use Code202\Security\Event\Authentication\CreatedEvent;
 use Code202\Security\Exception;
 use Code202\Security\User\User;
 use Code202\Security\Uuid\UuidGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UsernamePasswordCreator
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private UuidGeneratorInterface $uuidGenerator,
-        private EventDispatcherInterface $eventDispatcher,
-        private PasswordHasherFactoryInterface $passwordHasherFactory,
-        private ValidatorInterface $validator,
-    ) {
-    }
+        private readonly EntityManagerInterface $em,
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private readonly ValidatorInterface $validator,
+    ) {}
 
-    public function create(Account|string $accountOrUuid, string $username, string $password = null, bool $autoFlush = true): Authentication
+    public function create(Account|string $accountOrUuid, string $username, ?string $password = null, bool $autoFlush = true): Authentication
     {
         if ($accountOrUuid instanceof Account) {
             $account = $accountOrUuid;
         } else {
-            $account = $this->em->getRepository(Account::class)->findOneBy([ 'uuid' => $accountOrUuid ]);
-        }
+            $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
 
-        if (!$account) {
-            throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            if (!$account instanceof Account) {
+                throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            }
         }
 
         $authentication = $this->em->getRepository(Authentication::class)->findOneBy([
             'account' => $account,
-            'type' => AuthenticationType::USERNAME_PASSWORD
+            'type' => AuthenticationType::USERNAME_PASSWORD,
         ]);
 
-        if ($authentication) {
-            throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('This account has already got an username/password authentication mode'));
+        if ($authentication instanceof Authentication) {
+            throw new Exception\AuthenticationUsernamePasswordCreator('This account has already got an username/password authentication mode');
         }
 
         $authentication = new Authentication($this->uuidGenerator->generate(), AuthenticationType::USERNAME_PASSWORD, $account);

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\User;
 
-use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
-use Code202\Security\Entity\AuthenticationType;
 use Code202\Security\Entity\Session;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 interface UserInterface extends BaseUserInterface
 {
@@ -16,5 +17,5 @@ interface UserInterface extends BaseUserInterface
 
     public function getSession(): Session;
 
-    public function getData($key): mixed;
+    public function getData(string $key): mixed;
 }

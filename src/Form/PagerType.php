@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form;
 
+use Code202\Security\Request\PagerRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Request\PagerRequest;
 
+/**
+ * @extends AbstractType<PagerRequest>
+ */
 class PagerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

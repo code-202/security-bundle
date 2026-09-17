@@ -2,24 +2,24 @@
 
 namespace Code202\Security\Service\Activity;
 
+use Code202\Security\Entity\Activity\Activity;
+use Code202\Security\Entity\Activity\Target;
+use Code202\Security\Entity\Activity\Trigger;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Entity\Activity\Activity;
-use Code202\Security\Entity\Activity\Target;
-use Code202\Security\Entity\Activity\Trigger;
 
 class Lister
 {
-    protected $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
+    /**
+     * @param mixed[] $options
+     * @return Pagerfanta<Activity>
+     */
     public function get(array $options): Pagerfanta
     {
         $options = $this->createOptionResolver()->resolve($options);
@@ -71,12 +71,12 @@ class Lister
 
         $resolver->define('targets')
             ->default(null)
-            ->allowedTypes('null', Target::class.'[]')
+            ->allowedTypes('null', Target::class . '[]')
         ;
 
         $resolver->define('triggers')
             ->default(null)
-            ->allowedTypes('null', Trigger::class.'[]')
+            ->allowedTypes('null', Trigger::class . '[]')
         ;
 
         return $resolver;

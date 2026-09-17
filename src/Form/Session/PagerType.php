@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form\Session;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Code202\Security\Form\PagerType as BasePagerType;
 use Code202\Security\Request\Session\PagerRequest;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PagerType extends BasePagerType
 {

@@ -2,20 +2,16 @@
 
 namespace Code202\Security\Service\Authentication;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Code202\Security\Entity\Account;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Entity\AuthenticationType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Provider
 {
-    protected $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
     public function getOne(Account $account, AuthenticationType $type): ?Authentication
     {

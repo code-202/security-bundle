@@ -2,23 +2,23 @@
 
 namespace Code202\Security\Service\Authentication;
 
+use Code202\Security\Entity\Account;
+use Code202\Security\Entity\Authentication;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Entity\Account;
-use Code202\Security\Entity\Authentication;
 
 class Lister
 {
-    protected $em;
-
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
+    /**
+     * @param array<mixed> $options
+     * @return Pagerfanta<Authentication>
+     */
     public function get(array $options): Pagerfanta
     {
         $options = $this->createOptionResolver()->resolve($options);

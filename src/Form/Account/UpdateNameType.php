@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Form\Account;
 
+use Code202\Security\Request\Account\UpdateNameRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Code202\Security\Request\Account\UpdateNameRequest;
 
+/**
+ * @extends AbstractType<UpdateNameRequest>
+ */
 class UpdateNameType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

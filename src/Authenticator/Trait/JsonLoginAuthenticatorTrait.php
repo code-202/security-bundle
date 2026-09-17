@@ -2,6 +2,7 @@
 
 namespace Code202\Security\Authenticator\Trait;
 
+use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +11,9 @@ use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+
+use function is_string;
+use function strlen;
 
 trait JsonLoginAuthenticatorTrait
 {
@@ -24,17 +28,17 @@ trait JsonLoginAuthenticatorTrait
         }
 
         $data = json_decode($request->getContent());
-        if (!$data instanceof \stdClass) {
-            return false;
-        }
 
-        return true;
+        return $data instanceof stdClass;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getCredentials(Request $request): array
     {
         $data = json_decode($request->getContent());
-        if (!$data instanceof \stdClass) {
+        if (!$data instanceof stdClass) {
             throw new BadRequestHttpException('Invalid JSON.');
         }
 
@@ -43,11 +47,11 @@ trait JsonLoginAuthenticatorTrait
         try {
             $credentials['key'] = $this->propertyAccessor->getValue($data, $this->options['username_parameter']);
 
-            if (!\is_string($credentials['key'])) {
+            if (!is_string($credentials['key'])) {
                 throw new BadRequestHttpException(sprintf('The key "%s" must be a string.', $this->options['username_parameter']));
             }
 
-            if (\strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
+            if (strlen($credentials['key']) > UserBadge::MAX_USERNAME_LENGTH) {
                 throw new BadCredentialsException('Invalid key.');
             }
         } catch (AccessException $e) {
@@ -57,7 +61,7 @@ trait JsonLoginAuthenticatorTrait
         return array_merge($this->getExtraCredentials($data), $credentials);
     }
 
-    protected function getExtraCredentials(\stdClass $data): array
+    protected function getExtraCredentials(stdClass $data): array
     {
         return [];
     }

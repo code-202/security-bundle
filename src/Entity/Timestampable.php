@@ -2,20 +2,23 @@
 
 namespace Code202\Security\Entity;
 
+use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait Timestampable
 {
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['timestampable'])]
-    protected \DateTimeImmutable $createdAt;
+    protected DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['timestampable'])]
-    protected \DateTimeImmutable $updatedAt;
+    protected DateTimeImmutable $updatedAt;
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -23,20 +26,22 @@ trait Timestampable
     #[ORM\PrePersist]
     public function setCreatedAt(): self
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
         return $this->updatedAt;
     }
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
-    public function setUpdatedAt(): self
+    public function setUpdatedAt(?DateTimeImmutable $date): self
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = $date ?: new DateTimeImmutable();
+
         return $this;
     }
 }

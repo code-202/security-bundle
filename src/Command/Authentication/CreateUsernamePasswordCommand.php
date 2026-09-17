@@ -2,34 +2,30 @@
 
 namespace Code202\Security\Command\Authentication;
 
+use Code202\Security\Service\Authentication\UsernamePasswordCreator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Code202\Security\Service\Authentication\UsernamePasswordCreator;
 
 #[AsCommand(
     name: 'code202:security:authentication:create-username-password',
-    hidden: false
+    hidden: false,
+    description: 'Creates a new authentication mode for account.'
 )]
 class CreateUsernamePasswordCommand extends Command
 {
-    private UsernamePasswordCreator $creator;
-
     public function __construct(
-        UsernamePasswordCreator $creator
+        private readonly UsernamePasswordCreator $creator
     ) {
         parent::__construct();
-
-        $this->creator = $creator;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new authentication mode for account.')
             ->addArgument('uuid', InputArgument::REQUIRED, 'The uuid of the account.')
             ->addArgument('username', InputArgument::REQUIRED, 'The username for the authentication.')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'The password for this authentication')

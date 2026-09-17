@@ -2,23 +2,22 @@
 
 namespace Code202\Security\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Code202\Security\Service\RoleStrategy\Manager as RoleStrategiesManager;
 use Code202\Security\User\UserInterface;
+use LogicException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/** @extends Voter<string, string> */
 class RoleManipulationVoter extends Voter
 {
     public const GRANT = 'SECURITY.ROLE.GRANT';
     public const REVOKE = 'SECURITY.ROLE.REVOKE';
 
-    protected RoleStrategiesManager $manager;
-
     public function __construct(
-        RoleStrategiesManager $manager
-    ) {
-        $this->manager = $manager;
-    }
+        protected RoleStrategiesManager $manager
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -29,14 +28,10 @@ class RoleManipulationVoter extends Voter
             return false;
         }
 
-        if (!is_string($subject)) {
-            return false;
-        }
-
-        return true;
+        return is_string($subject);
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
 
@@ -48,7 +43,7 @@ class RoleManipulationVoter extends Voter
         return match ($attribute) {
             self::GRANT => $this->manager->canGrant($subject),
             self::REVOKE => $this->manager->canRevoke($subject),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 }

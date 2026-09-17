@@ -2,41 +2,40 @@
 
 namespace Code202\Security\Service\Activity\Trigger;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Code202\Security\Entity\Activity\Console;
 use Code202\Security\Entity\Activity\Trigger;
 use Code202\Security\Entity\Activity\TriggerConsole;
 use Code202\Security\Entity\Activity\TriggerReference;
+use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(event: ConsoleCommandEvent::class, method: 'onConsoleCommandEvent')]
 #[AsEventListener(event: ConsoleTerminateEvent::class, method: 'onConsoleTerminateEvent')]
 class ConsoleProvider implements ProviderInterface
 {
-    protected EntityManagerInterface $em;
-
     protected ?string $runningCommandName = null;
 
+    /** @var mixed[] */
     protected ?array $runningArguments = null;
 
+    /** @var mixed[] */
     protected ?array $runningOptions = null;
 
     public function __construct(
-        EntityManagerInterface $em
-    ) {
-        $this->em = $em;
-    }
+        protected EntityManagerInterface $em
+    ) {}
 
-    public function onConsoleCommandEvent(ConsoleCommandEvent $event)
+    public function onConsoleCommandEvent(ConsoleCommandEvent $event): void
     {
         $this->runningCommandName = $event->getCommand()?->getName();
         $this->runningArguments = $event->getInput()->getArguments();
         $this->runningOptions = $event->getInput()->getOptions();
     }
 
-    public function onConsoleTerminateEvent(ConsoleTerminateEvent $event)
+    public function onConsoleTerminateEvent(ConsoleTerminateEvent $event): void
     {
         $this->runningCommandName = null;
         $this->runningArguments = null;
@@ -45,20 +44,20 @@ class ConsoleProvider implements ProviderInterface
 
     public function supports(): bool
     {
-        return $this->runningCommandName !== null;
+        return null !== $this->runningCommandName;
     }
 
     public function get(): Trigger
     {
-        if ($this->runningCommandName === null) {
-            throw new \RuntimeException('there is no running command');
+        if (null === $this->runningCommandName) {
+            throw new RuntimeException('there is no running command');
         }
 
         $repository = $this->em->getRepository(TriggerConsole::class);
 
         $res = $repository->findOneBy([]);
 
-        if (!$res) {
+        if (!$res instanceof TriggerConsole) {
             $res = new TriggerConsole(new Console());
         }
 
@@ -74,14 +73,13 @@ class ConsoleProvider implements ProviderInterface
         return $res;
     }
 
+    /** @return TriggerConsole[] */
     public function findAll(TriggerReference $reference): array
     {
         if ($reference instanceof Console) {
             $repository = $this->em->getRepository(TriggerConsole::class);
 
-            $res = $repository->findBy([]);
-
-            return $res;
+            return $repository->findBy([]);
         }
 
         return [];

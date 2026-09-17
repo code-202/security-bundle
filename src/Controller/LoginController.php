@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
-use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 
 #[OA\Tag(name: ' Login')]
 #[Security(name: null)]
@@ -35,12 +36,12 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function username(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 
     #[OA\Post(
@@ -59,12 +60,12 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function usernameJson(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 
     #[OA\Post(
@@ -87,12 +88,12 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function usernameForm(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 
     #[OA\Post(
@@ -119,12 +120,12 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function email(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 
     #[OA\Post(
@@ -143,12 +144,12 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function emailJson(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 
     #[OA\Post(
@@ -171,11 +172,11 @@ class LoginController
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/LoginResponse'
                 )
-            )
+            ),
         ]
     )]
     public function emailForm(): Response
     {
-        return new Response(null, 404, [], true);
+        return new Response(null, Response::HTTP_NOT_FOUND, []);
     }
 }

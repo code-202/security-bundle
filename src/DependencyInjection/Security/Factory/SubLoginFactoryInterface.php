@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Code202\Security\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
@@ -9,5 +11,8 @@ interface SubLoginFactoryInterface extends AuthenticatorFactoryInterface
 {
     public function getShortKey(): string;
 
-    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []);
+    /**
+     * @param array<string> $overrideOptions
+     */
+    public function addShortConfiguration(NodeDefinition $node, array $overrideOptions = []): void;
 }
