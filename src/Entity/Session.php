@@ -2,6 +2,7 @@
 
 namespace Code202\Security\Entity;
 
+use Code202\Security\Exception\SessionEmptyUuid;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -72,8 +73,13 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         return $this->authentication;
     }
 
+    /** @return non-empty-string */
     public function getUuid(): string
     {
+        if ('' === $this->uuid) {
+            throw new SessionEmptyUuid();
+        }
+
         return $this->uuid;
     }
 

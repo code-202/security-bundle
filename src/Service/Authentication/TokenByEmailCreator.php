@@ -27,10 +27,10 @@ class TokenByEmailCreator
             $account = $accountOrUuid;
         } else {
             $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
-        }
 
-        if (!$account || !$account->isEnabled()) {
-            throw new Exception\AuthenticationTokenByEmailCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            if (!$account || !$account->isEnabled()) {
+                throw new Exception\AuthenticationTokenByEmailCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            }
         }
 
         if (!$email) {

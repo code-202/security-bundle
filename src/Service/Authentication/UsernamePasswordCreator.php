@@ -30,10 +30,10 @@ class UsernamePasswordCreator
             $account = $accountOrUuid;
         } else {
             $account = $this->em->getRepository(Account::class)->findOneBy(['uuid' => $accountOrUuid]);
-        }
 
-        if (!$account instanceof Account) {
-            throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            if (!$account instanceof Account) {
+                throw new Exception\AuthenticationUsernamePasswordCreator(sprintf('Account not found for uuid : %s', $accountOrUuid));
+            }
         }
 
         $authentication = $this->em->getRepository(Authentication::class)->findOneBy([
