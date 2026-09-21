@@ -1,6 +1,6 @@
 {
     "name": "code202/security-bundle",
-    "version": "1.3.16",
+    "version": "1.4.0",
     "description": "Provides user management for Symfony Project.",
     "license": "MIT",
     "authors": [
@@ -24,7 +24,7 @@
         "symfony/serializer": "6.4.*||^7.0||^8.0",
         "symfony/validator": "6.4.*||^7.0||^8.0",
         "symfony/yaml": "6.4.*||^7.0||^8.0",
-        "zircote/swagger-php": "^4.7",
+        "zircote/swagger-php": "^4.7||^5.0||6.0",
         "symfony/routing": "6.4.*||^7.0||^8.0",
         "symfony/doctrine-bridge": "6.4.*||^7.0||^8.0",
         "doctrine/doctrine-bundle": "^3.3"
