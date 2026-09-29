@@ -38,9 +38,9 @@ trait Timestampable
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
-    public function setUpdatedAt(?DateTimeImmutable $date): self
+    public function refreshUpdatedAt(): self
     {
-        $this->updatedAt = $date ?: new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }

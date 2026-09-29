@@ -127,9 +127,10 @@ class SessionListener
 
     protected function updateExpiredAt(Session $session): void
     {
+        $session->refreshUpdatedAt();
+
         // Update expiredAt from now + ttl
         $now = new DateTimeImmutable();
-        $session->setUpdatedAt($now);
 
         if ($session->getExpiredAt() instanceof DateTimeInterface) {
             $ttl = $this->sessionTTLProvider->getSessionTTL($session->getAuthentication()->getType()->value);
