@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,7 +40,7 @@ class SessionController
     #[OAA\PagerFantaResponse(new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        #[MapQueryParameter] PagerRequest $request,
+        #[MapQueryString] PagerRequest $request,
         UserInterface $user,
         Lister $lister,
         SerializerInterface $serializer

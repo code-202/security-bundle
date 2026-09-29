@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
@@ -38,7 +38,7 @@ class AccountController
     #[OAA\PagerFantaResponse(new Model(type: Account::class, groups: ['list']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        #[MapQueryParameter] PagerRequest $request,
+        #[MapQueryString] PagerRequest $request,
         Lister $lister,
         SerializerInterface $serializer
     ): Response {

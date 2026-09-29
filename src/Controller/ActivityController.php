@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -29,7 +29,7 @@ class ActivityController
     #[OAA\PagerFantaResponse(new Model(type: Activity::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        #[MapQueryParameter] PagerRequest $request,
+        #[MapQueryString] PagerRequest $request,
         UserInterface $user,
         Lister $lister,
         TargetProvider $targetProvider,
