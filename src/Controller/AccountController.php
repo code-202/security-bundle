@@ -5,8 +5,6 @@ namespace Code202\Security\Controller;
 use Code202\Security\Attribute\UuidOrMe;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 use Code202\Security\Entity\Account;
-use Code202\Security\Form\Account\PagerType;
-use Code202\Security\Form\Account\UpdateNameType;
 use Code202\Security\Request\Account\PagerRequest;
 use Code202\Security\Request\Account\UpdateNameRequest;
 use Code202\Security\Service\Account\Enabler;
@@ -15,11 +13,11 @@ use Code202\Security\Service\Account\Updater;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -31,8 +29,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Response(response: 401, ref: '#/components/responses/401-Unauthorized')]
 class AccountController
 {
-    use FormHelperTrait;
-
     #[Route('', name: '.list', methods: 'GET')]
     #[IsGranted('SECURITY.ACCOUNT.LIST')]
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
@@ -42,20 +38,15 @@ class AccountController
     #[OAA\PagerFantaResponse(new Model(type: Account::class, groups: ['list']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapQueryParameter] PagerRequest $request,
         Lister $lister,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(PagerType::class, new PagerRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         $pager = $lister->get([
-            'page' => $data->page,
-            'maxPerPage' => $data->maxPerPage,
-            'show' => $data->show,
-            'sort' => $data->sort,
+            'page' => $request->page,
+            'maxPerPage' => $request->maxPerPage,
+            'show' => $request->show,
+            'sort' => $request->sort,
         ]);
 
         return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list']]), Response::HTTP_OK, [], true);
@@ -76,20 +67,15 @@ class AccountController
     #[IsGranted('SECURITY.ACCOUNT.EDIT', subject: 'account')]
     #[IsGranted('SECURITY.SESSION.TRUSTED')]
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string'), description: 'Uuid of the account or "me"')]
-    #[OAA\PutBody(new Model(type: UpdateNameType::class))]
+    #[OAA\PutBody(new Model(type: UpdateNameRequest::class))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Account::class, groups: ['list', 'timestampable']))]
     public function updateName(
         #[UuidOrMe] Account $account,
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] UpdateNameRequest $request,
         Updater $updater,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(UpdateNameType::class, new UpdateNameRequest());
-
-        $data = $this->handleRequest($form, $request);
-
-        $updater->updateName($account, $data->name);
+        $updater->updateName($account, $request->name);
 
         return new JsonResponse($serializer->serialize($account, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
     }

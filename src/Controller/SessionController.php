@@ -5,8 +5,6 @@ namespace Code202\Security\Controller;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 use Code202\Security\Entity\Session;
 use Code202\Security\Exception\ExceptionInterface;
-use Code202\Security\Form\Session\PagerType;
-use Code202\Security\Form\Session\TrustPasswordType;
 use Code202\Security\Request\Session\PagerRequest;
 use Code202\Security\Request\Session\TrustPasswordRequest;
 use Code202\Security\Service\Session\Deleter;
@@ -18,11 +16,11 @@ use Code202\Security\User\UserInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -34,8 +32,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Response(response: 401, ref: '#/components/responses/401-Unauthorized')]
 class SessionController
 {
-    use FormHelperTrait;
-
     #[Route('', name: '.list', methods: 'GET')]
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
     #[OA\QueryParameter(name: 'maxPerPage', schema: new OA\Schema(type: 'integer'))]
@@ -44,21 +40,16 @@ class SessionController
     #[OAA\PagerFantaResponse(new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        FormFactoryInterface $factory,
-        Request $request,
+        #[MapQueryParameter] PagerRequest $request,
         UserInterface $user,
         Lister $lister,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(PagerType::class, new PagerRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         $pager = $lister->get([
-            'page' => $data->page,
-            'maxPerPage' => $data->maxPerPage,
-            'show' => $data->show,
-            'search' => $data->search,
+            'page' => $request->page,
+            'maxPerPage' => $request->maxPerPage,
+            'show' => $request->show,
+            'search' => $request->search,
             'account' => $user->getAccount(),
         ]);
 
@@ -85,17 +76,12 @@ class SessionController
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function trust(
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Session $session,
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] TrustPasswordRequest $request,
         PasswordTruster $truster,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(TrustPasswordType::class, new TrustPasswordRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $truster->trust($session, $data->password);
+            $truster->trust($session, $request->password);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -110,8 +96,6 @@ class SessionController
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function untrust(
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Session $session,
-        Request $request,
-        FormFactoryInterface $factory,
         Truster $truster,
         SerializerInterface $serializer
     ): Response {

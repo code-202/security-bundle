@@ -5,12 +5,6 @@ namespace Code202\Security\Controller;
 use Code202\Security\Bridge\OpenApi\Attributes as OAA;
 use Code202\Security\Entity\Authentication;
 use Code202\Security\Exception\ExceptionInterface;
-use Code202\Security\Form\Authentication\CreateEmailType;
-use Code202\Security\Form\Authentication\PagerType;
-use Code202\Security\Form\Authentication\UpdateEmailType;
-use Code202\Security\Form\Authentication\UpdatePasswordType;
-use Code202\Security\Form\Authentication\UpdateUsernameType;
-use Code202\Security\Form\Authentication\VerifyTokenByEmailType;
 use Code202\Security\Request\Authentication\CreateEmailRequest;
 use Code202\Security\Request\Authentication\PagerRequest;
 use Code202\Security\Request\Authentication\UpdateEmailRequest;
@@ -27,11 +21,11 @@ use Code202\Security\User\UserInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -45,8 +39,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Response(response: 401, ref: '#/components/responses/401-Unauthorized')]
 class AuthenticationController
 {
-    use FormHelperTrait;
-
     #[Route('', name: '.list', methods: 'GET')]
     #[OA\QueryParameter(name: 'account', schema: new OA\Schema(type: 'string'), required: true, description: 'Uuid of the account or "me"')]
     #[OA\QueryParameter(name: 'page', schema: new OA\Schema(type: 'integer'))]
@@ -55,25 +47,20 @@ class AuthenticationController
     #[OAA\PagerFantaResponse(new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function list(
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapQueryParameter] PagerRequest $request,
         Lister $lister,
         AuthorizationCheckerInterface $authorizationChecker,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(PagerType::class, new PagerRequest());
-
-        $data = $this->handleRequest($form, $request);
-
-        if (!$authorizationChecker->isGranted('SECURITY.ACCOUNT.AUTHENTICATIONS', $data->account)) {
+        if (!$authorizationChecker->isGranted('SECURITY.ACCOUNT.AUTHENTICATIONS', $request->account)) {
             throw new AccessDeniedException('Access of authentication of this account is denied !');
         }
 
         $pager = $lister->get([
-            'page' => $data->page,
-            'maxPerPage' => $data->maxPerPage,
-            'show' => $data->show,
-            'account' => $data->account,
+            'page' => $request->page,
+            'maxPerPage' => $request->maxPerPage,
+            'show' => $request->show,
+            'account' => $request->account,
         ]);
 
         return new JsonResponse($serializer->serialize($pager, 'json', ['groups' => ['list', 'timestampable']]), Response::HTTP_OK, [], true);
@@ -88,17 +75,12 @@ class AuthenticationController
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function updatePassword(
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] UpdatePasswordRequest $request,
         UsernamePasswordUpdater $updater,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(UpdatePasswordType::class, new UpdatePasswordRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $updater->updatePassword($authentication, $data->new);
+            $updater->updatePassword($authentication, $request->new);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -115,17 +97,12 @@ class AuthenticationController
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function updateUsername(
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] UpdateUsernameRequest $request,
         UsernamePasswordUpdater $updater,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(UpdateUsernameType::class, new UpdateUsernameRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $updater->updateUsername($authentication, $data->username);
+            $updater->updateUsername($authentication, $request->username);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -139,18 +116,13 @@ class AuthenticationController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function createEmail(
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] CreateEmailRequest $request,
         TokenByEmailCreator $creator,
         UserInterface $user,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(CreateEmailType::class, new CreateEmailRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $authentication = $creator->createEmail($user->getAccount(), $data->email);
+            $authentication = $creator->createEmail($user->getAccount(), $request->email);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -183,18 +155,13 @@ class AuthenticationController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function verifyTokenByEmail(
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] VerifyTokenByEmailRequest $request,
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         TokenByEmailVerifier $verifier,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(VerifyTokenByEmailType::class, new VerifyTokenByEmailRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $verifier->verify($authentication, $data->token);
+            $verifier->verify($authentication, $request->token);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
@@ -210,18 +177,13 @@ class AuthenticationController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function updateEmail(
-        Request $request,
-        FormFactoryInterface $factory,
+        #[MapRequestPayload] UpdateEmailRequest $request,
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         TokenByEmailUpdater $updater,
         SerializerInterface $serializer
     ): Response {
-        $form = $factory->create(UpdateEmailType::class, new UpdateEmailRequest());
-
-        $data = $this->handleRequest($form, $request);
-
         try {
-            $updater->updateEmail($authentication, $data->email);
+            $updater->updateEmail($authentication, $request->email);
         } catch (ExceptionInterface $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
