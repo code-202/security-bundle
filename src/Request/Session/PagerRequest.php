@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 
 class PagerRequest extends BasePagerRequest
 {
-    #[Choice(['all', 'active', 'inactive'])]
+    #[Choice(choices: ['all', 'active', 'inactive'])]
     public string $show = 'all';
 
     public ?string $search = '';

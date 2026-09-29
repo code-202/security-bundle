@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class PagerRequest extends BasePagerRequest
 {
-    #[Choice(['all', 'active', 'inactive'])]
+    #[Choice(choices: ['all', 'active', 'inactive'])]
     public string $show = 'all';
 
     #[NotNull]

@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints\Choice;
 
 class PagerRequest extends BasePagerRequest
 {
-    #[Choice(['all', 'active', 'inactive'])]
+    #[Choice(choices: ['all', 'active', 'inactive'])]
     public string $show = 'all';
 
-    #[Choice(['name', 'date'])]
+    #[Choice(choices: ['name', 'date'])]
     public string $sort = 'name';
 }
