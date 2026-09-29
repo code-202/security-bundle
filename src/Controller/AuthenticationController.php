@@ -26,6 +26,7 @@ use Code202\Security\Service\Authentication\UsernamePasswordUpdater;
 use Code202\Security\User\UserInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +87,7 @@ class AuthenticationController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function updatePassword(
-        Authentication $authentication,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         Request $request,
         FormFactoryInterface $factory,
         UsernamePasswordUpdater $updater,
@@ -113,7 +114,7 @@ class AuthenticationController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Authentication::class, groups: ['list', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function updateUsername(
-        Authentication $authentication,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         Request $request,
         FormFactoryInterface $factory,
         UsernamePasswordUpdater $updater,
@@ -163,7 +164,7 @@ class AuthenticationController
     #[OA\Response(response: 204, description: 'Successful', content: new OA\MediaType(mediaType: 'application/json'))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function sendTokenByEmail(
-        Authentication $authentication,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         TokenByEmailRefresher $refresher
     ): Response {
         try {
@@ -184,7 +185,7 @@ class AuthenticationController
     public function verifyTokenByEmail(
         Request $request,
         FormFactoryInterface $factory,
-        Authentication $authentication,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         TokenByEmailVerifier $verifier,
         SerializerInterface $serializer
     ): Response {
@@ -211,7 +212,7 @@ class AuthenticationController
     public function updateEmail(
         Request $request,
         FormFactoryInterface $factory,
-        Authentication $authentication,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Authentication $authentication,
         TokenByEmailUpdater $updater,
         SerializerInterface $serializer
     ): Response {

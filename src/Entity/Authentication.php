@@ -6,8 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -24,9 +26,9 @@ class Authentication implements Activity\TargetReference
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    #[ORM\Column(type: Types::GUID)]
+    #[ORM\Column(type: UuidType::NAME)]
     #[Groups(['list'])]
-    protected string $uuid;
+    protected Uuid $uuid;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'authentications')]
     #[ORM\JoinColumn(nullable: false)]
@@ -64,7 +66,7 @@ class Authentication implements Activity\TargetReference
 
     public function __construct(string $uuid, AuthenticationType $type, Account $account)
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::fromString($uuid);
         $this->type = $type;
         $this->account = $account;
         $this->datas = [];
@@ -78,7 +80,7 @@ class Authentication implements Activity\TargetReference
         return $this->id;
     }
 
-    public function getUuid(): string
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

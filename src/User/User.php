@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->session->getUuid();
+        return $this->session->getUuid()->toString();
     }
 
     public function eraseCredentials(): void

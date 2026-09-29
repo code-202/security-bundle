@@ -2,13 +2,14 @@
 
 namespace Code202\Security\Entity;
 
-use Code202\Security\Exception\SessionEmptyUuid;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(schema: 'security')]
@@ -27,9 +28,9 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
     #[ORM\JoinColumn(nullable: false)]
     protected Authentication $authentication;
 
-    #[ORM\Column(type: Types::GUID)]
+    #[ORM\Column(type: UuidType::NAME)]
     #[Groups(['list'])]
-    protected string $uuid;
+    protected Uuid $uuid;
 
     /**
      * @var array<string, mixed>
@@ -51,7 +52,7 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
 
     public function __construct(string $uuid, Authentication $authentication)
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::fromString($uuid);
         $this->authentication = $authentication;
         $this->datas = [];
         $this->expiredAt = (new DateTimeImmutable())->modify('+60 seconds');
@@ -73,13 +74,8 @@ class Session implements Activity\TargetReference, Activity\TriggerReference
         return $this->authentication;
     }
 
-    /** @return non-empty-string */
-    public function getUuid(): string
+    public function getUuid(): Uuid
     {
-        if ('' === $this->uuid) {
-            throw new SessionEmptyUuid();
-        }
-
         return $this->uuid;
     }
 

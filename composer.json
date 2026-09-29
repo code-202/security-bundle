@@ -1,6 +1,6 @@
 {
     "name": "code202/security-bundle",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Provides user management for Symfony Project.",
     "license": "MIT",
     "authors": [
@@ -27,7 +27,8 @@
         "zircote/swagger-php": "^4.7||^5.0||6.0",
         "symfony/routing": "6.4.*||^7.0||^8.0",
         "symfony/doctrine-bridge": "6.4.*||^7.0||^8.0",
-        "doctrine/doctrine-bundle": "^3.3"
+        "doctrine/doctrine-bundle": "^3.3",
+        "symfony/uid": "6.4.*||^7.0||^8.0"
     },
     "suggest": {
         "lexik/jwt-authentication-bundle": "This bundle provides JWT (Json Web Token) authentication for your Symfony API.",

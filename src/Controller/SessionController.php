@@ -17,6 +17,7 @@ use Code202\Security\Service\Session\Truster;
 use Code202\Security\User\UserInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +84,7 @@ class SessionController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function trust(
-        Session $session,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Session $session,
         Request $request,
         FormFactoryInterface $factory,
         PasswordTruster $truster,
@@ -108,7 +109,7 @@ class SessionController
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     #[OA\Response(response: 400, ref: '#/components/responses/400-BadRequest')]
     public function untrust(
-        Session $session,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Session $session,
         Request $request,
         FormFactoryInterface $factory,
         Truster $truster,
@@ -125,7 +126,7 @@ class SessionController
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'), description: 'Uuid of the session')]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Session::class, groups: ['list', 'session.info', 'timestampable']))]
     public function delete(
-        Session $session,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Session $session,
         Deleter $deleter,
         SerializerInterface $serializer
     ): Response {

@@ -14,6 +14,7 @@ use Code202\Security\Service\Account\Lister;
 use Code202\Security\Service\Account\Updater;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,7 +123,7 @@ class AccountController
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Account::class, groups: ['list', 'timestampable']))]
     public function enable(
-        Account $account,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Account $account,
         Enabler $enabler,
         SerializerInterface $serializer
     ): Response {
@@ -136,7 +137,7 @@ class AccountController
     #[OA\PathParameter(name: 'uuid', schema: new OA\Schema(type: 'string', format: 'uuid'))]
     #[OA\Response(response: 200, description: 'Successful', content: new Model(type: Account::class, groups: ['list', 'timestampable']))]
     public function disable(
-        Account $account,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Account $account,
         Enabler $enabler,
         SerializerInterface $serializer
     ): Response {

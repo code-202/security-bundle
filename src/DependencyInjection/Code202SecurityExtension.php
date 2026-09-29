@@ -2,8 +2,10 @@
 
 namespace Code202\Security\DependencyInjection;
 
-use Code202\Security\Bridge\Ramsey\Uuid\UuidGenerator;
-use Code202\Security\Bridge\Ramsey\Uuid\UuidValidator;
+use Code202\Security\Bridge\Ramsey\Uuid\UuidGenerator as RamseyUuidGenerator;
+use Code202\Security\Bridge\Ramsey\Uuid\UuidValidator as RamseyUuidValidator;
+use Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidGenerator as SymfonyPolyfillUuidGenerator;
+use Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidValidator as SymfonyPolyfillUuidValidator;
 use Code202\Security\Service\Authentication\TokenByEmailRefresher;
 use Code202\Security\Service\Common\NumberBaseTokenGenerator;
 use Code202\Security\Service\Common\TokenGeneratorInterface;
@@ -59,8 +61,8 @@ class Code202SecurityExtension extends Extension
     protected function configureUuidGenerator(array $config, ContainerBuilder $container): void
     {
         $uuidGeneratorClass = match ($config['uuid']['generator']) {
-            'ramsey/uuid' => UuidGenerator::class,
-            'symfony/polyfill-uuid' => \Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidGenerator::class,
+            'ramsey/uuid' => RamseyUuidGenerator::class,
+            'symfony/polyfill-uuid' => SymfonyPolyfillUuidGenerator::class,
             default => $config['uuid']['generator'],
         };
 
@@ -76,8 +78,8 @@ class Code202SecurityExtension extends Extension
     protected function configureUuidValidator(array $config, ContainerBuilder $container): void
     {
         $uuidValidatorClass = match ($config['uuid']['validator']) {
-            'ramsey/uuid' => UuidValidator::class,
-            'symfony/polyfill-uuid' => \Code202\Security\Bridge\Symfony\Polyfill\Uuid\UuidValidator::class,
+            'ramsey/uuid' => RamseyUuidValidator::class,
+            'symfony/polyfill-uuid' => SymfonyPolyfillUuidValidator::class,
             default => $config['uuid']['validator'],
         };
 
