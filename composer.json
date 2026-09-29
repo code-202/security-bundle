@@ -1,6 +1,6 @@
 {
     "name": "code202/security-bundle",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Provides user management for Symfony Project.",
     "license": "MIT",
     "authors": [
